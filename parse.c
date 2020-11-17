@@ -33,15 +33,18 @@ int		catch_tale(const char *str, char *r)
 	char 	*min;
 	int 	i;
 
-	min = (char *)str;
+	min = (char *)(str - 1);
 	if ((i = is_redir(str)) != -1)
 		min += i;
 	if ((symb = ft_strchr(str, 39)) && min > symb)
 		min = symb;
 	if ((symb = ft_strchr(str, '"')) && min > symb)
 		min = symb;
-	if (!symb)
-		return (-1);
+	if (min < str)
+	{
+		*r = 0;
+		return (ft_strlen(str));
+	}
 	*r = *min;
 	return ((int)(min - str) + 1);
 }
@@ -50,7 +53,8 @@ size_t	catch_quote(const char *line, char c)
 {
 	char	*res;
 
-	return (!(res = ft_strchr(line, c)) ? -1 : res - line);
+	res = ft_strchr(line, c);
+	return (!res ? -1 : res - line);
 }
 
 char	*handle_quote(char *dup)
@@ -63,6 +67,7 @@ char	*handle_quote(char *dup)
 char	*get_part(const char *line, size_t *i)
 {
 	size_t	f;
+	size_t	e;
 	char 	*dup;
 	char 	r;
 	char	*quaters;
@@ -72,7 +77,7 @@ char	*get_part(const char *line, size_t *i)
 //	i - index of next to tale symbol
 //	r - tale symbol
 	dup = NULL;
-	while ((*i = catch_tale(line, &r)) && (r == 39 || r == '"'))
+	while ((*i += (e = catch_tale(line + *i, &r))) && (r == 39 || r == '"'))
 	{
 //		f - closes quotation mark
 		if ((f = catch_quote(line + *i, r)) == -1)
@@ -81,7 +86,7 @@ char	*get_part(const char *line, size_t *i)
 			return (NULL);
 		}
 //		str into quotation marks
-		quaters = ft_substr(line, *i, f - *i);
+		quaters = ft_substr(line, *i, f);
 		if (r == '"')
 		{
 //			tmp = quaters;
@@ -89,7 +94,7 @@ char	*get_part(const char *line, size_t *i)
 //			free(tmp);
 //			tmp = NULL;
 		}
-		str = ft_substr(line, 0, *i - 2);
+		str = ft_substr(line, 0, *i - 1);
 		tmp = dup;
 		dup = ft_strjoin(dup, str);
 		free(str);
@@ -102,13 +107,13 @@ char	*get_part(const char *line, size_t *i)
 		tmp = NULL;
 		free(quaters);
 		quaters = NULL;
-		*i = f + 1;
+		*i += f + 1;
 //		line now is the next to quotation marks symbol
-		line += *i;
+//		*i += *i;
 	}
 	if (r)
 	{
-		str = ft_substr(line, 0, *i);
+		str = ft_substr(line, *i - 1, e);
 		tmp = dup;
 		dup = ft_strjoin(dup, str);
 		if (tmp)
@@ -166,6 +171,7 @@ char	**parse(const char *line)
 	char	**split = NULL;
 
 	head = &list;
+	i = 0;
 	while (*line)
 	{
 //		returns the part of str until redir symbol (include redir symbol)
@@ -177,7 +183,7 @@ char	**parse(const char *line)
 		}*/
 		ft_printf(">%s<\n", res);
 //		line now is next to redirect symbol
-		line += i + 1;
+		line += i;
 	}
 	return (split);
 }
@@ -189,7 +195,7 @@ int 	main()
 	int		r;
 
 	r = 1;
-	line = "lvns gjs \"vsjdk ' vsfvs\"; '| \"'   s | bsgfsgvs'fdvs';fserff";
+	line = " ab \"c ' de\"; '| \"'   n | opqr'st';uvwxyz";
 	while (r > 0 && *line)
 	{
 //		ft_putstr_fd("kekai > ", 1);
