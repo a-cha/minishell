@@ -9,12 +9,13 @@ typedef struct		s_data
 	struct s_data	*prev;
 }					t_data;
 
+//	returns index of redirection in str
 int		is_redir(const char *str)
 {
 	char	*symb;
 	char 	*min;
 
-	min = (char *)str;
+	min = (char *)(str - 1);
 	if ((symb = ft_strchr(str, '|')))
 		min = symb;
 	if ((symb = ft_strchr(str, ';')) && min > symb)
@@ -23,7 +24,7 @@ int		is_redir(const char *str)
 		min = symb;
 	if ((symb = ft_strchr(str, '>')) && min > symb)
 		min = symb;
-	return (!symb ? -1 : (int)(min - str));
+	return (min < str ? -1 : (int)(min - str));
 }
 
 int		catch_tale(const char *str, char *r)
@@ -36,15 +37,13 @@ int		catch_tale(const char *str, char *r)
 	if ((i = is_redir(str)) != -1)
 		min += i;
 	if ((symb = ft_strchr(str, 39)) && min > symb)
-		if (*(symb - 1) != '\\')
-			min = symb;
+		min = symb;
 	if ((symb = ft_strchr(str, '"')) && min > symb)
-		if (*(symb - 1) != '\\')
-			min = symb;
+		min = symb;
 	if (!symb)
 		return (-1);
 	*r = *min;
-	return ((int)(min - str));
+	return ((int)(min - str) + 1);
 }
 
 size_t	catch_quote(const char *line, char c)
@@ -54,11 +53,13 @@ size_t	catch_quote(const char *line, char c)
 	return (!(res = ft_strchr(line, c)) ? -1 : res - line);
 }
 
-void	handle_quote(char **dup)
+char	*handle_quote(char *dup)
 {
-
+//	substitution of variables
+	return (dup);
 }
 
+//	returns the part of str until redir symbol (include redir symbol)
 char	*get_part(const char *line, size_t *i)
 {
 	size_t	f;
@@ -66,43 +67,117 @@ char	*get_part(const char *line, size_t *i)
 	char 	r;
 	char	*quaters;
 	char	*tmp;
+	char	*str;
 
-	*i = catch_tale(line, &r);
-	if (r == 39 || r == '"')
+//	i - index of next to tale symbol
+//	r - tale symbol
+	dup = NULL;
+	while ((*i = catch_tale(line, &r)) && (r == 39 || r == '"'))
 	{
-		if ((f = catch_quote(line + 1, r)) == -1)
+//		f - closes quotation mark
+		if ((f = catch_quote(line + *i, r)) == -1)
 		{
 			ft_putendl_fd("Error quotation marks", 1);
 			return (NULL);
 		}
-		quaters = ft_substr(line, *i + 1, f - (*i + 1));
+//		str into quotation marks
+		quaters = ft_substr(line, *i, f - *i);
 		if (r == '"')
-			handle_quote(&dup);
-		tmp = ft_substr(line, 0, *i);
-		dup = ft_strjoin(quaters, tmp);
+		{
+//			tmp = quaters;
+//			quaters = handle_quote(quaters);
+//			free(tmp);
+//			tmp = NULL;
+		}
+		str = ft_substr(line, 0, *i - 2);
+		tmp = dup;
+		dup = ft_strjoin(dup, str);
+		free(str);
+		str = NULL;
 		free(tmp);
+		tmp = NULL;
+		tmp = dup;
+		dup = ft_strjoin(dup, quaters);
+		free(tmp);
+		tmp = NULL;
 		free(quaters);
-		*i = f;
+		quaters = NULL;
+		*i = f + 1;
+//		line now is the next to quotation marks symbol
+		line += *i;
 	}
-	else if (r)
-		dup = ft_substr(line, 0, *i + 1);
+	if (r)
+	{
+		str = ft_substr(line, 0, *i);
+		tmp = dup;
+		dup = ft_strjoin(dup, str);
+		if (tmp)
+		{
+			free(tmp);
+			tmp = NULL;
+		}
+		free(str);
+		str = NULL;
+	}
 	else
-		dup = ft_substr(line, 0, (*i = ft_strlen(line) - 1) + 1);
+	{
+		str = ft_strdup(line);
+		tmp = dup;
+		dup = ft_strjoin(dup, str);
+		if (tmp)
+		{
+			free(tmp);
+			tmp = NULL;
+		}
+		free(str);
+		str = NULL;
+	}
 	return (dup);
+}
+
+t_data	*create_part(char *res)
+{
+	t_data	*part;
+	size_t	len;
+
+	if (!(part = malloc(sizeof(t_data))))
+	{
+//		free some? and what is the error must return
+		return (NULL);
+	}
+	len = ft_strlen(res);
+	if ((is_redir(res + len -1)))
+	{
+		part->type = res[len - 1];
+		res[len - 1] = '\0';
+	}
+	else
+		part->type = 0;
+	part->args = ft_split(res, ' ');
 }
 
 char	**parse(const char *line)
 {
 	size_t	i;
 	char	*res;
-	char	**split;
+	t_list	*list;
+	t_list	**head;
 
-	split = NULL;
+	char	**split = NULL;
+
+	head = &list;
 	while (*line)
 	{
+//		returns the part of str until redir symbol (include redir symbol)
 		res = get_part(line, &i);
+/*		if (!(list = ft_lstnew(create_part(res))))
+		{
+//		free some? and what is the error must return
+			return (NULL);
+		}*/
+		ft_printf(">%s<\n", res);
+//		line now is next to redirect symbol
 		line += i + 1;
-		ft_printf("%s\n", res);
 	}
 	return (split);
 }
@@ -114,11 +189,11 @@ int 	main()
 	int		r;
 
 	r = 1;
-	line = "kek";
+	line = "lvns gjs \"vsjdk ' vsfvs\"; '| \"'   s | bsgfsgvs'fdvs';fserff";
 	while (r > 0 && *line)
 	{
-		ft_putstr_fd("kekai > ", 1);
-		r = get_next_line(1, &line);
+//		ft_putstr_fd("kekai > ", 1);
+//		r = get_next_line(1, &line);
 		parsed = parse(line);
 	}
 //	while (*parsed)
