@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/18 18:22:50 by sadolph           #+#    #+#             */
+/*   Updated: 2020/11/18 19:36:43 by sadolph          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -8,6 +20,15 @@
 // delete
 #include <stdio.h>
 #include <string.h>
+
+/*
+** Defines for parsing
+*/
+# define PIPE (9)
+# define SEMIC (10)
+# define REDIR_R (11)
+# define REDIR_DR (12)
+# define REDIR_L (13)
 
 /*
 ** Defines for processing
@@ -22,23 +43,17 @@
 // for test
 # define LS (8)
 
-/*
-** Defines for parsing
-*/
-# define PIPE (9)
-# define SEMIC (10)
-# define REDIR_R (11)
-# define REDIR_DR (12)
-# define REDIR_L (13)
-
 typedef struct		s_data
 {
-    char			command; // ECHO CD
-    char			**args;
-    size_t			len;
-    char			type;
-    struct s_data	*next;
-    struct s_data	*prev;
+	char			**args;		// First element - command (ECHO, CD etc.), second - flags (if presented). Flags format: "-abcde"
+//	maybe we don't need len?
+	size_t			len;		// Len of args array
+	char			type;		// Type of redirection. If presented
+//	file descriptors for redirections (maybe there is another implementation)
+	int				infile;
+	int 			outfile;
+	struct s_data	*next;
+	struct s_data	*prev;
 }					t_data;
 
 #endif
