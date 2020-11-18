@@ -1,3 +1,4 @@
 # minishell
-As beautiful as a shell 
--- our first school team project --
+_As beautiful as a shell_ 
+
+Our first school team project
