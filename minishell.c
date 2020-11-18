@@ -1,11 +1,26 @@
 #include "minishell.h"
 
 char *com[] = {
-    "cd",
-    "echo",
-    "exit",
     "-n"
 };
+
+char    **fill_args(void)
+{
+    char **arg;
+    char    *a = "/Users/acarnati/ fnvid fnvdf bivsdj";
+
+    arg = ft_split(a, ' ');
+    return (arg);
+}
+
+t_data inicial(t_data data)
+{
+    data.command = ECHO;
+    data.args = fill_args();
+    data.len = 4;
+    data.type = 0;
+    return(data);
+}
 
 int ft_strcmp(char *s1, char *s2)
 {
@@ -16,79 +31,82 @@ int ft_strcmp(char *s1, char *s2)
     return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
-void print_str(char **str)
+int print_echo(t_data data)
 {
-    int i;
+	int i;
 
-    i = 1;
-    while (str[i + 1])
-    {
-        printf("%s", str[i]);
-        i++;
-        printf("%c", '\n');
-    }
-    printf("%s", str[i]);
-    printf("%c", '\n');
+	i = 0;
+	while(data.args[i + 1])
+	{
+		printf("%s", data.args[i]);
+		printf("%c", ' ');
+		i++;
+	}
+	printf("%s", data.args[i]);
+	printf("%c", '\n');
+	return (1);
 }
 
-int print_str_flag(char **str, int j)
+int msh_echo(t_data data)
 {
-    int i;
+	int i;
 
-    i = 2;
-    if (!str[i])
-        return (0);
-    while (str[i + 1])
-    {
-        printf("%s ", str[i]);
-        i++;
-    }
-    printf("%s", str[i]);
-    if (j == 1)
-    {
-        printf("%c", '%');
-        printf("%c", '\n');
-    }
-    return (0);
-}
-
-int msh_echo(char *line, int j)
-{
-    char **str;
-
-    str = ft_split(line, ' ');
-    if (ft_strcmp(str[0], com[1]) == 0 && !str[1])
-        write(1, "\n", 1);
-    else if (ft_strcmp(str[0], com[1]) == 0 && ft_strcmp(str[1], com[3]) == 0)
-        print_str_flag(str, j);
-    else if (ft_strcmp(str[0], com[1]) == 0 && ft_strcmp(str[1], com[3]) != 0)
-        print_str(str);
+	i = 1;
+    if (ft_strcmp(data.args[0], com[0]) == 0)
+	{
+		while(data.args[i + 1])
+		{
+			printf("%s", data.args[i]);
+			printf("%c", ' ');
+			i++;
+		}
+		printf("%s", data.args[i]);
+	}
+    else if (ft_strcmp(data.args[0], com[0]) != 0)
+        print_echo(data);
     return (1);
 }
 
-int main()
+int msh_else()
 {
-    char *line;
-    char **str;
-    int i;
-    int j;
+    char *name[] = {"/bin/sh", NULL};
+    execve (name[0], name, NULL);
+    return(1);
+}
 
-    line = ft_strdup("");
-    printf("%s", "Login:");
-    printf("%c", '\n');
-    while (ft_strcmp(line, com[2]) != 0)
-    {
-        get_next_line(0, &line);
-        str = ft_split(line, ';');
-        j = 0;
-        while (str[j])
-            j++;
-        i = 0;
-        while (str[i])
-        {
-            msh_echo(str[i], j);
-            j--;
-            i++;
-        }
+int msh_cd(t_data data)
+{
+    DIR *pDir;
+
+    if (data.len == 0) 
+        return 1;
+    pDir = opendir (data.args[0]);
+    if (pDir == NULL) {
+        printf ("Cannot open directory '%s'\n", data.args[0]);
+        return 1;
     }
+    if (chdir(data.args[0]) != 0)
+		strerror(chdir(data.args[0]));
+    return 0;
+}
+
+int main(int ac, char **av, char **envp)
+{
+    t_data data;
+
+    data.command = CD;
+    data.args = fill_args();
+    data.len = 1;
+    data.type = 0;
+    while (data.command != EXIT)
+    {
+        if (data.command == ECHO)
+            msh_echo(data);
+		if (data.command == CD)
+            msh_cd(data);
+		else if (data.command == LS)
+			msh_else();
+		data.command = LS;
+    }
+    return (0);
 }
