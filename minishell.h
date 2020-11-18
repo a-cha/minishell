@@ -9,14 +9,27 @@
 #include <stdio.h>
 #include <string.h>
 
-#define ECHO 1
-#define CD 2
-#define PWD 3
-#define EXPORT 4
-#define UNSET 5
-#define ENV 6
-#define EXIT 7
-#define LS 8
+/*
+** Defines for processing
+*/
+# define ECHO (1)
+# define CD (2)
+# define PWD (3)
+# define EXPORT (4)
+# define UNSET (5)
+# define ENV (6)
+# define EXIT (7)
+// for test
+# define LS (8)
+
+/*
+** Defines for parsing
+*/
+# define PIPE (9)
+# define SEMIC (10)
+# define REDIR_R (11)
+# define REDIR_DR (12)
+# define REDIR_L (13)
 
 typedef struct		s_data
 {
