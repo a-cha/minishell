@@ -1,7 +1,5 @@
-SRC = 		minishell.c \
-			get_next_line/get_next_line.c \
-			get_next_line/get_next_line_utils.c \
-			ft_split.c
+
+SRC = 		minishell.c 
 
 OBJS	=	$(SRC:.c=.o)
 
@@ -9,7 +7,9 @@ CC = gcc
 
 RM	= rm -f
 
-CFLAGS		= -O3 -Wall -Wextra -Werror -I.
+CFLAGS		= -O3 -I ./libft/# -Wall -Wextra -Werror 
+
+LIBS = libft.a
 
 NAME = minishell
 
@@ -19,8 +19,12 @@ RM		=		rm -f
 
 all		:		$(NAME)
 
-$(NAME)	:	$(OBJS)
-	gcc ${CFLAGS} -o ${NAME} ${OBJS} ${LIBS}
+$(NAME)	: make_lib	$(OBJS)
+	gcc ${CFLAGS} -o ${NAME} ${OBJS} ${LIBS} 
+
+make_lib:
+	make -C ./libft
+	cp libft/libft.a ./
 
 clean	:
 	$(RM) $(OBJS)
