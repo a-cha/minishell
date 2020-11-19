@@ -6,7 +6,7 @@
 /*   By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:28:51 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/18 22:25:42 by sadolph          ###   ########.fr       */
+/*   Updated: 2020/11/19 17:47:07 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	fill_type(t_data *part, char *symb, char **min, char *redir)
 }
 
 //	returns index of redirection in str
-int		is_redir(const char *str, t_data *part)
+int		is_break(const char *str, t_data *part)
 {
 	char	*symb;
 	char 	*min;
@@ -46,15 +46,15 @@ int		is_redir(const char *str, t_data *part)
 		min = symb;
 		part->type = PIPE;
 	}
-	else if ((symb = ft_strchr(str, ';')) && min > symb)
+	if ((symb = ft_strchr(str, ';')) && min > symb)
 	{
 		min = symb;
 		part->type = SEMIC;
 	}
-	if ((symb = ft_strchr(str, '<')) && min > symb)
-		fill_type(part, symb, &min, "<<");
-	if ((symb = ft_strchr(str, '>')) && min > symb)
-		fill_type(part, symb, &min, ">>");
+//	if ((symb = ft_strchr(str, '<')) && min > symb)
+//		fill_type(part, symb, &min, "<<");
+//	if ((symb = ft_strchr(str, '>')) && min > symb)
+//		fill_type(part, symb, &min, ">>");
 	return (min < str ? -1 : (int)(min - str));
 }
 
@@ -66,7 +66,7 @@ int		catch_tale(const char *str, t_data *part, char *r)
 	int 	i;
 
 	min = (char *)(str - 1);
-	if ((i = is_redir(str, part)) != -1)
+	if ((i = is_break(str, part)) != -1)
 		min += i + 1;
 	if ((symb = ft_strchr(str, 39)) && min > symb)
 		min = symb;
@@ -144,9 +144,6 @@ t_data	*get_part(const char **line)
 		tmpd[1] = NULL;
 //		MALLOC HERE
 		split = (char **)ft_arrayjoin((void **)split, (void **)tmpd);
-
-
-
 /*
 		tmp = dup;
 		dup = ft_strjoin(dup, str);
@@ -165,15 +162,12 @@ t_data	*get_part(const char **line)
 //		line now is the next to quotation marks symbol
 //		i += i;
 	}
-	if ((part->type))
-	{
-		str = ft_substr(*line, i - e, e);
-		i += e;
-		tmpd = ft_split(str, ' ');
-		free(str);
-		str = NULL;
-		split = (char **)ft_arrayjoin((void **)split, (void **)tmpd);
-		/*
+	str = ft_substr(*line, i - e, e);
+	i += e;
+	tmpd = ft_split(str, ' ');
+	free(str);
+	str = NULL;
+	split = (char **) ft_arrayjoin((void **) split, (void **) tmpd);/*
 		dup = ft_strjoin(dup, str);
 		if (tmp)
 		{
@@ -181,28 +175,6 @@ t_data	*get_part(const char **line)
 			tmp = NULL;
 		}
 		*/
-	}
-	else
-	{
-		str = ft_substr(*line, i - e, e);
-		i += e;
-		tmpd = ft_split(str, ' ');
-		free(str);
-		str = NULL;
-		split = (char **)ft_arrayjoin((void **)split, (void **)tmpd);
-		/*
-		str = ft_strdup(line);
-		tmp = dup;
-		dup = ft_strjoin(dup, str);
-		if (tmp)
-		{
-			free(tmp);
-			tmp = NULL;
-		}
-		free(str);
-		str = NULL;
-		*/
-	}
 	*line += i;
 	part->args = split;
 	part->len = ft_arraylen((void **)split);
