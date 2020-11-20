@@ -6,7 +6,7 @@
 /*   By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:22:50 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/18 21:38:24 by sadolph          ###   ########.fr       */
+/*   Updated: 2020/11/20 18:53:55 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,11 @@ typedef struct		s_data
 /*
 ** Defines for parsing
 */
-# define PIPE (9)
-# define SEMIC (10)
+# define SEMICOLON (59)
+# define PIPE (124)
 # define REDIR_R (11)
 # define REDIR_DR (12)
 # define REDIR_L (13)
-
-/*
-** Defines for processing
-*/
-# define ECHO (1)
-# define CD (2)
-# define PWD (3)
-# define EXPORT (4)
-# define UNSET (5)
-# define ENV (6)
-# define EXIT (7)
-// for test
-# define LS (8)
 
 /*
 ** Prototypes for parsing
