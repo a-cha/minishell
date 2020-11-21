@@ -6,7 +6,7 @@
 #    By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/21 16:29:44 by sadolph           #+#    #+#              #
-#    Updated: 2020/11/21 16:59:35 by sadolph          ###   ########.fr        #
+#    Updated: 2020/11/21 17:04:06 by sadolph          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,12 +38,10 @@ $(NAME): $(LIBFT_NAME) $(INC_DIR)$(INC_HERE)
 $(LIBFT_NAME):
 	make -C $(LIBFT_DIR)
 
-# Standard rules separated for ft_printf & libft:
 clean:
-	rm -rf $(OBJ_DIR)
 	make -C $(LIBFT_DIR) clean
 fclean: clean
-	rm -f $(NAME)
+	rm -f minishell
 	make -C $(LIBFT_DIR) fclean
 re: fclean all
 

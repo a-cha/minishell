@@ -6,7 +6,7 @@
 /*   By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:22:50 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/21 13:56:01 by sadolph          ###   ########.fr       */
+/*   Updated: 2020/11/21 19:44:59 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct		s_data
 */
 # define SEMICOLON (59)
 # define PIPE (124)
+
 # define REDIR_R (11)
 # define REDIR_DR (12)
 # define REDIR_L (13)

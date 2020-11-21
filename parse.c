@@ -6,11 +6,11 @@
 /*   By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:28:51 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/20 22:49:29 by sadolph          ###   ########.fr       */
+/*   Updated: 2020/11/21 19:28:14 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "includes/minishell.h"
 
 void	free_memory(void **memory)
 {
@@ -47,9 +47,11 @@ int		is_linebreak(const char *str)
 	size_t	min;
 
 	min = ft_strlen(str);
-	if ((symb = ft_strchr(str, SEMICOLON)) && min > symb - str && *(symb - 1) != '\\')
+	if ((symb = ft_strchr(str, SEMICOLON)) &&
+							min > symb - str && *(symb - 1) != '\\')
 		min = symb - str;
-	if ((symb = ft_strchr(str, PIPE)) && min > symb - str && *(symb - 1) != '\\')
+	if ((symb = ft_strchr(str, PIPE)) &&
+							min > symb - str && *(symb - 1)	!= '\\')
 		min = symb - str;
 	return (min == ft_strlen(str) ? -1 : (int)min);
 }
@@ -61,9 +63,11 @@ int		is_quotmark(const char *str)
 	size_t	min;
 
 	min = ft_strlen(str);
-	if ((symb = ft_strchr(str, 39)) && min > symb - str && *(symb - 1) != '\\')
+	if ((symb = ft_strchr(str, 39)) &&
+								min > symb - str && *(symb - 1) != '\\')
 		min = symb - str;
-	if ((symb = ft_strchr(str, '"')) && min > symb - str && *(symb - 1) != '\\')
+	if ((symb = ft_strchr(str, '"')) &&
+								min > symb - str && *(symb - 1) != '\\')
 		min = symb - str;
 	return (min == ft_strlen(str) ? -1 : (int)min);
 }
@@ -88,65 +92,118 @@ size_t		catch_first_sign(const char *str, t_data *part, char *r)
 	return (min != ft_strlen(str) ? min + 1 : ft_strlen(str));
 }
 
-// handle double quotation (substitute variables)
-char	*handle_quotation(const char *line, size_t s, size_t f)
-{
-	char *quotation;
-
-// move start
-	if (s != 0)
-		while ((s) && (ft_isalpha(line[s])))
-			s--;
-// move finish
-	while ((line[++f]) && (ft_isalpha(line[f])) )
-		;
-//	+ substitution of variables
-	return (quotation);
-}
-
-//	need to return variable's content (if not presented, empty line)
-char 	*handle_env(const char *line, size_t *f/*, char **env*/)
-{
-	char 	*res;
-
-	*f = 1;
-	while ((line[*f]))
-		if ((ft_isalnum(line[*f])) || line[*f] == '_')
-			(*f)++;
-//	res nov is the name of variable
-//	MALLOC HERE
-	res = ft_substr(line, 0, *f);
-	return (res);
-}
-
-char 	*is_env(const char *line)
+int		is_env(const char *line)
 {
 	char 	*tmp;
 
-	if ((tmp = ft_strchr(line + n, '$')) && *(tmp - 1) != '\\')
-	{
-//		line before env
-		dup = ft_substr(line, n, tmp - line);
-		env = handle_env(tmp, &n);
-//		MALLOC HERE
-		dup1 = ft_strjoin(dup, env);
-		free_memory((void **)&dup);
-		free_memory((void **)&env);
-	}
+	return ((tmp = ft_strchr(line, '$')) && *(tmp - 1) != '\\' ?
+			(int)(tmp - line) : -1);
 }
 
-// line before quotations (and without quots, except shielded)
-char	**handle_line(const char *line, size_t f)
+char 	*handle_env(char *dup, const char *line, size_t *s)
+{
+	char	*env;
+	char	*tmp;
+	size_t	f;
+
+	f = 1;
+	while ((line[f]))
+	{
+		if ((ft_isalnum(line[f])) || line[f] == '_')
+			f++;
+	}
+//	NEED TO FILL ENV HERE
+	env = fill_env(line, 1, f);
+
+	tmp = dup;
+	dup = ft_strjoin(dup, env);
+	*s += f;
+	free_memory((void **) &tmp);
+	free_memory((void **) &env);
+	return (dup);
+}
+
+// line before quotations (and without quots, except escaped)
+char	**handle_line(const char *line)
+{
+	char 	*dup;
+	char 	*tmp;
+	char 	*dup1;
+	size_t	i;
+	size_t	s;
+
+	if ((s = is_env(line)))
+	{
+		i = 0;
+		while ((s = is_env(line + i)))
+		{
+			if (!(dup = ft_substr(line, i, s)))
+				return (NULL);
+			tmp = dup;
+			dup = handle_env(dup, line + s, &s);
+			free_memory((void **) &tmp);
+//			dup1 = ft_substr(line, i, s);
+//			tmp = dup;
+//			dup = ft_strjoin(dup, dup1);
+//			tmp = dup;
+//			dup = ft_strjoin(dup, handle_env(line + i + s, &s));
+//			free_memory((void **) &tmp);
+			i += s;
+		}
+	}
+	else
+		dup = handle_escaped();
+	{
+		dup1 = ft_substr(line, i, s);
+		env = dup;
+		dup = ft_strjoin(dup, dup1);
+		free_memory((void **)&env);
+		free_memory((void **)&dup1);
+		env = handle_env(line + i + s, &s);
+		dup = ft_strjoin(dup, env);
+		free_memory((void **)&env);
+		i += s;
+	}
+//	need we?
+//	while (escaped_symbols)
+	free_memory((void **)&line);
+	return (ft_split(dup, ' '));
+}
+
+// handle double quotation (substitute variables)
+char	*handle_quot_double(const char *line)
 {
 	char 	*dup;
 	char 	*dup1;
 	char	*env;
-	size_t	n;
+	size_t	i;
+	size_t	s;
 
-//	MALLOC HERE
-	n = 0;
-
-
+// move start
+//	if (s != 0)
+//		while ((s) && (ft_isalpha(line[s])))
+//			s--;
+// move finish
+//	while ((line[++f]) && (ft_isalpha(line[f])) )
+//		;
+// CAN I MOVE IT TO ANOTHER FUNCTION?
+	i = 0;
+	dup = "\0";
+	while ((s = is_env(line + i)))
+	{
+		dup1 = ft_substr(line, i, s);
+		env = dup;
+		dup = ft_strjoin(dup, dup1);
+		free_memory((void **)&env);
+		free_memory((void **)&dup1);
+		env = handle_env(line + i + s, &s);
+		dup = ft_strjoin(dup, env);
+		free_memory((void **)&env);
+		i += s;
+	}
+//	+ substitution of variables
+	free_memory((void **)&line);
+	return (dup);
 }
 
 //	returns the part of str until redir symbol (include redir symbol)
@@ -187,8 +244,9 @@ t_data	*get_part(const char **line)
 			f = tmp - (*line + i);
 //		MALLOC HERE
 //		quaters = ft_substr(*line, i, f);
-		args = handle_line(*line + i, s - 1);
-		quot = handle_quotation(*line, i + s, f);
+		args = handle_line(ft_substr(*line, i, s - 1));
+//		MALLOC HERE
+		quot = (r == '\'' ? ft_substr(*line, i + s, f) : handle_quot_double(ft_substr(*line, i + s, f)));
 //		free(tmp);
 //		tmp = NULL;
 /*
@@ -206,6 +264,8 @@ t_data	*get_part(const char **line)
 		quaters = NULL;
 */
 		i += s;
+		s = 0;
+
 /*
 
 		i += f + 1;
