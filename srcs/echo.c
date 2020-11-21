@@ -21,7 +21,7 @@ void	echo(t_data *data)
 	flag = 0;
 	if (ft_strcmp(data->args[i], "-n") == 0)
 		i++ && flag++;
-	if (data->len != 0)
+	if (data->len > 1)
 	{
 		while (data->args[i])
 		{
@@ -38,4 +38,3 @@ void	echo(t_data *data)
 	if (flag == 0)
 		ft_putstr_fd("\n", 1);
 }
-

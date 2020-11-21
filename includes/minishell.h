@@ -6,7 +6,7 @@
 /*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:22:50 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/21 18:55:00 by pcatrina         ###   ########.fr       */
+/*   Updated: 2020/11/21 13:56:01 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct		s_data
 */
 # define SEMICOLON (59)
 # define PIPE (124)
+
 # define REDIR_R (11)
 # define REDIR_DR (12)
 # define REDIR_L (13)
@@ -52,7 +53,7 @@ size_t				ft_arraylen(void **array);
 void				**ft_arrayjoin(void **array1, void **array2);
 
 /*
-**Prototypes for commands
+** Prototypes for commands
 */ 
 void				pwd(t_data *data);
 void				echo(t_data *data);
