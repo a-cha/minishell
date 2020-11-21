@@ -6,23 +6,21 @@
 /*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 18:07:37 by pcatrina          #+#    #+#             */
-/*   Updated: 2020/11/21 22:14:20 by pcatrina         ###   ########.fr       */
+/*   Updated: 2020/11/21 21:36:12 by pcatrina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdio.h>
 
 void	pwd(t_data *data)
 {
 	char	*pwd;
 
 	if ((pwd = getcwd(NULL, 0)) == NULL)
-		ft_putstr_fd("error\n", 1);
+		printf("error\n");
 	else
-	{
-		ft_putstr_fd(pwd, 1);
-		ft_putchar_fd('\n', 1);
-	}
+		printf("%s\n", pwd);
 	data->pwd = pwd;
 	free(pwd);
 }

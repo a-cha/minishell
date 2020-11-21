@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/21 16:29:44 by sadolph           #+#    #+#              #
-#    Updated: 2020/11/21 22:03:19 by pcatrina         ###   ########.fr        #
+#    Updated: 2020/11/21 22:48:25 by sadolph          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,10 +27,8 @@ LIBFT_NAME := libft.a
 # Sources
 NAME := minishell
 SRC :=			\
-./srcs/echo.c	\
-./srcs/main.c	\
-./srcs/pwd.c	\
-./srcs/cd.c
+parse.c			\
+utils.c
 
 all: $(NAME)
 

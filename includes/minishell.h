@@ -6,7 +6,7 @@
 /*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:22:50 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/21 22:41:26 by pcatrina         ###   ########.fr       */
+/*   Updated: 2020/11/21 22:48:25 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINISHELL_H
 
 # include "libft.h"
-# include "get_next_line.h"
 # include <fcntl.h>
 # include <dirent.h>
 # include <errno.h>
@@ -58,5 +57,4 @@ void				**ft_arrayjoin(void **array1, void **array2);
 */ 
 void				pwd(t_data *data);
 void				echo(t_data *data);
-void				cd(t_data *data);
 #endif
