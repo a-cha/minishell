@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:22:50 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/21 13:56:01 by sadolph          ###   ########.fr       */
+/*   Updated: 2020/11/21 18:55:00 by pcatrina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct		s_data
 	int 			outfile;
 	struct s_data	*next;
 	struct s_data	*prev;
+	char			*pwd;
 }					t_data;
 
 /*
@@ -50,4 +51,9 @@ char				**ft_arrayfree(void **array);
 size_t				ft_arraylen(void **array);
 void				**ft_arrayjoin(void **array1, void **array2);
 
+/*
+**Prototypes for commands
+*/ 
+void				pwd(t_data *data);
+void				echo(t_data *data);
 #endif
