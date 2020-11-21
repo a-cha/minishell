@@ -6,7 +6,7 @@
 /*   By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:22:50 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/20 18:53:55 by sadolph          ###   ########.fr       */
+/*   Updated: 2020/11/21 13:56:01 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@
 
 typedef struct		s_data
 {
-	char			**args;		// First element - command (ECHO, CD etc.), second - flags (if presented). Flags format: "-abcde"
+	char			**args;		// First element - command (ECHO, CD etc.), further - arguments (may be flags)
 //	maybe we don't need len?
 	size_t			len;		// Len of args array
-	char			type;		// Type of redirection. If presented
+	char			type;		// Type of break. If presented
 //	file descriptors for redirections (maybe there is another implementation)
 	int				infile;
 	int 			outfile;
