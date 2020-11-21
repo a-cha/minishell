@@ -6,11 +6,11 @@
 /*   By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:28:51 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/21 19:28:14 by sadolph          ###   ########.fr       */
+/*   Updated: 2020/11/21 19:44:59 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "minishell.h"
 
 void	free_memory(void **memory)
 {

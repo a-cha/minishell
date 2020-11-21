@@ -53,7 +53,7 @@ size_t				ft_arraylen(void **array);
 void				**ft_arrayjoin(void **array1, void **array2);
 
 /*
-**Prototypes for commands
+** Prototypes for commands
 */ 
 void				pwd(t_data *data);
 void				echo(t_data *data);
