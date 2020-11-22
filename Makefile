@@ -6,7 +6,7 @@
 #    By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/21 16:29:44 by sadolph           #+#    #+#              #
-#    Updated: 2020/11/22 12:44:52 by sadolph          ###   ########.fr        #
+#    Updated: 2020/11/22 15:16:56 by sadolph          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ NAME := minishell
 SRC :=			\
 parse.c			\
 utils.c			\
-main.c
+tests_parsing.c
 
 all: $(NAME)
 
