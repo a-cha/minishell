@@ -6,7 +6,7 @@
 /*   By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:28:51 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/21 22:46:39 by sadolph          ###   ########.fr       */
+/*   Updated: 2020/11/22 14:24:01 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,26 +18,17 @@ void	free_memory(void **memory)
 	*memory = NULL;
 }
 
-void	fill_type(t_data *part, char *symb, char **min, char *redir)
+size_t	is_escaped(const char *line, size_t i)
 {
-	if (!(ft_strncmp(symb, redir, 2)))
+	size_t	n;
+
+	n = 0;
+	if (i != 0)
 	{
-		if (*redir == '<')
-			part->type = 0;
-		else
-		{
-			*min = symb + 1;
-			part->type = REDIR_DR;
-		}
+		while ((i--) && line[i] == '\\')
+			n++;
 	}
-	else
-	{
-		*min = symb;
-		if (*redir == '<')
-			part->type = REDIR_L;
-		else
-			part->type = REDIR_R;
-	}
+	return (n % 2);
 }
 
 // returns index of
@@ -48,10 +39,10 @@ int		is_linebreak(const char *str)
 
 	min = ft_strlen(str);
 	if ((symb = ft_strchr(str, SEMICOLON)) &&
-							min > symb - str && *(symb - 1) != '\\')
+							min > symb - str && !(is_escaped(str, symb - str)))
 		min = symb - str;
 	if ((symb = ft_strchr(str, PIPE)) &&
-							min > symb - str && *(symb - 1)	!= '\\')
+							min > symb - str && !(is_escaped(str, symb - str)))
 		min = symb - str;
 	return (min == ft_strlen(str) ? -1 : (int)min);
 }
@@ -64,15 +55,15 @@ int		is_quotmark(const char *str)
 
 	min = ft_strlen(str);
 	if ((symb = ft_strchr(str, 39)) &&
-								min > symb - str && *(symb - 1) != '\\')
+							min > symb - str && !(is_escaped(str, symb - str)))
 		min = symb - str;
 	if ((symb = ft_strchr(str, '"')) &&
-								min > symb - str && *(symb - 1) != '\\')
+							min > symb - str && !(is_escaped(str, symb - str)))
 		min = symb - str;
 	return (min == ft_strlen(str) ? -1 : (int)min);
 }
 
-// returns index of closest redirection or quotation mark
+// returns index (or may be next index) of closest redirection or quotation mark
 size_t		catch_first_sign(const char *str, t_data *part, char *r)
 {
 	size_t	min;
@@ -89,20 +80,15 @@ size_t		catch_first_sign(const char *str, t_data *part, char *r)
 		part->type = PIPE;
 	if (str[min] == '\'' || str[min] == '"')
 		*r = str[min];
-	return (min != ft_strlen(str) ? min + 1 : ft_strlen(str));
+	return (min != ft_strlen(str) ? min/* + 1*/ : ft_strlen(str));
 }
 
 int		is_env(const char *line)
 {
 	char 	*tmp;
 
-	return ((tmp = ft_strchr(line, '$')) && *(tmp - 1) != '\\' ?
+	return ((tmp = ft_strchr(line, '$')) && !(is_escaped(line, tmp - line)) ?
 			(int)(tmp - line) : -1);
-}
-
-int		is_escaped(char line)
-{
-	size_t	i;
 }
 
 char 	*fill_env(char *env_name)
@@ -209,7 +195,7 @@ char	*handle_quot_double(const char *line)
 		dup = ft_strjoin(dup, dup1);
 		free_memory((void **)&env);
 		free_memory((void **)&dup1);
-		env = handle_env(line + i + s, &s);
+		env = handle_env(dup, line + i + s, &s);
 		dup = ft_strjoin(dup, env);
 		free_memory((void **)&env);
 		i += s;
@@ -306,6 +292,7 @@ t_data	*get_part(const char **line)
 	return (part);
 */
 	}
+	return (NULL);
 }
 
 t_list	**parse(const char *line)
@@ -329,6 +316,7 @@ t_list	**parse(const char *line)
 	return (head);
 }
 
+/*
 int 	main(int ac, char **av, char **envp)
 {
 	char	*line;
@@ -356,3 +344,4 @@ int 	main(int ac, char **av, char **envp)
 //	}
 	return (0);
 }
+*/
