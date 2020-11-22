@@ -6,7 +6,7 @@
 /*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 21:45:39 by pcatrina          #+#    #+#             */
-/*   Updated: 2020/11/21 22:44:36 by pcatrina         ###   ########.fr       */
+/*   Updated: 2020/11/22 14:55:36 by pcatrina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	cd(t_data *data)
 
 	if (!(data->args[1]))
 	{
-		chdir(cd);
+		chdir("");
 		return;
 	}
 	if (chdir(data->args[1]) == -1)
