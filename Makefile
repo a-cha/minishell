@@ -6,13 +6,13 @@
 #    By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/21 16:29:44 by sadolph           #+#    #+#              #
-#    Updated: 2020/11/21 22:48:25 by sadolph          ###   ########.fr        #
+#    Updated: 2020/11/22 12:44:52 by sadolph          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Compile
 CC := gcc
-CFLAGS := -Wall -Wextra -Werror
+CFLAGS := #-Wall -Wextra -Werror
 
 # Directories
 SRC_DIR := ./src/
@@ -28,7 +28,8 @@ LIBFT_NAME := libft.a
 NAME := minishell
 SRC :=			\
 parse.c			\
-utils.c
+utils.c			\
+main.c
 
 all: $(NAME)
 

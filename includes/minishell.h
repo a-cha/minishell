@@ -6,7 +6,7 @@
 /*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:22:50 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/22 15:12:34 by pcatrina         ###   ########.fr       */
+/*   Updated: 2020/11/22 15:15:39 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,9 @@ typedef struct		s_data
 //	file descriptors for redirections (maybe there is another implementation)
 	int				infile;
 	int 			outfile;
+	char			**env;
 	struct s_data	*next;
 	struct s_data	*prev;
-	char			**env;
-	char			*pwd;
 }					t_data;
 
 /*
@@ -41,10 +40,6 @@ typedef struct		s_data
 */
 # define SEMICOLON (59)
 # define PIPE (124)
-
-# define REDIR_R (11)
-# define REDIR_DR (12)
-# define REDIR_L (13)
 
 /*
 ** Prototypes for parsing
