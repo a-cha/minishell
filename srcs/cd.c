@@ -17,12 +17,12 @@ void	cd(t_data *data)
 	char	*cd;
 
 	if (!(data->args[1]))
-	{
-		chdir("");
+    {
+		chdir("/");
 		return;
 	}
 	if (chdir(data->args[1]) == -1)
-		return (ft_putstr_fd("error", 1));
+		return (ft_putstr_fd("cd: No such file or directory \n", 1));
 	cd = getcwd(NULL, 0);
 	data->pwd = cd;
 	free(cd);
