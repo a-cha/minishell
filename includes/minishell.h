@@ -6,7 +6,7 @@
 /*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:22:50 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/22 15:36:04 by pcatrina         ###   ########.fr       */
+/*   Updated: 2020/11/22 19:09:20 by pcatrina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,5 @@ void				**ft_arrayjoin(void **array1, void **array2);
 void				pwd(t_data *data);
 void				echo(t_data *data);
 void				cd(t_data *data);
-int 				find(t_data *data);
+int 				find(char **env, char *str);
 #endif
