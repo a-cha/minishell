@@ -6,7 +6,7 @@
 /*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:22:50 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/21 22:41:26 by pcatrina         ###   ########.fr       */
+/*   Updated: 2020/11/22 15:04:02 by pcatrina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct		s_data
 	int 			outfile;
 	struct s_data	*next;
 	struct s_data	*prev;
+	char			**env;
 	char			*pwd;
 }					t_data;
 
