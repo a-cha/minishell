@@ -4,19 +4,36 @@
 
 #include "minishell.h"
 #include "get_next_line.h"
+
+size_t	is_escaped(const char *line, size_t i);
+int		is_symb(const char *line, char c);
 int		is_linebreak(const char *str);
 int		is_quotmark(const char *str);
-size_t	is_escaped(const char *line, size_t i);
 size_t	catch_first_sign(const char *str, t_data *part, char *r);
 
 int			main()
 {
-//	test is_linebreak
 	int 	n;
-	char 	*line = " ni fln vwi \\;nv";
+	char 	*line = "kjnvv\\$kmlvs$vdf";
 	t_data	*part = ft_calloc(1, sizeof(t_data));
 	char 	r;
+
 /*
+//	test is_env
+	while (1)
+	{
+		ft_putstr_fd("kekai > ", 1);
+		get_next_line(1, &line);
+		if ((n = is_env(line)) > -1)
+		{
+			printf("ret: %d\n", n);
+			printf("%s\n", line + n);
+		}
+		else
+			printf("-1\n");
+	}
+*/
+//	test is_linebreak
 	while (1)
 	{
 		ft_putstr_fd("kekai > ", 1);
@@ -27,9 +44,8 @@ int			main()
 		else
 			printf("-1\n");
 	}
-*/
-//	test is_quotmark
 /*
+//	test is_quotmark
 	while (1)
 	{
 		ft_putstr_fd("kekai > ", 1);
@@ -40,14 +56,18 @@ int			main()
 			printf("-1\n");
 	}
 */
+/*
 //	test catch_first_sign
 	while (1)
 	{
 		ft_putstr_fd("kekai > ", 1);
 		get_next_line(1, &line);
-		if ((n = catch_first_sign(line, part, &r)))
+		if ((n = catch_first_sign(line, part, &r)) != -1)
+		{
+			printf("ret: %d\n", n);
 			printf("%s\n%c\n%c\n", line + n, part->type, r);
-	}
+		}
+}*/
 	return (0);
 
 }

@@ -6,7 +6,7 @@
 /*   By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:28:51 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/22 14:24:01 by sadolph          ###   ########.fr       */
+/*   Updated: 2020/11/22 19:09:40 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,39 +31,52 @@ size_t	is_escaped(const char *line, size_t i)
 	return (n % 2);
 }
 
-// returns index of
-int		is_linebreak(const char *str)
+int		is_symb(const char *line, char c)
 {
-	char	*symb;
+	size_t	i;
 	size_t	min;
+	char	*symb;
 
-	min = ft_strlen(str);
-	if ((symb = ft_strchr(str, SEMICOLON)) &&
-							min > symb - str && !(is_escaped(str, symb - str)))
-		min = symb - str;
-	if ((symb = ft_strchr(str, PIPE)) &&
-							min > symb - str && !(is_escaped(str, symb - str)))
-		min = symb - str;
-	return (min == ft_strlen(str) ? -1 : (int)min);
+	i = 0;
+	min = ft_strlen(line);
+	while ((symb = ft_strchr(line + i, c)))
+	{
+		if (min > symb - line && !(is_escaped(line, symb - line)))
+		{
+			min = symb - line;
+			break ;
+		}
+		i += symb - line + 1;
+	}
+	return (min == ft_strlen(line) ? -1 : (int)min);
 }
 
-// returns index of
-int		is_quotmark(const char *str)
+int		is_linebreak(const char *line)
 {
-	char	*symb;
-	size_t	min;
+	size_t	res;
+	size_t	s;
 
-	min = ft_strlen(str);
-	if ((symb = ft_strchr(str, 39)) &&
-							min > symb - str && !(is_escaped(str, symb - str)))
-		min = symb - str;
-	if ((symb = ft_strchr(str, '"')) &&
-							min > symb - str && !(is_escaped(str, symb - str)))
-		min = symb - str;
-	return (min == ft_strlen(str) ? -1 : (int)min);
+	res = ft_strlen(line);
+	if ((s = is_symb(line, SEMICOLON)) < res)
+		res = s;
+	if ((s = is_symb(line, PIPE)) < res)
+		res = s;
+	return (res == ft_strlen(line) ? -1 : (int)res);
 }
 
-// returns index (or may be next index) of closest redirection or quotation mark
+int		is_quotmark(const char *line)
+{
+	size_t	res;
+	size_t	s;
+
+	res = ft_strlen(line);
+	if ((s = is_symb(line, SEMICOLON)) < res)
+		res = s;
+	if ((s = is_symb(line, PIPE)) < res)
+		res = s;
+	return (res == ft_strlen(line) ? -1 : (int)res);
+}
+
 size_t		catch_first_sign(const char *str, t_data *part, char *r)
 {
 	size_t	min;
@@ -80,24 +93,9 @@ size_t		catch_first_sign(const char *str, t_data *part, char *r)
 		part->type = PIPE;
 	if (str[min] == '\'' || str[min] == '"')
 		*r = str[min];
-	return (min != ft_strlen(str) ? min/* + 1*/ : ft_strlen(str));
-}
-
-int		is_env(const char *line)
-{
-	char 	*tmp;
-
-	return ((tmp = ft_strchr(line, '$')) && !(is_escaped(line, tmp - line)) ?
-			(int)(tmp - line) : -1);
-}
-
-char 	*fill_env(char *env_name)
-{
-	char 	*env;
-
-	env = "lol";
-	free_memory((void **) &env_name);
-	return (env);
+	else
+		*r = '\0';
+	return (min);
 }
 
 char 	*handle_env(char *dup, const char *line, size_t *s)
@@ -147,10 +145,10 @@ char	**handle_line(const char *line)
 	size_t	i;
 	size_t	s;
 
-	if ((s = is_env(line)))
+	if ((s = is_symb(line, '$')))
 	{
 		i = 0;
-		while ((s = is_env(line + i)))
+		while ((s = is_symb(line + i, '$')))
 		{
 			if (!(dup = ft_substr(line, i, s)))
 				return (NULL);
@@ -188,7 +186,7 @@ char	*handle_quot_double(const char *line)
 // CAN I MOVE IT TO ANOTHER FUNCTION?
 	i = 0;
 	dup = "\0";
-	while ((s = is_env(line + i)))
+	while ((s = is_symb(line + i, '$')))
 	{
 		dup1 = ft_substr(line, i, s);
 		env = dup;
@@ -227,7 +225,6 @@ t_data	*get_part(const char **line)
 
 	i = 0;
 	s = 0;
-	r = '\0';
 //	i - index of next to first sign symbol (if not presented, index to the end of line)
 //	r - quotation mark symbol
 	while ((s = catch_first_sign(*line + i + s, part, &r)) && (r == '\'' || r == '"'))
