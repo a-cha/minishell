@@ -10,6 +10,7 @@ int		is_symb(const char *line, char c);
 int		is_linebreak(const char *str);
 int		is_quotmark(const char *str);
 size_t	catch_first_sign(const char *str, t_data *part, char *r);
+void 	escape_symbols(char *dup);
 
 int			main()
 {
@@ -18,13 +19,21 @@ int			main()
 	t_data	*part = ft_calloc(1, sizeof(t_data));
 	char 	r;
 
-/*
-//	test is_env
+//	test escape_symbols
 	while (1)
 	{
 		ft_putstr_fd("kekai > ", 1);
 		get_next_line(1, &line);
-		if ((n = is_env(line)) > -1)
+		escape_symbols(line);
+		printf("%s\n", line);
+	}
+/*
+//	test is_symb
+	while (1)
+	{
+		ft_putstr_fd("kekai > ", 1);
+		get_next_line(1, &line);
+		if ((n = is_symb(line)) > -1)
 		{
 			printf("ret: %d\n", n);
 			printf("%s\n", line + n);
@@ -33,6 +42,7 @@ int			main()
 			printf("-1\n");
 	}
 */
+/*
 //	test is_linebreak
 	while (1)
 	{
@@ -44,6 +54,7 @@ int			main()
 		else
 			printf("-1\n");
 	}
+*/
 /*
 //	test is_quotmark
 	while (1)
