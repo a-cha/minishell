@@ -6,7 +6,7 @@
 /*   By: pcatrina <pcatrina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 19:05:08 by pcatrina          #+#    #+#             */
-/*   Updated: 2020/11/22 21:38:14 by pcatrina         ###   ########.fr       */
+/*   Updated: 2020/11/22 23:39:21 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,28 @@ char		*find_env(char **env, char *str)
 	return (arr);
 }
 
-char 	**dub_env(char **env)
+t_env	*env_to_cont(char *env)
 {
-	char	**env_dup;
-	int		i;
+	t_env	*var;
+	char 	*tmp;
 
-	i = 0;
-
-	env_dup = (char **)malloc(8 * (ft_arraylen((void**)env) + 1));
-	while (env[i])
-	{
-		env_dup[i] = ft_strdup(env[i]);
-		i++;
-	}
-	return (env_dup);
+//	PATH=/kek/lol
+//	PATH2=/kek/lol
+	var = (t_env *)malloc(sizeof(t_env));
+	tmp = ft_strchr(env, '=');
+	var->env_name = ft_substr(env, 0, tmp - env);
+	var->env_cont = ft_substr(env, tmp - env + 1, ft_strlen(env));
+	return (var);
 }
 
+t_list	*dub_env(char **env)
+{
+	t_list	*env_dup;
+	int		i;
+
+	i = -1;
+	env_dup = NULL;
+	while (env[++i])
+		ft_lstadd_back(&env_dup, ft_lstnew(env_to_cont(env[i])));
+	return (env_dup);
+}

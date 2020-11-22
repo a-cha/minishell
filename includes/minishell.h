@@ -6,7 +6,7 @@
 /*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:22:50 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/22 21:46:50 by pcatrina         ###   ########.fr       */
+/*   Updated: 2020/11/22 23:27:56 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@
 #include <stdio.h>
 #include <string.h>
 
+typedef struct		s_env
+{
+	char 			*env_name;
+	char 			*env_cont;
+}					t_env;
+
 typedef struct		s_data
 {
 	char			**args;		// First element - command (ECHO, CD etc.), further - arguments (may be flags)
@@ -31,7 +37,7 @@ typedef struct		s_data
 //	file descriptors for redirections (maybe there is another implementation)
 	int				infile;
 	int 			outfile;
-	char			**env;
+	t_list			*env;
 	struct s_data	*next;
 	struct s_data	*prev;
 }					t_data;
@@ -56,5 +62,5 @@ void				pwd(t_data *data);
 void				echo(t_data *data);
 void				cd(t_data *data);
 char 				*find_env(char **env, char *str);
-char 				**dub_env(char **env);
+t_list				*dub_env(char **env);
 #endif
