@@ -6,7 +6,7 @@
 /*   By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:28:51 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/21 19:44:59 by sadolph          ###   ########.fr       */
+/*   Updated: 2020/11/21 22:46:39 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,20 @@ int		is_env(const char *line)
 			(int)(tmp - line) : -1);
 }
 
+int		is_escaped(char line)
+{
+	size_t	i;
+}
+
+char 	*fill_env(char *env_name)
+{
+	char 	*env;
+
+	env = "lol";
+	free_memory((void **) &env_name);
+	return (env);
+}
+
 char 	*handle_env(char *dup, const char *line, size_t *s)
 {
 	char	*env;
@@ -113,8 +127,7 @@ char 	*handle_env(char *dup, const char *line, size_t *s)
 			f++;
 	}
 //	NEED TO FILL ENV HERE
-	env = fill_env(line, 1, f);
-
+	env = fill_env(ft_substr(line, 1, f - 1));
 	tmp = dup;
 	dup = ft_strjoin(dup, env);
 	*s += f;
@@ -123,12 +136,28 @@ char 	*handle_env(char *dup, const char *line, size_t *s)
 	return (dup);
 }
 
+void 	escaped_symbols(char *dup)
+{
+	size_t	i;
+	size_t	r;
+
+	i = -1;
+	while (dup[++i])
+	{
+		if (dup[i] == '\\')
+		{
+			r = 0;
+			while (dup[i + r++])
+				dup[i + r] = dup[i + r + 1];
+		}
+	}
+}
+
 // line before quotations (and without quots, except escaped)
 char	**handle_line(const char *line)
 {
 	char 	*dup;
 	char 	*tmp;
-	char 	*dup1;
 	size_t	i;
 	size_t	s;
 
@@ -140,32 +169,16 @@ char	**handle_line(const char *line)
 			if (!(dup = ft_substr(line, i, s)))
 				return (NULL);
 			tmp = dup;
-			dup = handle_env(dup, line + s, &s);
+			if (!(dup = handle_env(dup, line + s, &s)))
+				return (NULL);
 			free_memory((void **) &tmp);
-//			dup1 = ft_substr(line, i, s);
-//			tmp = dup;
-//			dup = ft_strjoin(dup, dup1);
-//			tmp = dup;
-//			dup = ft_strjoin(dup, handle_env(line + i + s, &s));
-//			free_memory((void **) &tmp);
 			i += s;
 		}
 	}
 	else
-		dup = handle_escaped();
-	{
-		dup1 = ft_substr(line, i, s);
-		env = dup;
-		dup = ft_strjoin(dup, dup1);
-		free_memory((void **)&env);
-		free_memory((void **)&dup1);
-		env = handle_env(line + i + s, &s);
-		dup = ft_strjoin(dup, env);
-		free_memory((void **)&env);
-		i += s;
-	}
-//	need we?
-//	while (escaped_symbols)
+		if (!(dup = ft_strdup(line)))
+			return (NULL);
+//	escaped_symbols(dup);
 	free_memory((void **)&line);
 	return (ft_split(dup, ' '));
 }
@@ -343,4 +356,3 @@ int 	main(int ac, char **av, char **envp)
 //	}
 	return (0);
 }
-
