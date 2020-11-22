@@ -6,7 +6,7 @@
 /*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:22:50 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/22 20:53:04 by pcatrina         ###   ########.fr       */
+/*   Updated: 2020/11/22 21:46:50 by pcatrina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define MINISHELL_H
 
 # include "libft.h"
-#include "get_next_line.h"
+# include "get_next_line.h"
 # include <fcntl.h>
 # include <dirent.h>
 # include <errno.h>
