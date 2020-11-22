@@ -6,7 +6,7 @@
 /*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 18:07:37 by pcatrina          #+#    #+#             */
-/*   Updated: 2020/11/21 21:36:12 by pcatrina         ###   ########.fr       */
+/*   Updated: 2020/11/22 20:53:04 by pcatrina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@ void	pwd(t_data *data)
 		printf("error\n");
 	else
 		printf("%s\n", pwd);
-	data->pwd = pwd;
+//	data->pwd = pwd;
 	free(pwd);
 }

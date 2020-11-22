@@ -26,10 +26,13 @@ LIBFT_NAME := libft.a
 
 # Sources
 NAME := minishell
-SRC :=			\
-parse.c			\
-utils.c			\
-tests_parsing.c
+SRC :=		\
+./utils.c	\
+./srcs/cd.c	\
+./srcs/echo.c\
+./srcs/env_utils.c\
+./srcs/main.c	\
+./srcs/pwd.c
 
 all: $(NAME)
 
