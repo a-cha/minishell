@@ -6,7 +6,7 @@
 /*   By: pcatrina <pcatrina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 19:05:08 by pcatrina          #+#    #+#             */
-/*   Updated: 2020/11/23 11:26:07 by sadolph          ###   ########.fr       */
+/*   Updated: 2020/11/23 13:20:50 by pcatrina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ char		*find_env(t_list **env_dup, char *str)
 	{
 		env = tmp->content;
 		if (!(ft_strcmp((const char *)env->env_name, str)))
-			break;
+			return (env->env_cont);
 		tmp = tmp->next;
 	}
-	return (env->env_cont);
+	return (NULL);
 }
 
 t_env		*env_to_cont(char *env)
@@ -50,4 +50,21 @@ t_list		*dub_env(char **env)
 	while (env[++i])
 		ft_lstadd_back(&env_dup, ft_lstnew(env_to_cont(env[i])));
 	return (env_dup);
+}
+
+void		test_env_list(t_list **env_dup)
+{
+	t_list	*tmp;
+	t_env	*env;
+
+	tmp = *env_dup;
+	while (tmp)
+	{
+		env = tmp->content;
+		ft_putstr_fd((env->env_name), 1);
+		ft_putstr_fd("=", 1);
+		ft_putstr_fd((env->env_cont), 1);
+		ft_putstr_fd("\n", 1);
+		tmp = tmp->next;
+	}
 }

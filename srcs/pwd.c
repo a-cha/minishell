@@ -21,6 +21,5 @@ void	pwd(t_data *data)
 		printf("error\n");
 	else
 		printf("%s\n", pwd);
-//	data->pwd = pwd;
 	free(pwd);
 }
