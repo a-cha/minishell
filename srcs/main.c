@@ -6,7 +6,7 @@
 /*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 19:38:39 by pcatrina          #+#    #+#             */
-/*   Updated: 2020/11/23 13:09:33 by pcatrina         ###   ########.fr       */
+/*   Updated: 2020/11/23 16:33:52 by pcatrina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		main(int argc, char **argv, char **env)
 	data = malloc(sizeof (t_data));
 
 	data->env = dub_env(env);
-	test_env_list(&data->env);
+//	test_env_list(&data->env);
 
 	while (1)
 	{
@@ -33,6 +33,11 @@ int		main(int argc, char **argv, char **env)
             pwd(data);
 		else if (ft_strcmp(data->args[0], "echo") == 0)
 		    echo(data);
+		else if (!(ft_strcmp(data->args[0], "env")))
+			test_env_list(&data->env);
+		int i = -1;
+		while (data->args[++i])
+			free(data->args[i]);
         // parsed = parse(line);
 	}
 	return (0);
