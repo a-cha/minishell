@@ -18,6 +18,7 @@ void	extern_bin(t_data *data, char **env)
 	char	*arr;
 	char	*tmp;
 	int		i;
+	pid_t	child;
 
 	i = -1;
 	str = ft_split(find_env(&data->env, "PATH"), ':');
@@ -25,7 +26,10 @@ void	extern_bin(t_data *data, char **env)
 	{
 		tmp = ft_strjoin("/", data->args[0]);
 		arr = ft_strjoin(str[i], tmp);
-		execve((const char *) arr, data->args, env);
+		if ((child = fork()) < 0)
+			ft_putstr_fd("error",1);
+		else if (child == 0)
+			execve((const char *) arr, data->args, env);
 		free(arr);
 		free(tmp);
 	}
