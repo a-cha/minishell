@@ -6,7 +6,7 @@
 /*   By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:28:51 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/23 13:02:08 by sadolph          ###   ########.fr       */
+/*   Updated: 2020/11/23 00:10:43 by pcatrina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,69 +31,39 @@ size_t	is_escaped(const char *line, size_t i)
 	return (n % 2);
 }
 
-void 	escape_symbols(char *dup)
+// returns index of
+int		is_linebreak(const char *str)
 {
-	size_t	i;
-	size_t	r;
-
-	i = -1;
-	while (dup[++i])
-	{
-		if (dup[i] == '\\')
-		{
-			r = -1;
-			while (dup[i + ++r])
-				dup[i + r] = dup[i + r + 1];
-		}
-	}
-}
-
-int		is_symb(const char *line, char c)
-{
-	size_t	i;
-	size_t	min;
 	char	*symb;
+	size_t	min;
 
-	i = 0;
-	min = ft_strlen(line);
-	while ((symb = ft_strchr(line + i, c)))
-	{
-		if (min > symb - line && !(is_escaped(line, symb - line)))
-		{
-			min = symb - line;
-			break ;
-		}
-		i += symb - line + 1;
-	}
-	return (min == ft_strlen(line) ? -1 : (int)min);
+	min = ft_strlen(str);
+	if ((symb = ft_strchr(str, SEMICOLON)) &&
+							min > symb - str && !(is_escaped(str, symb - str)))
+		min = symb - str;
+	if ((symb = ft_strchr(str, PIPE)) &&
+							min > symb - str && !(is_escaped(str, symb - str)))
+		min = symb - str;
+	return (min == ft_strlen(str) ? -1 : (int)min);
 }
 
-int		is_linebreak(const char *line)
+// returns index of
+int		is_quotmark(const char *str)
 {
-	size_t	res;
-	size_t	s;
+	char	*symb;
+	size_t	min;
 
-	res = ft_strlen(line);
-	if ((s = is_symb(line, SEMICOLON)) < res)
-		res = s;
-	if ((s = is_symb(line, PIPE)) < res)
-		res = s;
-	return (res == ft_strlen(line) ? -1 : (int)res);
+	min = ft_strlen(str);
+	if ((symb = ft_strchr(str, 39)) &&
+							min > symb - str && !(is_escaped(str, symb - str)))
+		min = symb - str;
+	if ((symb = ft_strchr(str, '"')) &&
+							min > symb - str && !(is_escaped(str, symb - str)))
+		min = symb - str;
+	return (min == ft_strlen(str) ? -1 : (int)min);
 }
 
-int		is_quotmark(const char *line)
-{
-	size_t	res;
-	size_t	s;
-
-	res = ft_strlen(line);
-	if ((s = is_symb(line, SEMICOLON)) < res)
-		res = s;
-	if ((s = is_symb(line, PIPE)) < res)
-		res = s;
-	return (res == ft_strlen(line) ? -1 : (int)res);
-}
-
+// returns index (or may be next index) of closest redirection or quotation mark
 size_t		catch_first_sign(const char *str, t_data *part, char *r)
 {
 	size_t	min;
@@ -110,72 +80,97 @@ size_t		catch_first_sign(const char *str, t_data *part, char *r)
 		part->type = PIPE;
 	if (str[min] == '\'' || str[min] == '"')
 		*r = str[min];
-	else
-		*r = '\0';
-	return (min);
+	return (min != ft_strlen(str) ? min/* + 1*/ : ft_strlen(str));
 }
 
-// NEED TO TEST
-char 	*handle_env(char *dup, const char *line, size_t *s, t_data *part)
+int		is_env(const char *line)
+{
+	char 	*tmp;
+
+	return ((tmp = ft_strchr(line, '$')) && !(is_escaped(line, tmp - line)) ?
+			(int)(tmp - line) : -1);
+}
+
+char 	*fill_env(char *env_name)
+{
+	char 	*env;
+
+	env = "lol";
+	free_memory((void **) &env_name);
+	return (env);
+}
+
+char 	*handle_env(char *dup, const char *line, size_t *s)
 {
 	char	*env;
 	char	*tmp;
 	size_t	f;
 
-	f = 0;
+	f = 1;
 	while ((line[f]))
 	{
 		if ((ft_isalnum(line[f])) || line[f] == '_')
 			f++;
 	}
+//	NEED TO FILL ENV HERE
+	env = fill_env(ft_substr(line, 1, f - 1));
 	tmp = dup;
-	if (!(env = ft_substr(line, 0, f)))
-		return (NULL);
-	free_memory((void **)&tmp);
-	env = find_env(&(part->env), env);
-	tmp = dup;
-	if (!(dup = ft_strjoin(dup, env)))
-		return (NULL);
+	dup = ft_strjoin(dup, env);
 	*s += f;
-	free_memory((void **)&tmp);
-	free_memory((void **)&env);
+	free_memory((void **) &tmp);
+	free_memory((void **) &env);
 	return (dup);
 }
 
-// NEED TO TEST
+void 	escaped_symbols(char *dup)
+{
+	size_t	i;
+	size_t	r;
+
+	i = -1;
+	while (dup[++i])
+	{
+		if (dup[i] == '\\')
+		{
+			r = 0;
+			while (dup[i + r++])
+				dup[i + r] = dup[i + r + 1];
+		}
+	}
+}
+
 // line before quotations (and without quots, except escaped)
-char	**handle_line(const char *line, t_data *part)
+char	**handle_line(const char *line)
 {
 	char 	*dup;
 	char 	*tmp;
 	size_t	i;
 	size_t	s;
 
-	if ((s = is_symb(line, '$')))
+	if ((s = is_env(line)))
 	{
 		i = 0;
-		while ((s = is_symb(line + i, '$')))
+		while ((s = is_env(line + i)))
 		{
-			tmp = dup;
 			if (!(dup = ft_substr(line, i, s)))
 				return (NULL);
-			free_memory((void **)&tmp);
 			tmp = dup;
-			if (!(dup = handle_env(dup, line + s + 1, &s, part)))
+			if (!(dup = handle_env(dup, line + s, &s)))
 				return (NULL);
-			free_memory((void **)&tmp);
+			free_memory((void **) &tmp);
 			i += s;
 		}
 	}
 	else
 		if (!(dup = ft_strdup(line)))
 			return (NULL);
+//	escaped_symbols(dup);
 	free_memory((void **)&line);
 	return (ft_split(dup, ' '));
 }
 
 // handle double quotation (substitute variables)
-char	*handle_quot(const char *line, t_data *part)
+char	*handle_quot_double(const char *line)
 {
 	char 	*dup;
 	char 	*dup1;
@@ -193,14 +188,14 @@ char	*handle_quot(const char *line, t_data *part)
 // CAN I MOVE IT TO ANOTHER FUNCTION?
 	i = 0;
 	dup = "\0";
-	while ((s = is_symb(line + i, '$')))
+	while ((s = is_env(line + i)))
 	{
 		dup1 = ft_substr(line, i, s);
 		env = dup;
 		dup = ft_strjoin(dup, dup1);
 		free_memory((void **)&env);
 		free_memory((void **)&dup1);
-		env = handle_env(dup, line + i + s, &s, part);
+		env = handle_env(dup, line + i + s, &s);
 		dup = ft_strjoin(dup, env);
 		free_memory((void **)&env);
 		i += s;
@@ -210,7 +205,7 @@ char	*handle_quot(const char *line, t_data *part)
 	return (dup);
 }
 
-//	returns the part of str until linebreak symbol (include redir symbol)
+//	returns the part of str until redir symbol (include redir symbol)
 t_data	*get_part(const char **line)
 {
 	size_t i;
@@ -227,15 +222,15 @@ t_data	*get_part(const char **line)
 
 //	MALLOC HERE
 	part = ft_calloc(1, sizeof(t_data));
-//	split = malloc(sizeof(char *));
-//	*split = NULL;
+	split = malloc(sizeof(char *));
+	*split = NULL;
 
 	i = 0;
 	s = 0;
+	r = '\0';
 //	i - index of next to first sign symbol (if not presented, index to the end of line)
 //	r - quotation mark symbol
-	while ((s = catch_first_sign(*line + i + s, part, &r)) &&
-													(r == '\'' || r == '"'))
+	while ((s = catch_first_sign(*line + i + s, part, &r)) && (r == '\'' || r == '"'))
 	{
 		if (!(tmp = ft_strchr(*line + i + s, r)))
 		{
@@ -247,12 +242,10 @@ t_data	*get_part(const char **line)
 		else
 			f = tmp - (*line + i);
 //		MALLOC HERE
-		args = handle_line(ft_substr(*line, i, s - 1), part);
-//		redirections(dup);
-//		escape_symbols(dup);
+//		quaters = ft_substr(*line, i, f);
+		args = handle_line(ft_substr(*line, i, s - 1));
 //		MALLOC HERE
-		quot = (r == '\'' ? ft_substr(*line, i + s, f) :
-				handle_quot(ft_substr(*line, i + s, f), part));
+		quot = (r == '\'' ? ft_substr(*line, i + s, f) : handle_quot_double(ft_substr(*line, i + s, f)));
 //		free(tmp);
 //		tmp = NULL;
 /*

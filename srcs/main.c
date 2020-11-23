@@ -6,7 +6,7 @@
 /*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 19:38:39 by pcatrina          #+#    #+#             */
-/*   Updated: 2020/11/22 21:40:34 by pcatrina         ###   ########.fr       */
+/*   Updated: 2020/11/23 13:09:33 by pcatrina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int		main(int argc, char **argv, char **env)
 	data = malloc(sizeof (t_data));
 
 	data->env = dub_env(env);
+	test_env_list(&data->env);
+
 	while (1)
 	{
 		ft_putstr_fd("minishell > ", 1);
