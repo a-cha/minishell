@@ -6,7 +6,7 @@
 #    By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/21 16:29:44 by sadolph           #+#    #+#              #
-#    Updated: 2020/11/22 15:16:56 by sadolph          ###   ########.fr        #
+#    Updated: 2020/11/23 15:17:23 by sadolph          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,13 +26,12 @@ LIBFT_NAME := libft.a
 
 # Sources
 NAME := minishell
-SRC :=		\
-./utils.c	\
-./srcs/cd.c	\
-./srcs/echo.c\
-./srcs/env_utils.c\
-./srcs/main.c	\
-./srcs/pwd.c
+SRC :=			\
+utils.c			\
+utils_lst.c		\
+srcs/env_utils.c
+#tests_parsing.c
+#parse.c			\
 
 all: $(NAME)
 

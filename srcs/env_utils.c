@@ -1,16 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find.c                                             :+:      :+:    :+:   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcatrina <pcatrina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/22 19:05:08 by pcatrina          #+#    #+#             */
-/*   Updated: 2020/11/23 13:20:50 by pcatrina         ###   ########.fr       */
+/*   Created: 2020/11/23 13:41:56 by sadolph           #+#    #+#             */
+/*   Updated: 2020/11/23 15:50:58 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+** Duplicate & sort list
+*/
+t_list		*list_dup_sort(t_list **env)
+{
+	t_list	*tmp;
+	t_list	*start;
+	t_env	*cur_env;
+	t_env	*next_env;
+	char	*tmp_name;
+
+	start = ft_lstmap(*env, apply_nothing, del_content);
+	tmp = start;
+	while(tmp->next)
+	{
+		cur_env = tmp->content;
+		next_env = tmp->next->content;
+		if ((ft_strcmp(cur_env->env_name, next_env->env_name)) > 0)
+		{
+			tmp_name = next_env->env_name;
+			next_env->env_name = cur_env->env_name;
+			cur_env->env_name = tmp_name;
+			tmp = start;
+			continue ;
+		}
+		tmp = tmp->next;
+	}
+	return (start);
+}
 
 char		*find_env(t_list **env_dup, char *str)
 {
@@ -40,7 +70,7 @@ t_env		*env_to_cont(char *env)
 	return (var);
 }
 
-t_list		*dub_env(char **env)
+t_list		*dup_env(char **env)
 {
 	t_list	*env_dup;
 	int		i;
@@ -52,11 +82,10 @@ t_list		*dub_env(char **env)
 	return (env_dup);
 }
 
-void		test_env_list(t_list **env_dup)
+void       test_env_list(t_list **env_dup)
 {
-	t_list	*tmp;
-	t_env	*env;
-
+	t_list *tmp;
+	t_env  *env;
 	tmp = *env_dup;
 	while (tmp)
 	{
@@ -67,4 +96,13 @@ void		test_env_list(t_list **env_dup)
 		ft_putstr_fd("\n", 1);
 		tmp = tmp->next;
 	}
+}
+
+int 	main(int ac, char **av, char **env)
+{
+	t_list	*env_dup;
+
+	env_dup = dup_env(env);
+	env_dup	= list_dup_sort(&env_dup);
+	test_env_list(&env_dup);
 }

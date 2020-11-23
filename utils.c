@@ -6,7 +6,7 @@
 /*   By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 21:37:33 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/20 16:23:52 by sadolph          ###   ########.fr       */
+/*   Updated: 2020/11/23 14:48:16 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 /*
 ** Counts lines in null-terminated array
 */
-
 size_t	ft_arraylen(void **array)
 {
 	size_t	i;
@@ -29,7 +28,6 @@ size_t	ft_arraylen(void **array)
 /*
 ** Frees null-terminated array
 */
-
 char	**ft_arrayfree(void **array)
 {
 	size_t i;
@@ -48,7 +46,6 @@ char	**ft_arrayfree(void **array)
 /*
 ** Joins two null-terminated arrays and free pointers to them
 */
-
 void	**ft_arrayjoin(void **array1, void **array2)
 {
 	size_t	i;
@@ -72,4 +69,13 @@ void	**ft_arrayjoin(void **array1, void **array2)
 	free(array2);
 	array2 = NULL;
 	return (res);
+}
+
+/*
+** Frees pointer and turns it to NULL
+*/
+void	free_memory(void **memory)
+{
+	free(*memory);
+	*memory = NULL;
 }
