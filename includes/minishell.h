@@ -6,7 +6,7 @@
 /*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:22:50 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/23 14:08:14 by sadolph          ###   ########.fr       */
+/*   Updated: 2020/11/23 20:34:31 by pcatrina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <fcntl.h>
 # include <dirent.h>
 # include <errno.h>
+# include <unistd.h>
 // delete
 #include <stdio.h>
 #include <string.h>
@@ -54,13 +55,6 @@ typedef struct		s_data
 char				**ft_arrayfree(void **array);
 size_t				ft_arraylen(void **array);
 void				**ft_arrayjoin(void **array1, void **array2);
-void				free_memory(void **memory);
-
-/*
-** Lists utils
-*/
-void			 	del_content(void *elem);
-void				*apply_nothing(void *elem);
 
 /*
 ** Prototypes for commands
@@ -69,6 +63,15 @@ void				pwd(t_data *data);
 void				echo(t_data *data);
 void				cd(t_data *data);
 char				*find_env(t_list **env_dup, char *str);
-t_list				*dub_env(char **env);
+t_list				*dup_env(char **env);
+void				test_env_list(t_list **env_dup);
+t_env				*find_env1(t_list **env_dup, char *str);
+void				extern_bin(t_data *data, char **env);
+int 				is_first_symbol(char *str, char c);
+
+
+void				del_content(void *elem);
+void				*apply_nothing(void *elem);
+
 
 #endif

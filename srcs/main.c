@@ -6,7 +6,7 @@
 /*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 19:38:39 by pcatrina          #+#    #+#             */
-/*   Updated: 2020/11/23 16:33:52 by pcatrina         ###   ########.fr       */
+/*   Updated: 2020/11/23 20:56:10 by pcatrina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,14 @@ int		main(int argc, char **argv, char **env)
 	char	*line;
 	data = malloc(sizeof (t_data));
 
-	data->env = dub_env(env);
+	data->env = dup_env(env);
 //	test_env_list(&data->env);
 
 	while (1)
 	{
 		ft_putstr_fd("minishell > ", 1);
 		get_next_line(1, &line);
+//		line = "ls -la";
 		data->args = ft_split(line, ' ');
 		data->len = ft_arraylen((void**)data->args);
 		if (ft_strcmp(data->args[0], "cd") == 0)
@@ -35,10 +36,20 @@ int		main(int argc, char **argv, char **env)
 		    echo(data);
 		else if (!(ft_strcmp(data->args[0], "env")))
 			test_env_list(&data->env);
+		else if (data->args[0])
+			extern_bin(data, env);
 		int i = -1;
 		while (data->args[++i])
 			free(data->args[i]);
         // parsed = parse(line);
 	}
 	return (0);
+}
+
+int 	is_first_symbol(char *str, char c)
+{
+	if (str[0] == c)
+		return (0);
+	else
+		return (-1);
 }
