@@ -6,7 +6,7 @@
 /*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:22:50 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/23 20:34:31 by pcatrina         ###   ########.fr       */
+/*   Updated: 2020/11/23 22:05:12 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,5 @@ void				echo(t_data *data);
 void				cd(t_data *data);
 char				*find_env(t_list **env_dup, char *str);
 t_list				*dup_env(char **env);
-void				test_env_list(t_list **env_dup);
-t_env				*find_env1(t_list **env_dup, char *str);
-void				extern_bin(t_data *data, char **env);
-int 				is_first_symbol(char *str, char c);
-
-
-void				del_content(void *elem);
-void				*apply_nothing(void *elem);
-
 
 #endif
