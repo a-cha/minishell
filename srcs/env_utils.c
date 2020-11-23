@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 /*
-** Duplicate & sort list
+** Duplicate & sort list. Returns a new sorted list.
 */
 t_list		*list_dup_sort(t_list **env)
 {
@@ -114,11 +114,11 @@ void       test_env_list(t_list **env_dup)
 	}
 }
 
-int 	main(int ac, char **av, char **env)
-{
-	t_list	*env_dup;
-
-	env_dup = dup_env(env);
-	env_dup	= list_dup_sort(&env_dup);
-	test_env_list(&env_dup);
-}
+//int 	main(int ac, char **av, char **env)
+//{
+//	t_list	*env_dup;
+//
+//	env_dup = dup_env(env);
+//	env_dup	= list_dup_sort(&env_dup);
+//	test_env_list(&env_dup);
+//}
