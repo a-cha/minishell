@@ -6,7 +6,7 @@
 /*   By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:28:51 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/22 21:04:03 by sadolph          ###   ########.fr       */
+/*   Updated: 2020/11/23 13:02:08 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ size_t		catch_first_sign(const char *str, t_data *part, char *r)
 	return (min);
 }
 
+// NEED TO TEST
 char 	*handle_env(char *dup, const char *line, size_t *s, t_data *part)
 {
 	char	*env;
@@ -131,7 +132,7 @@ char 	*handle_env(char *dup, const char *line, size_t *s, t_data *part)
 	if (!(env = ft_substr(line, 0, f)))
 		return (NULL);
 	free_memory((void **)&tmp);
-//	env = find_env(part->env, env);
+	env = find_env(&(part->env), env);
 	tmp = dup;
 	if (!(dup = ft_strjoin(dup, env)))
 		return (NULL);
@@ -141,6 +142,7 @@ char 	*handle_env(char *dup, const char *line, size_t *s, t_data *part)
 	return (dup);
 }
 
+// NEED TO TEST
 // line before quotations (and without quots, except escaped)
 char	**handle_line(const char *line, t_data *part)
 {
@@ -168,7 +170,6 @@ char	**handle_line(const char *line, t_data *part)
 	else
 		if (!(dup = ft_strdup(line)))
 			return (NULL);
-//	escaped_symbols(dup);
 	free_memory((void **)&line);
 	return (ft_split(dup, ' '));
 }
@@ -209,7 +210,7 @@ char	*handle_quot(const char *line, t_data *part)
 	return (dup);
 }
 
-//	returns the part of str until redir symbol (include redir symbol)
+//	returns the part of str until linebreak symbol (include redir symbol)
 t_data	*get_part(const char **line)
 {
 	size_t i;
@@ -246,8 +247,9 @@ t_data	*get_part(const char **line)
 		else
 			f = tmp - (*line + i);
 //		MALLOC HERE
-//		quaters = ft_substr(*line, i, f);
 		args = handle_line(ft_substr(*line, i, s - 1), part);
+//		redirections(dup);
+//		escape_symbols(dup);
 //		MALLOC HERE
 		quot = (r == '\'' ? ft_substr(*line, i + s, f) :
 				handle_quot(ft_substr(*line, i + s, f), part));

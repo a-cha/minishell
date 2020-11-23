@@ -61,6 +61,7 @@ void				**ft_arrayjoin(void **array1, void **array2);
 void				pwd(t_data *data);
 void				echo(t_data *data);
 void				cd(t_data *data);
-char 				*find_env(char **env, char *str);
+char				*find_env(t_list **env_dup, char *str);
 t_list				*dub_env(char **env);
+
 #endif
