@@ -3,3 +3,4 @@
 /CMakeLists.txt
 test.c
 minishell
+Makefile
