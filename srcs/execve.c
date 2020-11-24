@@ -18,7 +18,7 @@ void	extern_bin(t_data *data, char **env)
 	char	*arr;
 	char	*tmp;
 	int		i;
-	pid_t	child;
+	int 	child;
 
 	i = -1;
 	str = ft_split(find_env(&data->env, "PATH"), ':');
@@ -30,6 +30,8 @@ void	extern_bin(t_data *data, char **env)
 			ft_putstr_fd("error",1);
 		else if (child == 0)
 			execve((const char *) arr, data->args, env);
+		else
+			wait(&child);
 		free(arr);
 		free(tmp);
 	}

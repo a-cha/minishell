@@ -55,6 +55,14 @@ typedef struct		s_data
 char				**ft_arrayfree(void **array);
 size_t				ft_arraylen(void **array);
 void				**ft_arrayjoin(void **array1, void **array2);
+void				*apply_nothing(void *elem);
+void				del_content(void *elem);
+t_list				*list_dup_sort(t_list **env);
+void				free_memory(void **memory);
+
+
+
+
 
 /*
 ** Prototypes for commands
@@ -64,5 +72,16 @@ void				echo(t_data *data);
 void				cd(t_data *data);
 char				*find_env(t_list **env_dup, char *str);
 t_list				*dup_env(char **env);
+t_env				*find_env1(t_list **env_dup, char *str);
+void       			test_env_list(t_list **env_dup);
+void				extern_bin(t_data *data, char **env);
+void				env_export(t_data *data);
+void       			print_exp_list(t_list **env_dup);
+int					is_first_symbol(const char *str, char c);
+
+
+
+
+
 
 #endif

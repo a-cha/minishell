@@ -25,7 +25,7 @@ int		main(int argc, char **argv, char **env)
 	{
 		ft_putstr_fd("minishell > ", 1);
 		get_next_line(1, &line);
-//		line = "ls -la";
+//		line = "export";
 		data->args = ft_split(line, ' ');
 		data->len = ft_arraylen((void**)data->args);
 		if (ft_strcmp(data->args[0], "cd") == 0)
@@ -36,20 +36,20 @@ int		main(int argc, char **argv, char **env)
 		    echo(data);
 		else if (!(ft_strcmp(data->args[0], "env")))
 			test_env_list(&data->env);
+		else if (!(ft_strcmp(data->args[0], "export")))
+		{
+			if (is_first_symbol(data->args[1], '$') == 0)
+					env_export(data);
+			else
+				env_export(data);
+		}
 		else if (data->args[0])
 			extern_bin(data, env);
 		int i = -1;
 		while (data->args[++i])
 			free(data->args[i]);
-        // parsed = parse(line);
+//         parsed = parse(line);
 	}
 	return (0);
 }
 
-int 	is_first_symbol(char *str, char c)
-{
-	if (str[0] == c)
-		return (0);
-	else
-		return (-1);
-}
