@@ -21,7 +21,7 @@ t_list		*list_dup_sort(t_list **env)
 	t_list	*start;
 	t_env	*cur_env;
 	t_env	*next_env;
-	char	*tmp_name;
+	t_env	*tmp_name;
 
 	start = ft_lstmap(*env, apply_nothing, del_content);
 	tmp = start;
@@ -31,9 +31,9 @@ t_list		*list_dup_sort(t_list **env)
 		next_env = tmp->next->content;
 		if ((ft_strcmp(cur_env->env_name, next_env->env_name)) > 0)
 		{
-			tmp_name = next_env->env_name;
-			next_env->env_name = cur_env->env_name;
-			cur_env->env_name = tmp_name;
+			tmp_name = tmp->next->content;
+			tmp->next->content = tmp->content;
+			tmp->content = tmp_name;
 			tmp = start;
 			continue ;
 		}
@@ -114,11 +114,13 @@ void       test_env_list(t_list **env_dup)
 	}
 }
 
-//int 	main(int ac, char **av, char **env)
-//{
-//	t_list	*env_dup;
-//
-//	env_dup = dup_env(env);
-//	env_dup	= list_dup_sort(&env_dup);
+int 	main(int ac, char **av, char **env)
+{
+	t_list	*env_dup;
+
+	env_dup = dup_env(env);
 //	test_env_list(&env_dup);
-//}
+	ft_putchar_fd('\n', 1);
+	env_dup	= list_dup_sort(&env_dup);
+	test_env_list(&env_dup);
+}
