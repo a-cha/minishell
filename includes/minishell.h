@@ -59,6 +59,7 @@ void				*apply_nothing(void *elem);
 void				del_content(void *elem);
 t_list				*list_dup_sort(t_list **env);
 void				free_memory(void **memory);
+int					is_symb(const char *line, char c);
 
 
 
@@ -71,17 +72,6 @@ void				pwd(t_data *data);
 void				echo(t_data *data);
 void				cd(t_data *data);
 char				*find_env(t_list **env_dup, char *str);
-t_list				*dup_env(char **env);
-t_env				*find_env1(t_list **env_dup, char *str);
-void       			test_env_list(t_list **env_dup);
-void				extern_bin(t_data *data, char **env);
-void				env_export(t_data *data);
-void       			print_exp_list(t_list **env_dup);
-int					is_first_symbol(const char *str, char c);
-
-
-
-
-
+t_list				*dub_env(char **env);
 
 #endif

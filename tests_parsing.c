@@ -5,20 +5,25 @@
 #include "minishell.h"
 #include "get_next_line.h"
 
-size_t	is_escaped(const char *line, size_t i);
-int		is_symb(const char *line, char c);
 int		is_linebreak(const char *str);
 int		is_quotmark(const char *str);
 size_t	catch_first_sign(const char *str, t_data *part, char *r);
 void 	escape_symbols(char *dup);
+char	*handle_quot(const char *line, t_data *part);
 
-int			main()
+int			main(int ac, char **av, char **env)
 {
 	int 	n;
 	char 	*line = "kjnvv\\$kmlvs$vdf";
 	t_data	*part = ft_calloc(1, sizeof(t_data));
 	char 	r;
+	char 	*dup = "echo $HOME lol $LOGNAME kek";
+	char 	*res;
 
+//	test handle_quot
+	part->env = dup_env(env);
+	printf(">%s<\n>%s<\n", dup, handle_quot(dup, part));
+/*
 //	test escape_symbols
 	while (1)
 	{
@@ -27,6 +32,7 @@ int			main()
 		escape_symbols(line);
 		printf("%s\n", line);
 	}
+*/
 /*
 //	test is_symb
 	while (1)
