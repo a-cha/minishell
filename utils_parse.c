@@ -74,8 +74,67 @@ void	**ft_arrayjoin(void **array1, void **array2)
 /*
 ** Frees pointer and turns it to NULL
 */
-void	free_memory(void **memory)
+void	free_memory(void *memory)
 {
-	free(*memory);
-	*memory = NULL;
+	free(memory);
+	memory = NULL;
+}
+
+/*
+** Find out if symbol is escaped
+*/
+size_t	is_escaped(const char *line, size_t i)
+{
+	size_t	n;
+
+	n = 0;
+	if (i != 0)
+	{
+		while ((i--) && line[i] == '\\')
+			n++;
+	}
+	return (n % 2);
+}
+
+/*
+** Finds first not escaped needed symbol in line
+*/
+int		is_symb(const char *line, char c)
+{
+	size_t	i;
+	size_t	min;
+	char	*symb;
+
+	i = 0;
+	min = ft_strlen(line);
+	while ((symb = ft_strchr(line + i, c)))
+	{
+		if (min > symb - line && !(is_escaped(line, symb - line)))
+		{
+			min = symb - line;
+			break ;
+		}
+		i += symb - line + 1;
+	}
+	return (min == ft_strlen(line) ? -1 : (int)min);
+}
+
+/*
+** Checks if symbol has escaped (or not escaped)
+*/
+void 	escape_symbols(char *dup)
+{
+	size_t	i;
+	size_t	r;
+
+	i = -1;
+	while (dup[++i])
+	{
+		if (dup[i] == '\\')
+		{
+			r = -1;
+			while (dup[i + ++r])
+				dup[i + r] = dup[i + r + 1];
+		}
+	}
 }

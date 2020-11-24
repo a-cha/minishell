@@ -12,56 +12,6 @@
 
 #include "minishell.h"
 
-size_t	is_escaped(const char *line, size_t i)
-{
-	size_t	n;
-
-	n = 0;
-	if (i != 0)
-	{
-		while ((i--) && line[i] == '\\')
-			n++;
-	}
-	return (n % 2);
-}
-
-void 	escape_symbols(char *dup)
-{
-	size_t	i;
-	size_t	r;
-
-	i = -1;
-	while (dup[++i])
-	{
-		if (dup[i] == '\\')
-		{
-			r = -1;
-			while (dup[i + ++r])
-				dup[i + r] = dup[i + r + 1];
-		}
-	}
-}
-
-int		is_symb(const char *line, char c)
-{
-	size_t	i;
-	size_t	min;
-	char	*symb;
-
-	i = 0;
-	min = ft_strlen(line);
-	while ((symb = ft_strchr(line + i, c)))
-	{
-		if (min > symb - line && !(is_escaped(line, symb - line)))
-		{
-			min = symb - line;
-			break ;
-		}
-		i += symb - line + 1;
-	}
-	return (min == ft_strlen(line) ? -1 : (int)min);
-}
-
 int		is_linebreak(const char *line)
 {
 	size_t	res;
@@ -109,30 +59,63 @@ size_t		catch_first_sign(const char *str, t_data *part, char *r)
 	return (min);
 }
 
-// NEED TO TEST
-char 	*handle_env(char *dup, const char *line, size_t *s, t_data *part)
+char 	*concatenate_env(char *dup, const char *line, size_t *s, t_data *part)
 {
 	char	*env;
 	char	*tmp;
 	size_t	f;
 
 	f = 0;
-	while ((line[f]))
-	{
-		if ((ft_isalnum(line[f])) || line[f] == '_')
-			f++;
-	}
-	tmp = dup;
+	while ((line[f]) && (ft_isalnum(line[f])) || line[f] == '_')
+		f++;
 	if (!(env = ft_substr(line, 0, f)))
 		return (NULL);
-	free_memory((void **)&tmp);
-	env = find_env(&(part->env), env);
+	tmp = env;
+	if (!(env = find_env(&(part->env), env)))
+		env = ft_strdup("");
+	free_memory((void *)tmp);
 	tmp = dup;
 	if (!(dup = ft_strjoin(dup, env)))
 		return (NULL);
-	*s += f;
-	free_memory((void **)&tmp);
-	free_memory((void **)&env);
+	*s += f + 1;
+	free_memory((void *)tmp);
+	free_memory((void *)env);
+	return (dup);
+}
+
+char	*handle_env(const char *line, t_data *part)
+{
+	char 	*dup;
+	char 	*dup1;
+	char	*tmp;
+	size_t	i;
+	size_t	s;
+
+	i = 0;
+	dup = ft_strdup("");
+	while ((s = is_symb(line + i, '$')))
+	{
+		dup1 = ft_substr(line, i, s);
+		tmp = dup;
+		dup = ft_strjoin(dup, dup1);
+		free_memory((void *)tmp);
+		free_memory((void *)dup1);
+		if (s == -1)
+			break ;
+		dup = concatenate_env(dup, line + i + s + 1, &s, part);
+		i += s;
+	}
+	return (dup);
+}
+
+char	*handle_quot(const char *line, t_data *part)
+{
+	char *dup;
+
+	dup = handle_env(line, part);
+	escape_symbols(dup);
+//	MAYBE THIS FREE ISN'T NEEDED
+//	free_memory((void *)line);
 	return (dup);
 }
 
@@ -140,70 +123,15 @@ char 	*handle_env(char *dup, const char *line, size_t *s, t_data *part)
 // line before quotations (and without quots, except escaped)
 char	**handle_line(const char *line, t_data *part)
 {
-	char 	*dup;
-	char 	*tmp;
-	size_t	i;
-	size_t	s;
+	char *dup;
 
-	if ((s = is_symb(line, '$')))
-	{
-		i = 0;
-		while ((s = is_symb(line + i, '$')))
-		{
-			tmp = dup;
-			if (!(dup = ft_substr(line, i, s)))
-				return (NULL);
-			free_memory((void **)&tmp);
-			tmp = dup;
-			if (!(dup = handle_env(dup, line + s + 1, &s, part)))
-				return (NULL);
-			free_memory((void **)&tmp);
-			i += s;
-		}
-	}
-	else
-		if (!(dup = ft_strdup(line)))
-			return (NULL);
-//	escaped_symbols(dup);
+	dup = handle_env(line, part);
+	escape_symbols(dup);
 //	redirections(dup);
-	free_memory((void **)&line);
+//	MAYBE THIS FREE ISN'T NEEDED
+//	free_memory((void *)line);
+//	split???
 	return (ft_split(dup, ' '));
-}
-
-// handle double quotation (substitute variables)
-char	*handle_quot(const char *line, t_data *part)
-{
-	char 	*dup;
-	char 	*dup1;
-	char	*env;
-	size_t	i;
-	size_t	s;
-
-// move start
-//	if (s != 0)
-//		while ((s) && (ft_isalpha(line[s])))
-//			s--;
-// move finish
-//	while ((line[++f]) && (ft_isalpha(line[f])) )
-//		;
-// CAN I MOVE IT TO ANOTHER FUNCTION?
-	i = 0;
-	dup = "\0";
-	while ((s = is_symb(line + i, '$')))
-	{
-		dup1 = ft_substr(line, i, s);
-		env = dup;
-		dup = ft_strjoin(dup, dup1);
-		free_memory((void **)&env);
-		free_memory((void **)&dup1);
-		env = handle_env(dup, line + i + s, &s, part);
-		dup = ft_strjoin(dup, env);
-		free_memory((void **)&env);
-		i += s;
-	}
-//	+ substitution of variables
-	free_memory((void **)&line);
-	return (dup);
 }
 
 //	returns the part of str until redir symbol (include redir symbol)
