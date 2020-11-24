@@ -62,9 +62,6 @@ t_list				*list_dup_sort(t_list **env);
 void				free_memory(void *memory);
 int					is_symb(const char *line, char c);
 
-
-
-
 /*
 ** Prototypes for commands
 */
