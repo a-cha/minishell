@@ -6,28 +6,11 @@
 /*   By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:28:51 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/23 22:05:12 by sadolph          ###   ########.fr       */
+/*   Updated: 2020/11/23 12:25:38 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void 	escape_symbols(char *dup)
-{
-	size_t	i;
-	size_t	r;
-
-	i = -1;
-	while (dup[++i])
-	{
-		if (dup[i] == '\\')
-		{
-			r = -1;
-			while (dup[i + ++r])
-				dup[i + r] = dup[i + r + 1];
-		}
-	}
-}
 
 int		is_linebreak(const char *line)
 {
@@ -76,7 +59,7 @@ size_t		catch_first_sign(const char *str, t_data *part, char *r)
 	return (min);
 }
 
-char 	*handle_env(char *dup, const char *line, size_t *s, t_data *part)
+char 	*concatenate_env(char *dup, const char *line, size_t *s, t_data *part)
 {
 	char	*env;
 	char	*tmp;
@@ -100,8 +83,7 @@ char 	*handle_env(char *dup, const char *line, size_t *s, t_data *part)
 	return (dup);
 }
 
-// handle double quotation (substitute variables)
-char	*handle_quot(const char *line, t_data *part)
+char	*handle_env(const char *line, t_data *part)
 {
 	char 	*dup;
 	char 	*dup1;
@@ -111,23 +93,28 @@ char	*handle_quot(const char *line, t_data *part)
 
 	i = 0;
 	dup = ft_strdup("");
-	while ((s = is_symb(line + i, '$')) != -1)
+	while ((s = is_symb(line + i, '$')))
 	{
 		dup1 = ft_substr(line, i, s);
 		tmp = dup;
 		dup = ft_strjoin(dup, dup1);
 		free_memory((void *)tmp);
 		free_memory((void *)dup1);
-		dup = handle_env(dup, line + i + s + 1, &s, part);
+		if (s == -1)
+			break ;
+		dup = concatenate_env(dup, line + i + s + 1, &s, part);
 		i += s;
 	}
-	dup1 = ft_substr(line, i, ft_strlen(line + i));
-	tmp = dup;
-	dup = ft_strjoin(dup, dup1);
-	free_memory((void *)tmp);
-	free_memory((void *)dup1);
-//	+ redirections
-//	MAYBE THIS FREE ISN'T NEED
+	return (dup);
+}
+
+char	*handle_quot(const char *line, t_data *part)
+{
+	char *dup;
+
+	dup = handle_env(line, part);
+	escape_symbols(dup);
+//	MAYBE THIS FREE ISN'T NEEDED
 //	free_memory((void *)line);
 	return (dup);
 }
@@ -136,33 +123,14 @@ char	*handle_quot(const char *line, t_data *part)
 // line before quotations (and without quots, except escaped)
 char	**handle_line(const char *line, t_data *part)
 {
-	char 	*dup;
-	char 	*tmp;
-	size_t	i;
-	size_t	s;
+	char *dup;
 
-	if ((s = is_symb(line, '$')))
-	{
-		i = 0;
-		while ((s = is_symb(line + i, '$')))
-		{
-			tmp = dup;
-			if (!(dup = ft_substr(line, i, s)))
-				return (NULL);
-			free_memory((void *)tmp);
-			tmp = dup;
-			if (!(dup = handle_env(dup, line + s + 1, &s, part)))
-				return (NULL);
-			free_memory((void *)tmp);
-			i += s;
-		}
-	}
-	else
-		if (!(dup = ft_strdup(line)))
-			return (NULL);
-//	escaped_symbols(dup);
+	dup = handle_env(line, part);
+	escape_symbols(dup);
 //	redirections(dup);
-	free_memory((void *)line);
+//	MAYBE THIS FREE ISN'T NEEDED
+//	free_memory((void *)line);
+//	split???
 	return (ft_split(dup, ' '));
 }
 

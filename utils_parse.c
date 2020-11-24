@@ -6,7 +6,7 @@
 /*   By: sadolph <sadolph@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 21:37:33 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/23 22:05:12 by sadolph          ###   ########.fr       */
+/*   Updated: 2020/11/23 14:48:16 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,4 +117,24 @@ int		is_symb(const char *line, char c)
 		i += symb - line + 1;
 	}
 	return (min == ft_strlen(line) ? -1 : (int)min);
+}
+
+/*
+** Checks if symbol has escaped (or not escaped)
+*/
+void 	escape_symbols(char *dup)
+{
+	size_t	i;
+	size_t	r;
+
+	i = -1;
+	while (dup[++i])
+	{
+		if (dup[i] == '\\')
+		{
+			r = -1;
+			while (dup[i + ++r])
+				dup[i + r] = dup[i + r + 1];
+		}
+	}
 }

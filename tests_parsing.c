@@ -8,7 +8,6 @@
 int		is_linebreak(const char *str);
 int		is_quotmark(const char *str);
 size_t	catch_first_sign(const char *str, t_data *part, char *r);
-void 	escape_symbols(char *dup);
 char	*handle_quot(const char *line, t_data *part);
 
 int			main(int ac, char **av, char **env)

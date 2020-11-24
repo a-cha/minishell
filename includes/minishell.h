@@ -58,8 +58,10 @@ void				**ft_arrayjoin(void **array1, void **array2);
 void				*apply_nothing(void *elem);
 void				del_content(void *elem);
 t_list				*list_dup_sort(t_list **env);
-void				free_memory(void **memory);
+void				free_memory(void *memory);
 int					is_symb(const char *line, char c);
+t_list				*dup_env(char **env);
+void			 	escape_symbols(char *dup);
 
 
 
