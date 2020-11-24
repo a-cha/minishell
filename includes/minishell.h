@@ -64,9 +64,6 @@ t_list				*dup_env(char **env);
 void			 	escape_symbols(char *dup);
 
 
-
-
-
 /*
 ** Prototypes for commands
 */ 
