@@ -65,8 +65,6 @@ int					is_symb(const char *line, char c);
 
 
 
-
-
 /*
 ** Prototypes for commands
 */
