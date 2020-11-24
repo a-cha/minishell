@@ -65,8 +65,6 @@ void			 	escape_symbols(char *dup);
 
 
 
-
-
 /*
 ** Prototypes for commands
 */ 
