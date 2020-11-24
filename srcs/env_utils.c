@@ -113,12 +113,3 @@ void       test_env_list(t_list **env_dup)
 		tmp = tmp->next;
 	}
 }
-
-int 	main(int ac, char **av, char **env)
-{
-	t_list	*env_dup;
-
-	env_dup = dup_env(env);
-	env_dup	= list_dup_sort(&env_dup);
-	test_env_list(&env_dup);
-}

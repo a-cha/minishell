@@ -6,7 +6,7 @@
 /*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:22:50 by sadolph           #+#    #+#             */
-/*   Updated: 2020/11/23 14:08:14 by sadolph          ###   ########.fr       */
+/*   Updated: 2020/11/23 22:05:12 by sadolph          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <fcntl.h>
 # include <dirent.h>
 # include <errno.h>
+# include <unistd.h>
 // delete
 #include <stdio.h>
 #include <string.h>
@@ -54,13 +55,15 @@ typedef struct		s_data
 char				**ft_arrayfree(void **array);
 size_t				ft_arraylen(void **array);
 void				**ft_arrayjoin(void **array1, void **array2);
-void				free_memory(void **memory);
-
-/*
-** Lists utils
-*/
-void			 	del_content(void *elem);
 void				*apply_nothing(void *elem);
+void				del_content(void *elem);
+t_list				*list_dup_sort(t_list **env);
+void				free_memory(void **memory);
+int					is_symb(const char *line, char c);
+
+
+
+
 
 /*
 ** Prototypes for commands
