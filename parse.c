@@ -31,32 +31,11 @@ int		is_quotmark(const char *line)
 	size_t	s;
 
 	res = ft_strlen(line);
-	if ((s = is_symb(line, SEMICOLON)) < res)
+	if ((s = is_symb(line, '"')) < res)
 		res = s;
-	if ((s = is_symb(line, PIPE)) < res)
+	if ((s = is_symb(line, '\'')) < res)
 		res = s;
 	return (res == ft_strlen(line) ? -1 : (int)res);
-}
-
-size_t		catch_first_sign(const char *str, t_data *part, char *r)
-{
-	size_t	min;
-	int		res;
-
-	min = ft_strlen(str);
-	if ((res = is_linebreak(str)) != -1 && res < min)
-		min = res;
-	if ((res = is_quotmark(str)) != -1 && res < min)
-		min = res;
-	if (str[min] == SEMICOLON)
-		part->type = SEMICOLON;
-	else if (str[min] == PIPE)
-		part->type = PIPE;
-	if (str[min] == '\'' || str[min] == '"')
-		*r = str[min];
-	else
-		*r = '\0';
-	return (min);
 }
 
 char 	*concatenate_env(char *dup, const char *line, size_t *s, t_data *part)
@@ -66,7 +45,7 @@ char 	*concatenate_env(char *dup, const char *line, size_t *s, t_data *part)
 	size_t	f;
 
 	f = 0;
-	while ((line[f]) && (ft_isalnum(line[f])) || line[f] == '_')
+	while ((line[f]) && ((ft_isalnum(line[f])) || line[f] == '_'))
 		f++;
 	if (!(env = ft_substr(line, 0, f)))
 		return (NULL);
@@ -131,11 +110,32 @@ char	**handle_line(const char *line, t_data *part)
 //	MAYBE THIS FREE ISN'T NEEDED
 //	free_memory((void *)line);
 //	split???
-	return (ft_split(dup, ' '));
+	return (ft_split_pro(dup, ' '));
+}
+
+size_t		catch_first_sign(const char *str, t_data *part, char *r)
+{
+	size_t	min;
+	int		res;
+
+	min = ft_strlen(str);
+	if ((res = is_linebreak(str)) != -1 && res < min)
+		min = res;
+	if ((res = is_quotmark(str)) != -1 && res < min)
+		min = res;
+	if (str[min] == SEMICOLON)
+		part->type = SEMICOLON;
+	else if (str[min] == PIPE)
+		part->type = PIPE;
+	if (str[min] == '\'' || str[min] == '"')
+		*r = str[min];
+	else
+		*r = '\0';
+	return (min);
 }
 
 //	returns the part of str until redir symbol (include redir symbol)
-t_data	*get_part(const char **line)
+t_data	*get_part(const char **line, char **env)
 {
 	size_t i;
 	size_t f;
@@ -143,135 +143,65 @@ t_data	*get_part(const char **line)
 	char r;
 	char *quot;
 	char *tmp;
-	char *str;
 	t_data *part;
-	char **split;
-	char **tmpd;
+	char **tmp_d;
 	char **args;
 
 //	MALLOC HERE
 	part = ft_calloc(1, sizeof(t_data));
-//	split = malloc(sizeof(char *));
-//	*split = NULL;
-
 	i = 0;
-	s = 0;
-//	i - index of next to first sign symbol (if not presented, index to the end of line)
-//	r - quotation mark symbol
-	while ((s = catch_first_sign(*line + i + s, part, &r)) &&
-													(r == '\'' || r == '"'))
+	part->env = dup_env(env);
+	args = (char **)malloc(sizeof(char **));
+	*args = NULL;
+	while (1)
 	{
-		if (!(tmp = ft_strchr(*line + i + s, r)))
+		s = catch_first_sign(*line + i, part, &r);
+		if (r != '\'' && r != '"')
+			break ;
+		if ((tmp = ft_strchr(*line + i + s + 1, r)))
+			f = tmp - (*line + i);
+		else
 		{
 			ft_putendl_fd("Error quotation marks", 1);
 //			need to determine what to return
 			return (NULL);
 		}
-//		f - index of closes quotation mark
-		else
-			f = tmp - (*line + i);
-//		MALLOC HERE
-//		quaters = ft_substr(*line, i, f);
-		args = handle_line(ft_substr(*line, i, s - 1), part);
-//		MALLOC HERE
-		quot = (r == '\'' ? ft_substr(*line, i + s, f) :
-				handle_quot(ft_substr(*line, i + s, f), part));
-//		free(tmp);
-//		tmp = NULL;
-/*
-		tmp = dup;
-		dup = ft_strjoin(dup, str);
-		free(str);
-		str = NULL;
-		free(tmp);
-		tmp = NULL;
-		tmp = dup;
-		dup = ft_strjoin(dup, quaters);
-		free(tmp);
-		tmp = NULL;
-		free(quaters);
-		quaters = NULL;
-*/
-		i += s;
-		s = 0;
-
-/*
-
-		i += f + 1;
-//		line now is the next to quotation marks symbol
-//		i += i;
-	}
-	str = ft_substr(*line, i - e, e);
-	i += e;
-	tmpd = ft_split(str, ' ');
-	free(str);
-	str = NULL;
-	split = (char **) ft_arrayjoin((void **) split, (void **) tmpd);*/
-/*
-		dup = ft_strjoin(dup, str);
-		if (tmp)
+		args = ft_arrayjoin(args,
+				handle_line(ft_substr(*line, i, s), part));
+		quot = (r == '\'' ? ft_substr(*line, i + s + 1, f) :
+				handle_quot(ft_substr(*line, i + s + 1, f), part));
+		if (!(ft_strchr((const char *)(line + i + s - 1), ' ')))
 		{
-			free(tmp);
-			tmp = NULL;
+			f = ft_arraylen(args);
+			tmp = args[f];
+			args[f] = ft_strjoin(args[f], quot);
+			free_memory(tmp);
 		}
-		*//*
-
-	*line += i;
-	part->args = split;
-	part->len = ft_arraylen((void **)split);
-	return (part);
-*/
+		else
+		{
+			tmp_d = (char **)malloc(sizeof(char **));
+			tmp_d = &quot;
+			args = (char **)ft_arrayjoin(args, tmp_d);
+		}
+		free_memory(quot);
+		i += s + f + 2;
 	}
-	return (NULL);
+	i += s + (part->type) ? 1 : 0;
+	args = ft_arrayjoin(args, handle_line(ft_substr(*line, i, s), part));
+	part->args = args;
+	part->len = ft_arraylen(args);
+	*line += i;
+	return (part);
 }
 
-t_list	**parse(const char *line)
+t_data		*parse(const char *line, char **env)
 {
 	t_data	*res;
-	t_list	**head;
 
-	head = malloc(sizeof(t_list *));
-	*head = NULL;
 	while (*line)
 	{
-		res = get_part(&line);
-		ft_lstadd_back(head, ft_lstnew(res));
-/*		if (!(list = ft_lstnew(create_part(res))))
-		{
-//		free some? and what is the error must return
-			return (NULL);
-		}*/
-//		line now is next to redirect symbol
+		res = get_part(&line, env);
+//		call here processing functions
 	}
-	return (head);
+	return (res);
 }
-
-/*
-int 	main(int ac, char **av, char **envp)
-{
-	char	*line;
-	t_list 	**parsed;
-	int		r;
-
-	while (envp)
-	{
-//		forbidden function
-		printf("%s\n", *envp);
-		envp++;
-	}
-	r = 1;
-	line = " ab \"c ' de\"; '| \"'   n | opqr'st';uvwxyz";
-	while (r > 0 && *line)
-	{
-//		ft_putstr_fd("kekai > ", 1);
-//		r = get_next_line(1, &line);
-		parsed = parse(line);
-	}
-//	while (*parsed)
-//	{
-//		ft_printf(">%s<\n", *parsed);
-//		parsed++;
-//	}
-	return (0);
-}
-*/

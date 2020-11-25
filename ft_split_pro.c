@@ -75,7 +75,6 @@ char		**ft_split_pro(char const *s, char c)
 		s += k;
 	}
 	free(res[--j]);
-	res[j] = 0;
+	res[j] = NULL;
 	return (res);
 }
-

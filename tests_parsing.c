@@ -16,12 +16,29 @@ int			main(int ac, char **av, char **env)
 	char 	*line = "kjnvv\\$kmlvs$vdf";
 	t_data	*part = ft_calloc(1, sizeof(t_data));
 	char 	r;
-	char 	*dup = "echo $HOME lol $LOGNAME kek";
-	char 	*res;
+//	char 	*dup = "echo $HOME";
+	char 	*dup = "echo '$HOME' lol $LOGNAME kek";
+	t_data	*res;
+	char	**args;
+	size_t	i;
+
+//	test parse
+	res = parse(dup, env);
+	args = res->args;
+	i = -1;
+	printf("str: %s\n", dup);
+	printf("args:\n");
+	while (args[++i] != NULL)
+	{
+		printf(">%s<\n", args[i]);
+	}
+	printf("\nlen: %ld\t%c\n", res->len, res->type);
+/*
 
 //	test handle_quot
 	part->env = dup_env(env);
 	printf(">%s<\n>%s<\n", dup, handle_quot(dup, part));
+*/
 /*
 //	test escape_symbols
 	while (1)

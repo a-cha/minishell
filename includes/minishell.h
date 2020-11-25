@@ -53,14 +53,18 @@ typedef struct		s_data
 /*
 ** Prototypes for parsing
 */
-char				**ft_arrayfree(void **array);
-size_t				ft_arraylen(void **array);
-void				**ft_arrayjoin(void **array1, void **array2);
+void				ft_arrayfree(char **array);
+size_t				ft_arraylen(char **array);
+char				**ft_arrayjoin(char **array1, char **array2);
 void				*apply_nothing(void *elem);
 void				del_content(void *elem);
 t_list				*list_dup_sort(t_list **env);
 void				free_memory(void *memory);
 int					is_symb(const char *line, char c);
+void			 	escape_symbols(char *dup);
+t_data				*parse(const char *line, char **env);
+char				**ft_split_pro(char const *s, char c);
+t_list				*dup_env(char **env);
 
 /*
 ** Prototypes for commands
@@ -70,7 +74,6 @@ void				echo(t_data *data);
 void				cd(t_data *data);
 char				*find_env(t_list **env_dup, char *str);
 t_env				*find_env1(t_list **env_dup, char *str);
-t_list				*dup_env(char **env);
 int					is_first_symbol(const char *str, char c);
 char				*is_corr_path(char **arr, char *str);
 void				env_export(t_data *data);

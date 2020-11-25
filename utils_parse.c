@@ -15,7 +15,7 @@
 /*
 ** Counts lines in null-terminated array
 */
-size_t	ft_arraylen(void **array)
+size_t	ft_arraylen(char **array)
 {
 	size_t	i;
 
@@ -28,7 +28,7 @@ size_t	ft_arraylen(void **array)
 /*
 ** Frees null-terminated array
 */
-char	**ft_arrayfree(void **array)
+void	ft_arrayfree(char **array)
 {
 	size_t i;
 
@@ -40,17 +40,16 @@ char	**ft_arrayfree(void **array)
 	}
 	free(array);
 	array = NULL;
-	return (NULL);
 }
 
 /*
 ** Joins two null-terminated arrays and free pointers to them
 */
-void	**ft_arrayjoin(void **array1, void **array2)
+char	**ft_arrayjoin(char **array1, char **array2)
 {
 	size_t	i;
 	size_t	len;
-	void	**res;
+	char	**res;
 
 	len = ft_arraylen(array1);
 	if (!(res = malloc(sizeof(void *) * (len + ft_arraylen(array2) + 1))))
