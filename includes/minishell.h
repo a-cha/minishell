@@ -29,6 +29,7 @@ typedef struct		s_env
 {
 	char 			*env_name;
 	char 			*env_cont;
+	char 			is_equal;
 }					t_env;
 
 typedef struct		s_data
@@ -97,6 +98,10 @@ void				extern_bin(t_data *data, char **env);
 t_env				*env_to_cont(char *env);
 void				ft_exit(t_data *data);
 void				env_unset(t_data *data);
+void       			print_exp_list(t_list **env_dup, t_data *data);
+int					is_last_symbol(const char *str, char c);
+
+
 
 
 #endif
