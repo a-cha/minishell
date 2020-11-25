@@ -25,34 +25,37 @@ int		main(int argc, char **argv, char **env)
 	{
 		ft_putstr_fd("minishell > ", 1);
 		get_next_line(1, &line);
-//		line = "echo";
+//		line = "export b=";
 		data->args = ft_split(line, ' ');
 		data->len = ft_arraylen((char**)data->args);
-		if (ft_strcmp(data->args[0], "cd") == 0)
-            cd(data);
-		else if (ft_strcmp(data->args[0], "pwd") == 0)
-            pwd(data);
-		else if (ft_strcmp(data->args[0], "echo") == 0)
-		    echo(data);
-		else if (!(ft_strcmp(data->args[0], "env")))
-			test_env_list(&data->env);
-		else if (!(ft_strcmp(data->args[0], "exit")))
-			ft_exit(data);
-		else if (!(ft_strcmp(data->args[0], "export")))
+		if(data->args[0])
 		{
-			if (is_first_symbol(data->args[1], '$') == 0)
+			if (ft_strcmp(data->args[0], "cd") == 0)
+				cd(data);
+			else if (ft_strcmp(data->args[0], "pwd") == 0)
+				pwd(data);
+			else if (ft_strcmp(data->args[0], "echo") == 0)
+				echo(data);
+			else if (!(ft_strcmp(data->args[0], "env")))
+				test_env_list(&data->env);
+			else if (!(ft_strcmp(data->args[0], "exit")))
+				ft_exit(data);
+			else if (!(ft_strcmp(data->args[0], "export")))
+			{
+				if (is_first_symbol(data->args[1], '$') == 0)
 					env_export(data);
-			else
-				env_export(data);
-		}
-		else if (!(ft_strcmp(data->args[0], "unset")))
-			env_unset(data);
-		else if (data->args[0])
-			extern_bin(data, env);
-		int i = -1;
-		while (data->args[++i])
-			free(data->args[i]);
+				else
+					env_export(data);
+			}
+			else if (!(ft_strcmp(data->args[0], "unset")))
+				env_unset(data);
+			else if (data->args[0])
+				extern_bin(data, env);
+			int i = -1;
+			while (data->args[++i])
+				free(data->args[i]);
 //         parsed = parse(line);
+		}
 	}
 	return (0);
 }
