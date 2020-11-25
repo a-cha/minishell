@@ -49,3 +49,17 @@ void 		remove_elem(t_list **env_dup, char *str)
 		free_memory(tmp);
 	}
 }
+
+void		env_unset(t_data *data)
+{
+	t_env	*env;
+	int		i;
+
+	i = 0;
+	while (data->args[++i])
+	{
+		env = find_env1(&data->env, data->args[i]);
+		if (!(ft_strcmp(data->args[i], env->env_name)))
+			remove_elem(&data->env, data->args[i]);
+	}
+}

@@ -77,7 +77,7 @@ void				cd(t_data *data);
 char				*find_env(t_list **env_dup, char *str);
 t_env				*find_env1(t_list **env_dup, char *str);
 t_list				*find_env2(t_list **env_dup, char *str);
-
+void 				remove_elem(t_list **env_dup, char *str);
 int					is_first_symbol(const char *str, char c);
 char				*is_corr_path(char **arr, char *str);
 void				env_export(t_data *data);
@@ -85,9 +85,7 @@ void       			test_env_list(t_list **env_dup);
 void				extern_bin(t_data *data, char **env);
 t_env				*env_to_cont(char *env);
 void				ft_exit(t_data *data);
-
-
-
+void				env_unset(t_data *data);
 
 
 #endif

@@ -25,7 +25,7 @@ int		main(int argc, char **argv, char **env)
 	{
 		ft_putstr_fd("minishell > ", 1);
 		get_next_line(1, &line);
-//		line = "echo -n kak $PWD $PATH";
+//		line = "echo";
 		data->args = ft_split(line, ' ');
 		data->len = ft_arraylen((char**)data->args);
 		if (ft_strcmp(data->args[0], "cd") == 0)
@@ -45,6 +45,8 @@ int		main(int argc, char **argv, char **env)
 			else
 				env_export(data);
 		}
+		else if (!(ft_strcmp(data->args[0], "unset")))
+			env_unset(data);
 		else if (data->args[0])
 			extern_bin(data, env);
 		int i = -1;
