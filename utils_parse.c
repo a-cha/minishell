@@ -45,7 +45,7 @@ void	ft_arrayfree(char **array)
 /*
 ** Joins two null-terminated arrays and free pointers to them
 */
-char	**ft_arrayjoin(char **array1, char **array2)
+char	**ft_arrjoin(char **array1, char **array2)
 {
 	size_t	i;
 	size_t	len;
@@ -121,7 +121,7 @@ int		is_symb(const char *line, char c)
 /*
 ** Checks if symbol has escaped (or not escaped)
 */
-void 	escape_symbols(char *dup)
+void	escape_symb_line(char *dup)
 {
 	size_t	i;
 	size_t	r;
@@ -130,6 +130,24 @@ void 	escape_symbols(char *dup)
 	while (dup[++i])
 	{
 		if (dup[i] == '\\')
+		{
+			r = -1;
+			while (dup[i + ++r])
+				dup[i + r] = dup[i + r + 1];
+		}
+	}
+}
+
+void	escape_symb_quot(char *dup)
+{
+	size_t	i;
+	size_t	r;
+
+	i = -1;
+	while (dup[++i])
+	{
+		if (dup[i] == '\\' &&
+				(dup[i + 1] == '\\' || dup[i + 1] == '\"' || dup[i + 1] == '$'))
 		{
 			r = -1;
 			while (dup[i + ++r])

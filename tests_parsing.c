@@ -16,8 +16,8 @@ int			main(int ac, char **av, char **env)
 	char 	*line = "kjnvv\\$kmlvs$vdf";
 	t_data	*part = ft_calloc(1, sizeof(t_data));
 	char 	r;
-//	char 	*dup = "echo $HOME";
-	char 	*dup = "echo '$HOME' lol $LOGNAME kek";
+//	char 	*dup = "echo HOME";
+	char 	*dup = "echo hellllo \"$HOME' l'ol\" kek; $LOGNAME kek"; // 11/23 28 42
 	t_data	*res;
 	char	**args;
 	size_t	i;
