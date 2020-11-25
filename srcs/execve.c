@@ -21,32 +21,17 @@ void	extern_bin(t_data *data, char **env)
 	ar = ft_split(find_env(&data->env, "PATH"), ':');
 	str = is_corr_path(ar, data->args[0]);
 	if ((child = fork()) < 0)
-		ft_putstr_fd("error",1);
+		ft_putstr_fd(": command not found",1);
 	else if (child == 0)
 	{
 		execve((const char *) str, data->args, env);
-		printf("error\n");
+		ft_putstr_fd("minishell: ", 1);
+		ft_putstr_fd(data->args[0], 1);
+		ft_putstr_fd(": command not found\n", 1);
 	}
 	else
 		wait(&child);
 	free(ar);
-//	while (str[++i])
-//	{
-//		tmp = ft_strjoin("/", data->args[0]);
-//		arr = ft_strjoin(str[i], tmp);
-//		if ((child = fork()) < 0)
-//			ft_putstr_fd("error",1);
-//		else if (child == 0)
-//		{
-//			execve((const char *) arr, data->args, env);
-//			printf("error\n");
-//		}
-//		else
-//			wait(&child);
-//		free(arr);
-//		free(tmp);
-//	}
-//	free(str);
 }
 
 char	*is_corr_path(char **arr, char *str)
@@ -64,14 +49,14 @@ char	*is_corr_path(char **arr, char *str)
 		free(buff);
 		if (stat(buff1, &stats) == 0)
 		{
-			printf("File access: ");
-			if (stats.st_mode & R_OK)
-				printf("read ");
-			if (stats.st_mode & W_OK)
-				printf("write ");
-			if (stats.st_mode & X_OK)
-				printf("execute");
-			printf("\nFile size: %lld", stats.st_size);
+//			printf("File access: ");
+//			if (stats.st_mode & R_OK)
+//				printf("read ");
+//			if (stats.st_mode & W_OK)
+//				printf("write ");
+//			if (stats.st_mode & X_OK)
+//				printf("execute");
+//			printf("\nFile size: %lld", stats.st_size);
 			return (buff1);
 		}
 		free(buff1);

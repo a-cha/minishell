@@ -20,6 +20,7 @@
 # include <errno.h>
 # include <unistd.h>
 # include <sys/stat.h>
+# include <stdlib.h>
 // delete
 #include <stdio.h>
 #include <string.h>
@@ -66,6 +67,7 @@ t_data				*parse(const char *line, char **env);
 char				**ft_split_pro(char const *s, char c);
 t_list				*dup_env(char **env);
 
+
 /*
 ** Prototypes for commands
 */
@@ -74,12 +76,15 @@ void				echo(t_data *data);
 void				cd(t_data *data);
 char				*find_env(t_list **env_dup, char *str);
 t_env				*find_env1(t_list **env_dup, char *str);
+t_list				*find_env2(t_list **env_dup, char *str);
+
 int					is_first_symbol(const char *str, char c);
 char				*is_corr_path(char **arr, char *str);
 void				env_export(t_data *data);
 void       			test_env_list(t_list **env_dup);
 void				extern_bin(t_data *data, char **env);
 t_env				*env_to_cont(char *env);
+void				ft_exit(t_data *data);
 
 
 

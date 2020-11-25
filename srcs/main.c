@@ -25,9 +25,9 @@ int		main(int argc, char **argv, char **env)
 	{
 		ft_putstr_fd("minishell > ", 1);
 		get_next_line(1, &line);
-//		line = "export";
+//		line = "echo -n kak $PWD $PATH";
 		data->args = ft_split(line, ' ');
-		data->len = ft_arraylen((void**)data->args);
+		data->len = ft_arraylen((char**)data->args);
 		if (ft_strcmp(data->args[0], "cd") == 0)
             cd(data);
 		else if (ft_strcmp(data->args[0], "pwd") == 0)
@@ -36,6 +36,8 @@ int		main(int argc, char **argv, char **env)
 		    echo(data);
 		else if (!(ft_strcmp(data->args[0], "env")))
 			test_env_list(&data->env);
+		else if (!(ft_strcmp(data->args[0], "exit")))
+			ft_exit(data);
 		else if (!(ft_strcmp(data->args[0], "export")))
 		{
 			if (is_first_symbol(data->args[1], '$') == 0)

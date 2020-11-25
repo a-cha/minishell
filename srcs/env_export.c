@@ -56,11 +56,12 @@ void	env_export(t_data *data)
 	if (data->args[1])
 	{
 		set_new_env(data);
+		new_list = list_dup_sort(&data->env);
 		return ;
 	}
 	new_list = list_dup_sort(&data->env);
 	print_exp_list(&new_list);
-	ft_lstclear(&new_list, (void*)free_memory);
+//	ft_lstclear(&new_list, (void*)free_memory);    <-зачем эта строчка, seg тут
 }
 
 int		is_first_symbol(const char *str, char c)

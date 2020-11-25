@@ -1,27 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/21 18:07:37 by pcatrina          #+#    #+#             */
-/*   Updated: 2020/11/22 20:53:04 by pcatrina         ###   ########.fr       */
+/*   Created: 2020/11/25 10:15:05 by pcatrina          #+#    #+#             */
+/*   Updated: 2020/11/25 10:15:08 by pcatrina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	pwd(t_data *data)
+void		ft_exit(t_data *data)
 {
-	char	*pwd;
-
-	if ((pwd = getcwd(NULL, 0)) == NULL)
-		ft_putstr_fd("error\n", 1);
-	else
-	{
-		ft_putstr_fd(pwd, 1);
-		ft_putstr_fd("\n", 1);
-	}
-	free(pwd);
+	ft_putstr_fd("Exit . . .", 1);
+	free_memory(data);
+	exit(0);
 }
