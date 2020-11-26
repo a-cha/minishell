@@ -13,16 +13,12 @@
 #include "includes/minishell.h"
 
 /*
-** Counts lines in null-terminated array
+** Frees pointer and turns it to NULL
 */
-size_t	ft_arraylen(char **array)
+void	free_memory(void *memory)
 {
-	size_t	i;
-
-	i = 0;
-	while (array[i])
-		i++;
-	return (i);
+	free(memory);
+	memory = NULL;
 }
 
 /*
@@ -43,40 +39,48 @@ void	ft_arrayfree(char **array)
 }
 
 /*
-** Joins two null-terminated arrays and free pointers to them
+** Counts lines in null-terminated array
 */
-char	**ft_arrjoin(char **array1, char **array2)
+int		ft_arraylen(char **array)
 {
-	size_t	i;
-	size_t	len;
-	char	**res;
+	int	i;
 
-	len = ft_arraylen(array1);
-	if (!(res = malloc(sizeof(void *) * (len + ft_arraylen(array2) + 1))))
-		return (NULL);
-	i = -1;
-	while (array1[++i])
-		res[i] = array1[i];
-	free(array1[i]);
-	array1[i] = NULL;
-	i--;
-	while (array2[++i - len])
-		res[i] = array2[i - len];
-	res[i] = array2[i - len];
-	free(array1);
-	array1 = NULL;
-	free(array2);
-	array2 = NULL;
-	return (res);
+	i = 0;
+	while (array[i])
+		i++;
+	return (i);
 }
 
 /*
-** Frees pointer and turns it to NULL
+** Joins two null-terminated arrays and free pointers to them
 */
-void	free_memory(void *memory)
+char	**ft_arrjoin_pro(char **arr1, char **arr2, char flag)
 {
-	free(memory);
-	memory = NULL;
+	size_t	i;
+	int 	l;
+	char	**res;
+
+	l = ft_arraylen(arr1);
+	if (!(res = malloc(8 * (l + ft_arraylen(arr2) + (flag == ' ') + !(l)))))
+		return (NULL);
+	if (flag != ' ')
+	{
+		res[0] = arr1[l - (l != 0)];
+		if (!(arr1[l - (l != 0)] = ft_strjoin(arr1[l - (l != 0)], arr2[0])))
+			return (NULL);
+		free_memory(res[0]);
+	}
+	i = -1;
+	while (++i < l + !(l))
+		res[i] = arr1[i];
+	l != 0 ? free_memory(arr1[i]) : 1;
+	i = !(l) ? 0 : i - 1;
+	while (arr2[++i - (l != 0 ? l : 1) + (flag != ' ')])
+		res[i] = arr2[i - (l != 0 ? l : 1) + (flag != ' ')];
+	res[i] = NULL;
+	free_memory(arr1);
+	free_memory(arr2);
+	return (res);
 }
 
 /*
@@ -154,4 +158,14 @@ void	escape_symb_quot(char *dup)
 				dup[i + r] = dup[i + r + 1];
 		}
 	}
+}
+
+//	remove
+void 	print_d_array(char **array)
+{
+	size_t	i;
+
+	i = -1;
+	while (array[++i])
+		printf(">%s<\n", array[i]);
 }

@@ -118,7 +118,7 @@ char		*handle_quot(char *line, t_data *part)
 //	MAYBE THIS FREE ISN'T NEEDED
 //	free_memory((void *)line);
 //		*************
-	printf("quot: %s\n", dup);
+//	printf("quot: %s\n", dup);
 //		*************
 	return (dup);
 }
@@ -136,7 +136,8 @@ char		**handle_line(char *line, t_data *part)
 //	free_memory((void *)line);
 //	split???
 //		*************
-	printf("line: %s\n", dup);
+	printf("handle_line\n");
+	printf("line: %s\n\n", dup);
 //		*************
 	return (ft_split_pro(dup, ' '));
 }
@@ -160,56 +161,91 @@ int			is_closed_quot(const char *line, char r)
 	return (f);
 }
 
-int 		is_concat_args(char **args, char *quot, char t)
+// t1 - symb before quots, t2 - symb after quots
+int 		concat_args(t_data *part, char *quot, char t1, char t2)
 {
 	char 	*tmp;
 	char 	**tmp_d;
 	size_t	f;
 
-	if (t == ' ')
+//		*************
+	printf("concat_args args\n");
+	print_d_array(part->args);
+//		*************
+	if (t1 == ' ')
 	{
+		if (!(tmp_d = (char **)ft_calloc(2 + (t2 == ' '), sizeof(char *))))
+			return (-1);
+		tmp_d[0] = quot;
+		if (t2 == ' ')
+			tmp_d[1] = ft_strdup(" ");
+//		*************
+		printf("concat_args tmp_d\n");
+		print_d_array(tmp_d);
+//		*************
+		if (!(part->args = ft_arrjoin_pro(part->args, tmp_d, t1)))
+			return (-1);
+		/*
 		f = ft_arraylen(args);
 		tmp = args[f];
 		if (!(args[f] = ft_strjoin(args[f], quot)))
 			return (-1);
 		free_memory(tmp);
+		*/
 	}
 	else
 	{
+		f = ft_arraylen(part->args);
+		free_memory(part->args[f - 1]);
+		tmp = part->args[f - 2];
+		if (!(part->args[f - 2] = ft_strjoin(part->args[f - 2], quot)))
+			return (-1);
+		free_memory(tmp);
+		if (t2 == ' ')
+		{
+			if (!(tmp_d = (char **)ft_calloc(2 + (t2 == ' '), sizeof(char *))))
+				return (-1);
+			tmp_d[0] = ft_strdup(" ");
+			if (!(part->args = ft_arrjoin_pro(part->args, tmp_d, t2)))
+				return (-1);
+		}
+		/*
 		if (!(tmp_d = (char **)malloc(sizeof(char **))))
 			return (-1);
 		tmp_d = &quot;
-		if (!(args = ft_arrjoin(args, tmp_d)))
+		if (!(part->args = ft_arrjoin_pro(part->args, tmp_d)))
 			return (-1);
+		*/
 	}
 	free_memory(quot);
+//		*************
+	printf("concat_args\n");
+	print_d_array(part->args);
+//		*************
 	return (0);
 }
 
 //	returns the part of str until redir symbol (include redir symbol)
-size_t		get_part(const char *line, t_data *part)
+int 		get_part(const char *line, t_data *part)
 {
-	size_t	i;
+	int 	i;
 	int		f;
-	size_t	s;
+	int 	s;
 	char	*quot;
 //	i can do without this variable (but this is just one string)
 	char	r;
+//	remove
+	int t;
 
 	i = 0;
 	while (1)
 	{
 		s = catch_first_sign(line + i, part, &r);
-		if (!(part->args = ft_arrjoin(part->args, handle_line(ft_substr(line, i, s), part))))
+		if (!(part->args = ft_arrjoin_pro(part->args, handle_line
+		(ft_substr(line, i, s), part), *(line + i))))
 //			need to determine what to return
 			return(errors(ERR_MALLOC, 5));
-//		*************
-		int t = -1;
-		printf("\n");
-		while (part->args[++t])
-			printf(">%s<\n", part->args[t]);
-//		*************
-		if (r != '"' && r != '\'')
+		if (!r)
 			break ;
 		if ((f = is_closed_quot(line + i + 1, r)) < 0)
 //			need to determine what to return
@@ -217,23 +253,22 @@ size_t		get_part(const char *line, t_data *part)
 		if (!(quot = (r == '\'' ? ft_substr(line, i + s + 1, f) :
 				handle_quot(ft_substr(line, i + s + 1, f - 1), part))))
 			return(errors(ERR_MALLOC, 5));
-		i += s + f + 3;
-		if ((is_concat_args(part->args, quot, *(line + i + s - 1))))
+		if ((concat_args(part, quot, *(line + i + s - 1),
+				   							*(line + i + s + f + 1))))
 			return(errors(ERR_MALLOC, 5));
+		i += s + f + 1;
 //		*************
-		t = -1;
+		printf("get_part\n");
+		print_d_array(part->args);
 		printf("\n");
-		while (part->args[++t])
-			printf(">%s<\n", part->args[t]);
 //		*************
 	}
 //		*************
-	int t = -1;
+	printf("get_part\n");
+	print_d_array(part->args);
 	printf("\n");
-	while (part->args[++t])
-		printf(">%s<\n", part->args[t]);
 //		*************
-	return (i + s + (part->type) ? 1 : 0);
+	return (i + s + ((part->type) ? 1 : 0));
 }
 
 t_data		*parse(const char *line, char **env)
@@ -243,8 +278,8 @@ t_data		*parse(const char *line, char **env)
 
 //	MALLOC HERE
 	part = ft_calloc(1, sizeof(t_data));
-	part->args = (char **)malloc(sizeof(char **));
-	part->args[0] = NULL;
+	part->args = (char **)ft_calloc(1, sizeof(char **));
+//	part->args[0] = ft_strdup("\0");
 	part->env = dup_env(env);
 /*
 //	save original fd
@@ -259,12 +294,12 @@ t_data		*parse(const char *line, char **env)
 //	return the original fd
 	dup2(part->output, 1);
 */
+//	check weird cases (ls ;; ...)
+//
 	while (*line)
 	{
-		i = get_part(line, part);
+		line += get_part(line, part);
 		part->len = ft_arraylen(part->args);
-		line += i;
-//		check weird cases (ls ;; ...)
 //		call here processing functions
 	}
 	return (part);

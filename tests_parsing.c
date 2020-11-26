@@ -29,12 +29,17 @@ int			main(int ac, char **av, char **env)
 	printf("str: %s\n", dup);
 	printf("args:\n");
 	while (args[++i] != NULL)
-	{
 		printf(">%s<\n", args[i]);
-	}
 	printf("\nlen: %ld\t%c\n", res->len, res->type);
 /*
-
+//	test ft_arrjoin_pro
+	args = ft_arrjoin_pro(ft_split("a b c", ' '),
+					   ft_split("d e f", ' '), 't');
+	i = -1;
+	while (args[++i] != NULL)
+		printf(">%s<\n", args[i]);
+*/
+/*
 //	test handle_quot
 	part->env = dup_env(env);
 	printf(">%s<\n>%s<\n", dup, handle_quot(dup, part));
