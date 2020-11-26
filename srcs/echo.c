@@ -41,14 +41,14 @@ void	echo(t_data *data)
 //	if (flag == 0)
 //		ft_putstr_fd("\n", 1);
 
-	i = 1;
+	i = 0;
 	flag = 0;
 	str = NULL;
 	tmp = NULL;
 	if (data->args[1])
 		if (!(ft_strcmp(data->args[1], "-n")))
 			i++ && flag++;
-	while (data->args[i])
+	while (data->args[++i])
 	{
 		str = data->args[i];
 		if (!(is_first_symbol(data->args[i], '$')))
@@ -57,6 +57,8 @@ void	echo(t_data *data)
 			str = find_env(&data->env, tmp);
 			free(tmp);
 		}
+		if (!(ft_strcmp(data->args[i], "$?")))
+			ft_putnbr_fd(data->last_status, 1);
 		if (i == (data->len) - 1)
 		{
 			ft_putstr_fd(str, 1);
@@ -64,7 +66,6 @@ void	echo(t_data *data)
 		}
 		ft_putstr_fd(str, 1);
 		ft_putstr_fd(" ", 1);
-		i++;
 	}
 	if (flag == 0)
 		ft_putstr_fd("\n", 1);

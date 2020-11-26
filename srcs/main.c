@@ -25,7 +25,7 @@ int		main(int argc, char **argv, char **env)
 	{
 		ft_putstr_fd("minishell > ", 1);
 		get_next_line(1, &line);
-//		line = "export b=";
+//		line = "env";
 		data->args = ft_split(line, ' ');
 		data->len = ft_arraylen((char**)data->args);
 		if(data->args[0])
@@ -53,7 +53,7 @@ int		main(int argc, char **argv, char **env)
 				extern_bin(data, env);
 			int i = -1;
 			while (data->args[++i])
-				free(data->args[i]);
+				free_memory(data->args[i]);
 //         parsed = parse(line);
 		}
 	}
