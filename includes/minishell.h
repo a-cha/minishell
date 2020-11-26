@@ -66,8 +66,8 @@ int				 	errors(char *error, int err_code);
 ** Prototypes for parsing
 */
 void				ft_arrayfree(char **array);
-size_t				ft_arraylen(char **array);
-char				**ft_arrjoin(char **array1, char **array2);
+int					ft_arraylen(char **array);
+char				**ft_arrjoin_pro(char **array1, char **array2, char flag);
 void				*apply_nothing(void *elem);
 void				del_content(void *elem);
 t_list				*list_dup_sort(t_list **env);
@@ -78,6 +78,7 @@ void				escape_symb_quot(char *dup);
 t_data				*parse(const char *line, char **env);
 char				**ft_split_pro(char const *s, char c);
 t_list				*dup_env(char **env);
+void			 	print_d_array(char **array);
 
 
 /*
