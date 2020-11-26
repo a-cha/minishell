@@ -39,12 +39,22 @@ typedef struct		s_data
 	size_t			len;		// Len of args array
 	char			type;		// Type of break. If presented
 //	file descriptors for redirections (maybe there is another implementation)
+	int				input;
+	int 			output;
 	int				infile;
 	int 			outfile;
 	t_list			*env;
 	struct s_data	*next;
 	struct s_data	*prev;
 }					t_data;
+
+/*
+** Defines for erors
+*/
+# define ERR_QUOTS "Error quotation marks"
+# define ERR_MALLOC "Malloc error"
+
+int				 	errors(char *error, int err_code);
 
 /*
 ** Defines for parsing
@@ -57,13 +67,14 @@ typedef struct		s_data
 */
 void				ft_arrayfree(char **array);
 size_t				ft_arraylen(char **array);
-char				**ft_arrayjoin(char **array1, char **array2);
+char				**ft_arrjoin(char **array1, char **array2);
 void				*apply_nothing(void *elem);
 void				del_content(void *elem);
 t_list				*list_dup_sort(t_list **env);
 void				free_memory(void *memory);
 int					is_symb(const char *line, char c);
-void			 	escape_symbols(char *dup);
+void				escape_symb_line(char *dup);
+void				escape_symb_quot(char *dup);
 t_data				*parse(const char *line, char **env);
 char				**ft_split_pro(char const *s, char c);
 t_list				*dup_env(char **env);
@@ -89,6 +100,9 @@ void				ft_exit(t_data *data);
 void				env_unset(t_data *data);
 void       			print_exp_list(t_list **env_dup, t_data *data);
 int					is_last_symbol(const char *str, char c);
+t_env 				*chek_env(t_data *data);
+void 				rewrite_cont(t_data *data, t_env *env);
+
 
 
 

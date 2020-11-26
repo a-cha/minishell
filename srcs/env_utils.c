@@ -126,14 +126,14 @@ void       test_env_list(t_list **env_dup)
 	tmp = *env_dup;
 	while (tmp)
 	{
-//		if ((env->env_cont))
-//		{
-			env = tmp->content;
+		env = tmp->content;
+		if (env->is_equal == 1)
+		{
 			ft_putstr_fd((env->env_name), 1);
 			ft_putstr_fd("=", 1);
 			ft_putstr_fd((env->env_cont), 1);
 			ft_putstr_fd("\n", 1);
-//		}
+		}
 		tmp = tmp->next;
 	}
 }
