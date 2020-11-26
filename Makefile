@@ -37,7 +37,8 @@ utils_lst.c		\
 ./srcs/execve.c	\
 ./srcs/env_export.c\
 ./srcs/exit.c		\
-./srcs/unset.c
+./srcs/unset.c		\
+./srcs/signals.c	\
 #tests_parsing.c	\
 #parse.c			\
 

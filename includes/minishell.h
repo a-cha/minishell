@@ -21,6 +21,7 @@
 # include <unistd.h>
 # include <sys/stat.h>
 # include <stdlib.h>
+# include <signal.h>
 // delete
 #include <stdio.h>
 #include <string.h>
@@ -46,6 +47,7 @@ typedef struct		s_data
 	t_list			*env;
 	struct s_data	*next;
 	struct s_data	*prev;
+	int				last_status;
 }					t_data;
 
 /*
@@ -102,6 +104,8 @@ void       			print_exp_list(t_list **env_dup, t_data *data);
 int					is_last_symbol(const char *str, char c);
 t_env 				*chek_env(t_data *data);
 void 				rewrite_cont(t_data *data, t_env *env);
+void				*ctrl_c(t_data *data);
+
 
 
 
