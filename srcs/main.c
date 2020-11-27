@@ -80,6 +80,7 @@ int		main(int argc, char **argv, char **env)
 			while (data->args[++i])
 				free_memory(data->args[i]);
 //         parsed = parse(line);
+//		}
 		}
 		break ;
 	}
