@@ -27,7 +27,7 @@ void		print_error(char *er_status, char *er_mess, int new_line)
 
 void		ft_exit(t_data *data, int exit_status)
 {
-	int e = data.exit;
+//	int e = data.exit;
 
 	free_memory(data->env);
 	free_memory(data->next);

@@ -38,13 +38,13 @@ int		main(int argc, char **argv, char **env)
 
 	data = shell_init(argc, argv, env);
 	data->env = dup_env(env);
-	while (1)
-	{
+//	while (1)
+//	{
 		ft_putstr_fd("minishell: ", 1);
-		if (get_next_line(1, &line) == -1)
-			ft_exit(data, last_status);
-		errno = 0;
-//		line = "env";
+//		if (get_next_line(1, &line) == -1)
+//			ft_exit(data, last_status);
+//		errno = 0;
+		line = "unset govno";
 		sigint_flag = 0;
 		data->args = ft_split(line, ' ');
 		data->len = ft_arraylen((char**)data->args);
@@ -70,7 +70,7 @@ int		main(int argc, char **argv, char **env)
 			while (data->args[++i])
 				free_memory(data->args[i]);
 //         parsed = parse(line);
-		}
+//		}
 	}
 	return (0);
 }
