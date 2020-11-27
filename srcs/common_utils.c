@@ -1,35 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   common_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pcatrina <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/26 16:58:25 by pcatrina          #+#    #+#             */
-/*   Updated: 2020/11/26 16:58:27 by pcatrina         ###   ########.fr       */
+/*   Created: 2020/11/27 15:54:04 by pcatrina          #+#    #+#             */
+/*   Updated: 2020/11/27 15:54:05 by pcatrina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	sig_quit()
+int 		process_status(void)
 {
-	int	exit_status;
+	int			child;
+	int			status;
 
-	if ((exit_status = process_status()) == -1)
-		return ;
-	else if(exit_status == 131)
-		write(2, "Quit: 3\n", 8);
+	if ((child = waitpid(-1, &status, 0)) == -1)
+		return (-1);
+	if (WIFEXITED(status))
+		status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		status = status | 128;
+	if (last_pid == child)
+		last_status = status;
+	return (status);
 }
 
-static void	sig_int()
+t_data		*malloc_shell(char **env)
 {
-	sigint_flag = 1;
-	exit(EXIT_FAILURE);
-}
+	t_data	*data;
 
-void		signal_oper(void)
-{
-	signal(SIGQUIT, sig_quit);
-	signal(SIGINT, sig_int);
+	if (!(data = ft_calloc(1, sizeof(t_data))))
+		ft_exit(data, EXIT_FAILURE);
+	return (data);
 }

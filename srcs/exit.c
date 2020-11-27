@@ -12,11 +12,27 @@
 
 #include "minishell.h"
 
-void		ft_exit(t_data *data)
+void		print_error(char *er_status, char *er_mess, int new_line)
 {
-	ft_putstr_fd("Exit . . .", 1);
+	ft_putstr_fd("minishell : ", 2);
+	if (er_status)
+	{
+		ft_putstr_fd(er_status, 2);
+		ft_putstr_fd(": ", 2);
+	}
+	ft_putstr_fd(er_mess, 2);
+	if (new_line)
+		ft_putstr_fd("\n", 2);
+}
+
+void		ft_exit(t_data *data, int exit_status)
+{
+	int e = data.exit;
+
 	free_memory(data->env);
 	free_memory(data->next);
 	free_memory(data->prev);
-	exit(0);
+	if (exit_status == EXIT_FAILURE && errno)
+		print_error(0, strerror(errno), 1);
+	exit(exit_status);
 }

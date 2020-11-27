@@ -58,7 +58,7 @@ void	echo(t_data *data)
 			free(tmp);
 		}
 		if (!(ft_strcmp(data->args[i], "$?")))
-			ft_putnbr_fd(data->last_status, 1);
+			ft_putnbr_fd(last_status, 1);
 		if (i == (data->len) - 1)
 		{
 			ft_putstr_fd(str, 1);

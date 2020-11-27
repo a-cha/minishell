@@ -34,27 +34,19 @@ void	cd(t_data *data)
 	{
 		tmp = find_env(&data->env, "HOME");
 		chdir(tmp);
-		cd = getcwd(NULL, 0);
-		renew_pwd(data->env, cd);
-		free(cd);
-		return ;
 	}
 	else if (!(ft_strcmp(data->args[1], "-")))
 	{
 		tmp = find_env(&data->env, "OLDPWD");
 		chdir(tmp);
 		pwd(data);
-		cd = getcwd(NULL, 0);
-		renew_pwd(data->env, cd);
-		free(cd);
-		return ;
 	}
 	else if (chdir(data->args[1]) == -1)
 	{
-		data->last_status = 1;
+		last_status = 1;
 		return (ft_putstr_fd("cd: No such file or directory \n", 1));
 	}
-	data->last_status = 0;
+	last_status = 0;
 	cd = getcwd(NULL, 0);
 	renew_pwd(data->env, cd);
 	free(cd);

@@ -39,6 +39,7 @@ utils_lst.c		\
 ./srcs/exit.c		\
 ./srcs/unset.c		\
 ./srcs/signals.c	\
+./srcs/common_utils.c
 #tests_parsing.c	\
 #parse.c			\
 

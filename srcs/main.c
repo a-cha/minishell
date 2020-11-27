@@ -12,20 +12,40 @@
 
 #include "minishell.h"
 
+int		last_status = 0;
+int		last_pid = 0;
+int		sigint_flag = 0;
+
+t_data	*shell_init(int argc, char **argv, char **env)
+{
+	t_data	*data;
+
+	if (argc != 1)
+	{
+		print_error(argv[0], "You must have arguments", 1);
+		exit(EXIT_FAILURE);
+	}
+	if (!(data = malloc_shell(env)))
+		ft_exit(data, EXIT_FAILURE);
+	signal_oper();
+	return (data);
+}
+
 int		main(int argc, char **argv, char **env)
 {
 	t_data  *data;
 	char	*line;
-	data = malloc(sizeof (t_data));
 
+	data = shell_init(argc, argv, env);
 	data->env = dup_env(env);
-//	test_env_list(&data->env);
-
 	while (1)
 	{
-		ft_putstr_fd("minishell > ", 1);
-		get_next_line(1, &line);
+		ft_putstr_fd("minishell: ", 1);
+		if (get_next_line(1, &line) == -1)
+			ft_exit(data, last_status);
+		errno = 0;
 //		line = "env";
+		sigint_flag = 0;
 		data->args = ft_split(line, ' ');
 		data->len = ft_arraylen((char**)data->args);
 		if(data->args[0])
@@ -39,14 +59,9 @@ int		main(int argc, char **argv, char **env)
 			else if (!(ft_strcmp(data->args[0], "env")))
 				test_env_list(&data->env);
 			else if (!(ft_strcmp(data->args[0], "exit")))
-				ft_exit(data);
+				ft_exit(data, last_status);
 			else if (!(ft_strcmp(data->args[0], "export")))
-			{
-				if (is_first_symbol(data->args[1], '$') == 0)
-					env_export(data);
-				else
-					env_export(data);
-			}
+				env_export(data);
 			else if (!(ft_strcmp(data->args[0], "unset")))
 				env_unset(data);
 			else if (data->args[0])

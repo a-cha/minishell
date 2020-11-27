@@ -29,13 +29,13 @@ void	extern_bin(t_data *data, char **env)
 		ft_putstr_fd("minishell: ", 1);
 		ft_putstr_fd(data->args[0], 1);
 		ft_putstr_fd(": command not found\n", 1);
-		data->last_status = 127;
-		exit(data->last_status);
+		last_status = 127;
+		exit(last_status);
 	}
 	else
 		waitpid(child ,&status, 0);
 		if (WIFEXITED(status))
-			data->last_status = WEXITSTATUS(status);
+			last_status = WEXITSTATUS(status);
 	free(ar);
 }
 
