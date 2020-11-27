@@ -31,23 +31,33 @@ t_data	*shell_init(int argc, char **argv, char **env)
 	return (data);
 }
 
+void	processing(t_data *data)
+
 int		main(int argc, char **argv, char **env)
 {
 	t_data  *data;
 	char	*line;
+	int 	n;
 
 	data = shell_init(argc, argv, env);
 	data->env = dup_env(env);
 	while (1)
 	{
-		ft_putstr_fd("minishell: ", 1);
+		ft_putstr_fd("Вводи > ", 1);
 		if (get_next_line(1, &line) == -1)
 			ft_exit(data, last_status);
 		errno = 0;
 //		line = "env";
 		sigint_flag = 0;
-		data->args = ft_split(line, ' ');
-		data->len = ft_arraylen((char**)data->args);
+		reset_t_data(data);
+		while (*line)
+		{
+			if ((n = parse(line, data)) < 0)
+				return (-1);
+//			call processing here, remove line below
+			print_d_array(data->args);
+			line += n;
+		}
 		if(data->args[0])
 		{
 			if (ft_strcmp(data->args[0], "cd") == 0)
@@ -71,6 +81,7 @@ int		main(int argc, char **argv, char **env)
 				free_memory(data->args[i]);
 //         parsed = parse(line);
 		}
+		break ;
 	}
 	return (0);
 }

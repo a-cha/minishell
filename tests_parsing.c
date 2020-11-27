@@ -29,7 +29,7 @@ int			main(int ac, char **av, char **env)
 	n = 0;
 	while (1)
 	{
-		ft_putstr_fd("> ", 1);
+		ft_putstr_fd("Вводи > ", 1);
 		get_next_line(0, &line);
 		reset_t_data(part);
 		while (*line)
