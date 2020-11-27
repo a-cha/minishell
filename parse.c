@@ -96,7 +96,7 @@ char		*handle_env(char *line, t_data *part)
 	while (1)
 	{
 		s = is_symb(line + i, '$');
-		dup1 = ft_substr(line, i, s == -1 ? ft_strlen(line + i) : s);
+		dup1 = ft_substr(line, i, (s == -1 ? ft_strlen(line + i) : s));
 		tmp = dup;
 		dup = ft_strjoin(dup, dup1);
 		free_memory((void *)tmp);
@@ -136,10 +136,10 @@ char		**handle_line(char *line, t_data *part)
 //	free_memory((void *)line);
 //	split???
 //		*************
-	printf("handle_line\n");
-	printf("line: %s\n\n", dup);
+	printf("\nhandle_line\n");
+	printf("line: >%s<\n", dup);
 //		*************
-	return (ft_split_pro(dup, ' '));
+	return (ft_split(dup, ' '));
 }
 
 int			is_closed_quot(const char *line, char r)
@@ -161,6 +161,20 @@ int			is_closed_quot(const char *line, char r)
 	return (f);
 }
 
+int 		concat_args(t_data *part, char *quot, char s)
+{
+	char 	**tmp_d;
+
+	if (!(tmp_d = (char **)ft_calloc(2, sizeof(char *))))
+		return (-1);
+	tmp_d[0] = quot;
+	tmp_d[1] = NULL;
+	if (!(part->args = ft_arrjoin_pro(part->args, tmp_d, s)))
+		return (-1);
+	return (0);
+}
+
+/*
 // t1 - symb before quots, t2 - symb after quots
 int 		concat_args(t_data *part, char *quot, char t1, char t2)
 {
@@ -169,7 +183,7 @@ int 		concat_args(t_data *part, char *quot, char t1, char t2)
 	size_t	f;
 
 //		*************
-	printf("concat_args args\n");
+	printf("\nconcat_args input\n");
 	print_d_array(part->args);
 //		*************
 	if (t1 == ' ')
@@ -185,13 +199,6 @@ int 		concat_args(t_data *part, char *quot, char t1, char t2)
 //		*************
 		if (!(part->args = ft_arrjoin_pro(part->args, tmp_d, t1)))
 			return (-1);
-		/*
-		f = ft_arraylen(args);
-		tmp = args[f];
-		if (!(args[f] = ft_strjoin(args[f], quot)))
-			return (-1);
-		free_memory(tmp);
-		*/
 	}
 	else
 	{
@@ -208,22 +215,20 @@ int 		concat_args(t_data *part, char *quot, char t1, char t2)
 			tmp_d[0] = ft_strdup(" ");
 			if (!(part->args = ft_arrjoin_pro(part->args, tmp_d, t2)))
 				return (-1);
+//		*************
+			printf("concat_args tmp_d\n");
+			print_d_array(tmp_d);
+//		*************
 		}
-		/*
-		if (!(tmp_d = (char **)malloc(sizeof(char **))))
-			return (-1);
-		tmp_d = &quot;
-		if (!(part->args = ft_arrjoin_pro(part->args, tmp_d)))
-			return (-1);
-		*/
 	}
 	free_memory(quot);
 //		*************
-	printf("concat_args\n");
+	printf("concat_args result\n");
 	print_d_array(part->args);
 //		*************
 	return (0);
 }
+*/
 
 //	returns the part of str until redir symbol (include redir symbol)
 int 		get_part(const char *line, t_data *part)
@@ -234,8 +239,6 @@ int 		get_part(const char *line, t_data *part)
 	char	*quot;
 //	i can do without this variable (but this is just one string)
 	char	r;
-//	remove
-	int t;
 
 	i = 0;
 	while (1)
@@ -244,43 +247,48 @@ int 		get_part(const char *line, t_data *part)
 		if (!(part->args = ft_arrjoin_pro(part->args, handle_line
 		(ft_substr(line, i, s), part), *(line + i))))
 //			need to determine what to return
-			return(errors(ERR_MALLOC, 5));
-		if (!r)
-			break ;
-		if ((f = is_closed_quot(line + i + 1, r)) < 0)
-//			need to determine what to return
-			return(errors(ERR_QUOTS, 5));
-		if (!(quot = (r == '\'' ? ft_substr(line, i + s + 1, f) :
-				handle_quot(ft_substr(line, i + s + 1, f - 1), part))))
-			return(errors(ERR_MALLOC, 5));
-		if ((concat_args(part, quot, *(line + i + s - 1),
-				   							*(line + i + s + f + 1))))
-			return(errors(ERR_MALLOC, 5));
-		i += s + f + 1;
+			return(ERR_MALLOC);
 //		*************
-		printf("get_part\n");
+		printf("\nft_arrjoin_pro\n");
 		print_d_array(part->args);
 		printf("\n");
 //		*************
+		if (!r)
+			break ;
+		if ((f = is_closed_quot(line + i + s + 1, r)) < 0)
+//			need to determine what to return
+			f = ft_strlen(line + i + s + 1);
+		if (!(quot = (r == '\'' ? ft_substr(line, i + s + 1, f) :
+				handle_quot(ft_substr(line, i + s + 1, f), part))))
+			return(ERR_MALLOC);
+		printf("\nquot\n");
+		printf("%s\n", quot);
+		if ((concat_args(part, quot, *(line + i + s - 1))))
+			return(ERR_MALLOC);
+//		*************
+		printf("\nft_arrjoin_pro\n");
+		print_d_array(part->args);
+		printf("\n");
+//		*************
+// 		ok with quoters with spaces
+		i += s + f + 2;
 	}
 //		*************
 	printf("get_part\n");
 	print_d_array(part->args);
 	printf("\n");
 //		*************
-	return (i + s + ((part->type) ? 1 : 0));
+	return (i + s + (!(part->type) ? 0 : 1));
 }
 
-t_data		*parse(const char *line, char **env)
+int			parse(const char *line, t_data *part)
 {
-	t_data	*part;
 	int 	i;
 
-//	MALLOC HERE
-	part = ft_calloc(1, sizeof(t_data));
-	part->args = (char **)ft_calloc(1, sizeof(char **));
-//	part->args[0] = ft_strdup("\0");
-	part->env = dup_env(env);
+//	check weird cases (ls ;; ...)
+	i = get_part(line, part);
+	return (i);
+}
 /*
 //	save original fd
 	part->input = dup(0);
@@ -294,13 +302,3 @@ t_data		*parse(const char *line, char **env)
 //	return the original fd
 	dup2(part->output, 1);
 */
-//	check weird cases (ls ;; ...)
-//
-	while (*line)
-	{
-		line += get_part(line, part);
-		part->len = ft_arraylen(part->args);
-//		call here processing functions
-	}
-	return (part);
-}

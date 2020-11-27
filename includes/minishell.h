@@ -44,15 +44,13 @@ typedef struct		s_data
 	int				infile;
 	int 			outfile;
 	t_list			*env;
-	struct s_data	*next;
-	struct s_data	*prev;
 }					t_data;
 
 /*
 ** Defines for erors
 */
-# define ERR_QUOTS "Error quotation marks"
-# define ERR_MALLOC "Malloc error"
+# define ERR_QUOTS (-3)
+# define ERR_MALLOC (-2)
 
 int				 	errors(char *error, int err_code);
 
@@ -65,8 +63,9 @@ int				 	errors(char *error, int err_code);
 /*
 ** Prototypes for parsing
 */
+int					parse(const char *line, t_data *part);
 void				ft_arrayfree(char **array);
-int					ft_arraylen(char **array);
+int					ft_arrlen(char **array);
 char				**ft_arrjoin_pro(char **array1, char **array2, char flag);
 void				*apply_nothing(void *elem);
 void				del_content(void *elem);
@@ -75,10 +74,10 @@ void				free_memory(void *memory);
 int					is_symb(const char *line, char c);
 void				escape_symb_line(char *dup);
 void				escape_symb_quot(char *dup);
-t_data				*parse(const char *line, char **env);
 char				**ft_split_pro(char const *s, char c);
 t_list				*dup_env(char **env);
 void			 	print_d_array(char **array);
+void				reset_t_data(t_data *data);
 
 
 /*
