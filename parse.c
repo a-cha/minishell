@@ -118,7 +118,7 @@ char		*handle_quot(char *line, t_data *part)
 //	MAYBE THIS FREE ISN'T NEEDED
 //	free_memory((void *)line);
 //		*************
-//	printf("quot: %s\n", dup);
+////	printf("quot: %s\n", dup);
 //		*************
 	return (dup);
 }
@@ -136,8 +136,8 @@ char		**handle_line(char *line, t_data *part)
 //	free_memory((void *)line);
 //	split???
 //		*************
-	printf("\nhandle_line\n");
-	printf("line: >%s<\n", dup);
+//	printf("\nhandle_line\n");
+//	printf("line: >%s<\n", dup);
 //		*************
 	return (ft_split(dup, ' '));
 }
@@ -183,7 +183,7 @@ int 		concat_args(t_data *part, char *quot, char t1, char t2)
 	size_t	f;
 
 //		*************
-	printf("\nconcat_args input\n");
+//	printf("\nconcat_args input\n");
 	print_d_array(part->args);
 //		*************
 	if (t1 == ' ')
@@ -194,7 +194,7 @@ int 		concat_args(t_data *part, char *quot, char t1, char t2)
 		if (t2 == ' ')
 			tmp_d[1] = ft_strdup(" ");
 //		*************
-		printf("concat_args tmp_d\n");
+//		printf("concat_args tmp_d\n");
 		print_d_array(tmp_d);
 //		*************
 		if (!(part->args = ft_arrjoin_pro(part->args, tmp_d, t1)))
@@ -216,14 +216,14 @@ int 		concat_args(t_data *part, char *quot, char t1, char t2)
 			if (!(part->args = ft_arrjoin_pro(part->args, tmp_d, t2)))
 				return (-1);
 //		*************
-			printf("concat_args tmp_d\n");
+//			printf("concat_args tmp_d\n");
 			print_d_array(tmp_d);
 //		*************
 		}
 	}
 	free_memory(quot);
 //		*************
-	printf("concat_args result\n");
+//	printf("concat_args result\n");
 	print_d_array(part->args);
 //		*************
 	return (0);
@@ -249,9 +249,9 @@ int 		get_part(const char *line, t_data *part)
 //			need to determine what to return
 			return(ERR_MALLOC);
 //		*************
-		printf("\nft_arrjoin_pro\n");
-		print_d_array(part->args);
-		printf("\n");
+//		printf("\nft_arrjoin_pro\n");
+//		print_d_array(part->args);
+//		printf("\n");
 //		*************
 		if (!r)
 			break ;
@@ -261,22 +261,22 @@ int 		get_part(const char *line, t_data *part)
 		if (!(quot = (r == '\'' ? ft_substr(line, i + s + 1, f) :
 				handle_quot(ft_substr(line, i + s + 1, f), part))))
 			return(ERR_MALLOC);
-		printf("\nquot\n");
-		printf("%s\n", quot);
+//		printf("\nquot\n");
+//		printf("%s\n", quot);
 		if ((concat_args(part, quot, *(line + i + s - 1))))
 			return(ERR_MALLOC);
 //		*************
-		printf("\nft_arrjoin_pro\n");
-		print_d_array(part->args);
-		printf("\n");
+//		printf("\nft_arrjoin_pro\n");
+//		print_d_array(part->args);
+//		printf("\n");
 //		*************
 // 		ok with quoters with spaces
 		i += s + f + 2;
 	}
 //		*************
-	printf("get_part\n");
-	print_d_array(part->args);
-	printf("\n");
+//	printf("get_part\n");
+//	print_d_array(part->args);
+//	printf("\n");
 //		*************
 	return (i + s + (!(part->type) ? 0 : 1));
 }

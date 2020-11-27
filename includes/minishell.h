@@ -103,7 +103,7 @@ int					is_first_symbol(const char *str, char c);
 char				*is_corr_path(char **arr, char *str);
 void				env_export(t_data *data);
 void       			test_env_list(t_list **env_dup);
-void				extern_bin(t_data *data, char **env);
+void				extern_bin(t_data *data);
 t_env				*env_to_cont(char *env);
 void				ft_exit(t_data *data, int exit_status);
 void				env_unset(t_data *data);

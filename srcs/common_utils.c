@@ -27,12 +27,3 @@ int 		process_status(void)
 		last_status = status;
 	return (status);
 }
-
-t_data		*malloc_shell(char **env)
-{
-	t_data	*data;
-
-	if (!(data = ft_calloc(1, sizeof(t_data))))
-		ft_exit(data, EXIT_FAILURE);
-	return (data);
-}

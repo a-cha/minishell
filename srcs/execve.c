@@ -12,15 +12,40 @@
 
 #include "minishell.h"
 
-void	extern_bin(t_data *data, char **env)
+static char		**list_to_array(t_data *data)
 {
-	char	**ar;
-	char	*str;
-	int 	child;
-	int		status;
+	char		**env;
+	int 		i;
+	char 		*tmp;
+	t_list 		*lst;
+	t_env 		*current;
+
+	if (!(env = (char **)malloc(sizeof(char *) * (ft_lstsize(data->env) + 1))))
+		ft_exit(data, 1);
+	i = -1;
+	lst = data->env;
+	while (lst)
+	{
+		current = lst->content;
+		tmp = ft_strjoin(current->env_name, "=");
+		env[++i] = ft_strjoin(tmp, current->env_cont);
+		free_memory(tmp);
+		lst = lst->next;
+	}
+	return (env);
+}
+
+void			extern_bin(t_data *data)
+{
+	char		**ar;
+	char		*str;
+	int 		child;
+	int			status;
+	char 		**env;
 
 	ar = ft_split(find_env(&data->env, "PATH"), ':');
 	str = is_corr_path(ar, data->args[0]);
+	env = list_to_array(data);
 	if ((child = fork()) < 0)
 		ft_putstr_fd(": process is can't open",1);
 	else if (child == 0)
@@ -39,7 +64,7 @@ void	extern_bin(t_data *data, char **env)
 	free(ar);
 }
 
-char	*is_corr_path(char **arr, char *str)
+char			*is_corr_path(char **arr, char *str)
 {
 	struct stat	stats;
 	char		*buff;
