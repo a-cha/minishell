@@ -21,9 +21,14 @@
 # include <unistd.h>
 # include <sys/stat.h>
 # include <stdlib.h>
+# include <signal.h>
 // delete
 #include <stdio.h>
 #include <string.h>
+
+extern int				sigint_flag;
+extern int				last_pid;
+extern int				last_status;
 
 typedef struct		s_env
 {
@@ -83,6 +88,10 @@ void				reset_t_data(t_data *data);
 /*
 ** Prototypes for commands
 */
+t_data 				*shell_init(int argc, char **argv, char **env);
+t_data				*malloc_shell(char **env);
+int 				process_status(void);
+void				signal_oper();
 void				pwd(t_data *data);
 void				echo(t_data *data);
 void				cd(t_data *data);
@@ -96,10 +105,17 @@ void				env_export(t_data *data);
 void       			test_env_list(t_list **env_dup);
 void				extern_bin(t_data *data, char **env);
 t_env				*env_to_cont(char *env);
-void				ft_exit(t_data *data);
+void				ft_exit(t_data *data, int exit_status);
 void				env_unset(t_data *data);
 void       			print_exp_list(t_list **env_dup, t_data *data);
 int					is_last_symbol(const char *str, char c);
+t_env 				*chek_env(t_data *data);
+void 				rewrite_cont(t_data *data, t_env *env);
+void				*ctrl_c(t_data *data);
+void				print_error(char *er_status, char *er_mess, int new_line);
+
+
+
 
 
 

@@ -17,20 +17,25 @@ void	extern_bin(t_data *data, char **env)
 	char	**ar;
 	char	*str;
 	int 	child;
+	int		status;
 
 	ar = ft_split(find_env(&data->env, "PATH"), ':');
 	str = is_corr_path(ar, data->args[0]);
 	if ((child = fork()) < 0)
-		ft_putstr_fd(": command not found",1);
+		ft_putstr_fd(": process is can't open",1);
 	else if (child == 0)
 	{
 		execve((const char *) str, data->args, env);
 		ft_putstr_fd("minishell: ", 1);
 		ft_putstr_fd(data->args[0], 1);
 		ft_putstr_fd(": command not found\n", 1);
+		last_status = 127;
+		exit(last_status);
 	}
 	else
-		wait(&child);
+		waitpid(child ,&status, 0);
+		if (WIFEXITED(status))
+			last_status = WEXITSTATUS(status);
 	free(ar);
 }
 

@@ -35,7 +35,11 @@ SRC :=				\
 utils_parse.c		\
 utils_lst.c		\
 ./srcs/execve.c	\
-./srcs/env_export.c
+./srcs/env_export.c\
+./srcs/exit.c		\
+./srcs/unset.c		\
+./srcs/signals.c	\
+./srcs/common_utils.c
 #tests_parsing.c	\
 #parse.c			\
 
