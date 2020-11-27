@@ -12,25 +12,37 @@ char	*handle_quot(const char *line, t_data *part);
 
 int			main(int ac, char **av, char **env)
 {
-	int 	n;
-	char 	*line = "kjnvv\\$kmlvs$vdf";
-	t_data	*part = ft_calloc(1, sizeof(t_data));
 	char 	r;
 //	char 	*dup = "echo HOME";
-	char 	*dup = "echo hellllo \"$HOME' l'ol\" kek; $LOGNAME kek"; // 11/23 28 42
+	char 	*dup = "echo he'll'o \"$HOME' l'ol\" kek; $LOGNAME resw"; // 7/10 13/25 31 44
 	t_data	*res;
 	char	**args;
 	size_t	i;
 
-//	test parse
-	res = parse(dup, env);
-	args = res->args;
-	i = -1;
-	printf("str: %s\n", dup);
-	printf("args:\n");
-	while (args[++i] != NULL)
-		printf(">%s<\n", args[i]);
-	printf("\nlen: %ld\t%c\n", res->len, res->type);
+//
+	t_data	*part;
+	int 	n;
+	char 	*line;
+
+	part = ft_calloc(1, sizeof(t_data));
+	part->env = dup_env(env);
+	n = 0;
+	while (1)
+	{
+		ft_putstr_fd("> ", 1);
+		get_next_line(0, &line);
+		reset_t_data(part);
+		while (*line)
+		{
+			if ((n = parse(line, part)) < 0)
+				return (-1);
+//			call processing here, remove line below
+			print_d_array(part->args);
+			line += n;
+		}
+	}
+	//		call here processing functions
+
 /*
 //	test ft_arrjoin_pro
 	args = ft_arrjoin_pro(ft_split("a b c", ' '),

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "minishell.h"
 
 /*
 ** Frees pointer and turns it to NULL
@@ -41,7 +41,7 @@ void	ft_arrayfree(char **array)
 /*
 ** Counts lines in null-terminated array
 */
-int		ft_arraylen(char **array)
+int		ft_arrlen(char **array)
 {
 	int	i;
 
@@ -49,6 +49,11 @@ int		ft_arraylen(char **array)
 	while (array[i])
 		i++;
 	return (i);
+}
+
+int 	max(int n1, int n2)
+{
+	return (n1 > n2 ? n1 : n2);
 }
 
 /*
@@ -60,8 +65,15 @@ char	**ft_arrjoin_pro(char **arr1, char **arr2, char flag)
 	int 	l;
 	char	**res;
 
-	l = ft_arraylen(arr1);
-	if (!(res = malloc(8 * (l + ft_arraylen(arr2) + (flag == ' ') + !(l)))))
+	l = ft_arrlen(arr1);
+	if (!*arr1)
+		return (arr2);
+	if (!*arr2)
+		return (arr1);
+//
+	int t = max(l + ft_arrlen(arr2) + (flag == ' ') + !(l), 2);
+	if (!(res = ft_calloc(8,
+					max(l + ft_arrlen(arr2) + (flag == ' ') + !(l), 2))))
 		return (NULL);
 	if (flag != ' ')
 	{
@@ -75,9 +87,10 @@ char	**ft_arrjoin_pro(char **arr1, char **arr2, char flag)
 		res[i] = arr1[i];
 	l != 0 ? free_memory(arr1[i]) : 1;
 	i = !(l) ? 0 : i - 1;
-	while (arr2[++i - (l != 0 ? l : 1) + (flag != ' ')])
+//
+	t = (l != 0 ? l : 1) + (flag != ' ');
+	while (arr2[++i - (l != 0 ? l : 1) + (flag != ' ')] && (*arr2))
 		res[i] = arr2[i - (l != 0 ? l : 1) + (flag != ' ')];
-	res[i] = NULL;
 	free_memory(arr1);
 	free_memory(arr2);
 	return (res);
@@ -158,6 +171,16 @@ void	escape_symb_quot(char *dup)
 				dup[i + r] = dup[i + r + 1];
 		}
 	}
+}
+
+void	reset_t_data(t_data *data)
+{
+	if (data->args)
+		ft_arrayfree(data->args);
+	data->args = (char **)ft_calloc(1, sizeof(char **));
+	data->len = -1;
+	data->infile = 0;
+	data->outfile = 1;
 }
 
 //	remove
