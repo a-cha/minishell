@@ -196,6 +196,7 @@ void	reset_t_data(t_data *data)
 		ft_arrayfree(data->args);
 	data->args = (char **)ft_calloc(1, sizeof(char **));
 	data->len = -1;
+//	need to utochnit'
 	data->infile = 0;
 	data->outfile = 1;
 }
