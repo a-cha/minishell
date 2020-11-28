@@ -68,6 +68,7 @@ int				 	errors(char *error, int err_code);
 /*
 ** Prototypes for parsing
 */
+size_t				catch_first_sign(const char *str, t_data *part, char *r);
 int					parse(const char *line, t_data *part);
 void				ft_arrayfree(char **array);
 int					ft_arrlen(char **array);

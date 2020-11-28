@@ -62,6 +62,7 @@ void			extern_bin(t_data *data)
 	}
 	if (!(env = list_to_array(data)))
 	{
+		free_memory(str);
 		ft_arrayfree(ar);
 		ft_exit(data, EXIT_FAILURE);
 	}
@@ -81,6 +82,7 @@ void			extern_bin(t_data *data)
 		if (WIFEXITED(status))
 			last_status = WEXITSTATUS(status);
 	}
+	free_memory(str);
 	ft_arrayfree(env);
 	ft_arrayfree(ar);
 }
