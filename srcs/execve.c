@@ -21,17 +21,27 @@ static char		**list_to_array(t_data *data)
 	t_env 		*current;
 
 	if (!(env = (char **)malloc(sizeof(char *) * (ft_lstsize(data->env) + 1))))
-		ft_exit(data, 1);
+		return (NULL);
 	i = -1;
 	lst = data->env;
 	while (lst)
 	{
 		current = lst->content;
-		tmp = ft_strjoin(current->env_name, "=");
-		env[++i] = ft_strjoin(tmp, current->env_cont);
+		if (!(tmp = ft_strjoin(current->env_name, "=")))
+		{
+			free_memory(env);
+			return (NULL);
+		}
+		if (!(env[++i] = ft_strjoin(tmp, current->env_cont)))
+		{
+			free_memory(env);
+			free_memory(tmp);
+			return (NULL);
+		}
 		free_memory(tmp);
 		lst = lst->next;
 	}
+	env[++i] = NULL;
 	return (env);
 }
 
@@ -43,9 +53,18 @@ void			extern_bin(t_data *data)
 	int			status;
 	char 		**env;
 
-	ar = ft_split(find_env(&data->env, "PATH"), ':');
-	str = is_corr_path(ar, data->args[0]);
-	env = list_to_array(data);
+	if (!(ar = ft_split(find_env(&data->env, "PATH"), ':')))
+		ft_exit(data, EXIT_FAILURE);
+	if (!(str = is_corr_path(ar, data->args[0])))
+	{
+		ft_arrayfree(ar);
+		ft_exit(data, EXIT_FAILURE);
+	}
+	if (!(env = list_to_array(data)))
+	{
+		ft_arrayfree(ar);
+		ft_exit(data, EXIT_FAILURE);
+	}
 	if ((child = fork()) < 0)
 		ft_putstr_fd(": process is can't open",1);
 	else if (child == 0)
@@ -55,13 +74,15 @@ void			extern_bin(t_data *data)
 		ft_putstr_fd(data->args[0], 1);
 		ft_putstr_fd(": command not found\n", 1);
 		last_status = 127;
-		exit(last_status);
 	}
 	else
+	{
 		waitpid(child ,&status, 0);
 		if (WIFEXITED(status))
 			last_status = WEXITSTATUS(status);
-	free(ar);
+	}
+	ft_arrayfree(env);
+	ft_arrayfree(ar);
 }
 
 char			*is_corr_path(char **arr, char *str)
@@ -74,9 +95,14 @@ char			*is_corr_path(char **arr, char *str)
 	i= -1;
 	while (arr[++i])
 	{
-		buff = ft_strjoin(arr[i], "/");
-		buff1 = ft_strjoin(buff, str);
-		free(buff);
+		if (!(buff = ft_strjoin(arr[i], "/")))
+			return (NULL);
+		if (!(buff1 = ft_strjoin(buff, str)))
+		{
+			free_memory(buff);
+			return (NULL);
+		}
+		free_memory(buff);
 		if (stat(buff1, &stats) == 0)
 		{
 //			printf("File access: ");
@@ -89,7 +115,7 @@ char			*is_corr_path(char **arr, char *str)
 //			printf("\nFile size: %lld", stats.st_size);
 			return (buff1);
 		}
-		free(buff1);
+		free_memory(buff1);
 	}
-	return (0);
+	return (NULL);
 }
