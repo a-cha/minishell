@@ -92,11 +92,12 @@ void	escape_symb_quot(char *dup)
 /*
 ** Reset struct to the next round of parsing
 */
-void	reset_t_data(t_data *data)
+void		reset_t_data(t_data *data)
 {
 	if (data->args)
 		ft_arrayfree(data->args);
 	data->args = (char **)ft_calloc(1, sizeof(char **));
+	*(data->args) = NULL;
 	data->len = -1;
 //	need to utochnit' when we must reset this params? (redirects)
 	data->infile = 0;

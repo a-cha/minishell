@@ -17,6 +17,9 @@
 */
 void	free_memory(void *memory)
 {
-	free(memory);
-	memory = NULL;
+	if (memory != NULL)
+	{
+		free(memory);
+		memory = NULL;
+	}
 }

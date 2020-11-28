@@ -38,6 +38,7 @@ t_data	*shell_init(int argc, char **argv, char **env)
 		ft_lstclear(&data->env, del_content);
 		exit(EXIT_FAILURE);
 	}
+	*(data->args) = NULL;
 	signal_oper();
 	return (data);
 }
@@ -67,7 +68,38 @@ void	processing(t_data *data)
 //			free_memory(data->args[i]);
 //         parsed = parse(line);
 	}
+}
 
+int 		read_stdin(t_data *data, char **line)
+{
+	int		gnl;
+
+//	if ((gnl = get_next_line(0, line)) == 1)
+//		return (1);
+	while ((gnl = get_next_line(0, line)) >= 0)
+	{
+//		printf("line: >%s<\n", *line);
+		if (gnl == 0)
+		{
+			while ((gnl = get_next_line(0, line)) == 0)
+				;
+			if (!**line)
+			{
+				last_status = 131;
+				ft_putendl_fd("exit suka", 1);
+				ft_exit(data, last_status);
+			}
+		}
+		if (gnl == 1)
+			return (1);
+		free_memory(*line);
+	}
+	if ((gnl = get_next_line(0, line)) == -1)
+		return (-1);
+//	if (gnl == 0 && !*line)
+//	{
+//	}
+	return (1);
 }
 
 int			main(int argc, char **argv, char **env)
@@ -81,16 +113,11 @@ int			main(int argc, char **argv, char **env)
 	while (1)
 	{
 		ft_putstr_fd("Вводи > ", 1);
-		if ((gnl = get_next_line(0, &line)) == -1)
-			ft_exit(data, last_status);
-		if (gnl == 131)
-		{
-			last_status = gnl;
-			ft_exit(data, last_status);
-		}
 		errno = 0;
 		sigint_flag = 0;
 		n = 0;
+		if ((read_stdin(data, &line)) == -1)
+			ft_exit(data, EXIT_FAILURE);
 		while (*(line + n))
 		{
 			reset_t_data(data);

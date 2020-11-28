@@ -64,7 +64,7 @@ int			get_next_line(int fd, char **line)
 			return (free_buf(&buf, rd));
 	}
 	free_buf(&remain[fd], 1);
-	if (rd == 0 && *buf == '\0')
-		exit(free_buf(&buf, 131));
+//	if (rd == 0 && *buf == '\0')
+//		exit(free_buf(&buf, 131));
 	return (free_buf(&buf, rd));
 }
