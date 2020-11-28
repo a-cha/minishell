@@ -190,8 +190,8 @@ int			parse(const char *line, t_data *part)
 	ft_putstr_fd(": syntax error near unexpected token '", 1);
 	ft_putstr_fd(" //syntax// '\n", 1);
  	last_status = 258;
-*/
 	return (ft_strlen(line));
+*/
 
 	i = get_part(line, part);
 	return (i);

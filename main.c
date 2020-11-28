@@ -75,13 +75,19 @@ int			main(int argc, char **argv, char **env)
 	t_data  *data;
 	char	*line;
 	int 	n;
+	int 	gnl;
 
 	data = shell_init(argc, argv, env);
 	while (1)
 	{
 		ft_putstr_fd("Вводи > ", 1);
-		if ((get_next_line(0, &line)) == -1)
+		if ((gnl = get_next_line(0, &line)) == -1)
 			ft_exit(data, last_status);
+		if (gnl == 131)
+		{
+			last_status = gnl;
+			ft_exit(data, last_status);
+		}
 		errno = 0;
 		sigint_flag = 0;
 		n = 0;
