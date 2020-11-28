@@ -36,7 +36,6 @@ static void	sig_int()
 
 }
 
-
 void		signal_oper()
 {
 	signal(SIGQUIT, sig_quit);
