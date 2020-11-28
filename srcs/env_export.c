@@ -15,18 +15,13 @@
 void		set_new_env(t_data *data)
 {
 	t_list	*tmp;
-	t_env	*env;
-	char	*str;
 	int 	i;
 
 	i = 0;
 	tmp = data->env;
 	while (data->args[++i])
-	{
-		env = tmp->content;
-		str = env->env_name;
 		ft_lstadd_back(&tmp, ft_lstnew(env_to_cont(data->args[i])));
-	}
+	ft_lstdelone(tmp, del_content);
 }
 
 void	rewrite_cont(t_data *data, t_env *env)
@@ -99,7 +94,7 @@ void		env_export(t_data *data)
 	}
 	new_list = list_dup_sort(&data->env);
 	print_exp_list(&new_list, data);
-//	ft_lstclear(&new_list, (void*)free_memory);    <-зачем эта строчка, seg тут
+	ft_lstclear(&new_list, del_content);
 }
 
 int		is_first_symbol(const char *str, char c)
@@ -123,12 +118,13 @@ t_env 	*chek_env(t_data *data)
 	while (data->args[++i])
 	{
 		str = ft_strchr(data->args[i], '=');
-		tmp = ft_substr(data->args[i], 0, str - data->args[i]);
+		if (!(tmp = ft_substr(data->args[i], 0, str - data->args[i])))
+			ft_exit(data, EXIT_FAILURE);
 		list = data->env;
 		while (list)
 		{
 			env = find_env1(&list, tmp);
-			if(env != NULL)
+			if (env != NULL)
 				return (env);
 			list = list->next;
 		}
