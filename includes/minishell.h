@@ -68,10 +68,11 @@ int				 	errors(char *error, int err_code);
 /*
 ** Prototypes for parsing
 */
+size_t				catch_first_sign(const char *str, t_data *part, char *r);
 int					parse(const char *line, t_data *part);
 void				ft_arrayfree(char **array);
 int					ft_arrlen(char **array);
-char				**ft_arrjoin_pro(char **array1, char **array2, char flag);
+char				**ft_arrjoin_pro(char **arr1, char **arr2, char flag);
 void				*apply_nothing(void *elem);
 void				del_content(void *elem);
 t_list				*list_dup_sort(t_list **env);

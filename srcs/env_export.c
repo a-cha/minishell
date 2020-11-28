@@ -55,26 +55,25 @@ void       print_exp_list(t_list **env_dup, t_data *data)
 	t_env  *env;
 
 	tmp = *env_dup;
-
-		while (tmp)
+	while (tmp)
+	{
+		env = tmp->content;
+		if (is_first_symbol(env->env_name, '_') == -1)
 		{
-			env = tmp->content;
-			if (is_first_symbol(env->env_name, '_') == -1)
+			ft_putstr_fd("declare -x ", 1);
+			ft_putstr_fd((env->env_name), 1);
+			if (env->is_equal == 1 && *(env->env_cont) == '\0')
+				ft_putstr_fd("=\"\"", 1);
+			if (*(env->env_cont) != '\0')
 			{
-				ft_putstr_fd("declare -x ", 1);
-				ft_putstr_fd((env->env_name), 1);
-				if (env->is_equal == 1 && *(env->env_cont) == '\0')
-					ft_putstr_fd("=\"\"", 1);
-				if (*(env->env_cont) != '\0')
-				{
-					ft_putstr_fd("=\"", 1);
-					ft_putstr_fd((env->env_cont), 1);
-					ft_putstr_fd("\"", 1);
-				}
-				ft_putstr_fd("\n", 1);
+				ft_putstr_fd("=\"", 1);
+				ft_putstr_fd((env->env_cont), 1);
+				ft_putstr_fd("\"", 1);
 			}
-			tmp = tmp->next;
+			ft_putstr_fd("\n", 1);
 		}
+		tmp = tmp->next;
+	}
 }
 
 void		env_export(t_data *data)
@@ -90,6 +89,7 @@ void		env_export(t_data *data)
 		else
 			rewrite_cont(data, env);
 		new_list = list_dup_sort(&data->env);
+		ft_lstclear(&new_list, del_content);
 		return ;
 	}
 	new_list = list_dup_sort(&data->env);
@@ -132,5 +132,3 @@ t_env 	*chek_env(t_data *data)
 	}
 	return (NULL);
 }
-
-

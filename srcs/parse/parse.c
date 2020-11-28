@@ -12,55 +12,6 @@
 
 #include "minishell.h"
 
-int			is_linebreak(const char *line)
-{
-	size_t	res;
-	size_t	s;
-
-	res = ft_strlen(line);
-	if ((s = is_symb(line, SEMICOLON)) < res)
-		res = s;
-	if ((s = is_symb(line, PIPE)) < res)
-		res = s;
-	return (res == ft_strlen(line) ? -1 : (int)res);
-}
-
-int			is_quotmark(const char *line)
-{
-	size_t	res;
-	size_t	s;
-
-	res = ft_strlen(line);
-	if ((s = is_symb(line, '"')) < res)
-		res = s;
-	if ((s = is_symb(line, '\'')) < res)
-		res = s;
-	return (res == ft_strlen(line) ? -1 : (int)res);
-}
-
-size_t		catch_first_sign(const char *str, t_data *part, char *r)
-{
-	size_t	min;
-	int		res;
-
-	min = ft_strlen(str);
-	if ((res = is_linebreak(str)) != -1 && res < min)
-		min = res;
-	if ((res = is_quotmark(str)) != -1 && res < min)
-		min = res;
-	if (str[min] == SEMICOLON)
-		part->type = SEMICOLON;
-	else if (str[min] == PIPE)
-		part->type = PIPE;
-	else
-		part->type = '\0';
-	if (str[min] == '\'' || str[min] == '"')
-		*r = str[min];
-	else
-		*r = '\0';
-	return (min);
-}
-
 char 		*concatenate_env(char *dup, const char *line, size_t *s, t_data *part)
 {
 	char	*env;
@@ -110,7 +61,9 @@ char		*handle_env(char *line, t_data *part)
 		free_memory(dup1);
 		if (s == -1)
 			break ;
+		tmp = dup;
 		dup = concatenate_env(dup, line + i + s + 1, &s, part);
+		free_memory(tmp);
 		i += s;
 	}
 	return (dup);
@@ -122,31 +75,22 @@ char		*handle_quot(char *line, t_data *part)
 
 	dup = handle_env(line, part);
 	escape_symb_quot(dup);
-//	MAYBE THIS FREE ISN'T NEEDED
-//	free_memory((void *)line);
-//		*************
-//	printf("quot: %s\n", dup);
-//		*************
+	free_memory(line);
 	return (dup);
 }
 
-// NEED TO TEST
-// line before quotations (and without quots, except escaped)
 char		**handle_line(char *line, t_data *part)
 {
 	char 	*dup;
+	char 	**ret;
 
 	dup = handle_env(line, part);
 	escape_symb_line(dup);
 //	redirections(dup);
-//	MAYBE THIS FREE ISN'T NEEDED
-//	free_memory((void *)line);
-//	split???
-//		*************
-//	printf("\nhandle_line\n");
-//	printf("line: >%s<\n", dup);
-//		*************
-	return (ft_split(dup, ' '));
+	free_memory(line);
+	ret = ft_split(dup, ' ');
+	free_memory(dup);
+	return (ret);
 }
 
 int			is_closed_quot(const char *line, char r)
@@ -188,6 +132,7 @@ int 		get_part(const char *line, t_data *part)
 	int		f;
 	int 	s;
 	char	*quot;
+	char 	**tmp_d;
 //	i can do without this variable (but this is just one string)
 	char	r;
 
@@ -195,10 +140,12 @@ int 		get_part(const char *line, t_data *part)
 	while (1)
 	{
 		s = catch_first_sign(line + i, part, &r);
+		tmp_d = part->args;
 		if (!(part->args = ft_arrjoin_pro(part->args, handle_line
 		(ft_substr(line, i, s), part), *(line + i))))
 //			need to determine what to return
 			return(ERR_MALLOC);
+		ft_arrayfree(tmp_d);
 //		*************
 //		printf("\nft_arrjoin_pro\n");
 //		print_d_array(part->args);
@@ -237,6 +184,15 @@ int			parse(const char *line, t_data *part)
 	int 	i;
 
 //	check weird cases (ls ;; ...)
+//	should return
+/*
+	ft_putstr_fd("minishell: ", 1);
+	ft_putstr_fd(": syntax error near unexpected token '", 1);
+	ft_putstr_fd(" //syntax// '\n", 1);
+ 	last_status = 258;
+*/
+	return (ft_strlen(line));
+
 	i = get_part(line, part);
 	return (i);
 }

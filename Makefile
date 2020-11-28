@@ -26,21 +26,24 @@ LIBFT_NAME := libft.a
 
 # Sources
 NAME := minishell
-SRC :=					\
-srcs/cd.c				\
-srcs/echo.c				\
-srcs/env_utils.c		\
-main.c					\
-srcs/pwd.c				\
-utils_parse.c			\
-utils_lst.c				\
-srcs/execve.c			\
-srcs/env_export.c		\
-srcs/exit.c				\
-srcs/unset.c			\
-srcs/signals.c			\
-srcs/common_utils.c		\
-parse.c					\
+SRC :=						\
+srcs/cd.c					\
+srcs/echo.c					\
+srcs/env_utils.c			\
+main.c						\
+srcs/pwd.c					\
+srcs/utils.c				\
+srcs/parse/utils_parse.c	\
+srcs/parse/utils_parse1.c	\
+srcs/parse/utils_array.c	\
+utils_lst.c					\
+srcs/execve.c				\
+srcs/env_export.c			\
+srcs/exit.c					\
+srcs/unset.c				\
+srcs/signals.c				\
+srcs/common_utils.c			\
+srcs/parse/parse.c			\
 
 all: $(NAME)
 

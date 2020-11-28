@@ -84,10 +84,10 @@ int			main(int argc, char **argv, char **env)
 			ft_exit(data, last_status);
 		errno = 0;
 		sigint_flag = 0;
-		reset_t_data(data);
 		n = 0;
 		while (*(line + n))
 		{
+			reset_t_data(data);
 			if ((n += parse(line + n, data)) < 0)
 			{
 				free_memory(line);
