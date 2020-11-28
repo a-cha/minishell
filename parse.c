@@ -52,6 +52,8 @@ size_t		catch_first_sign(const char *str, t_data *part, char *r)
 		part->type = SEMICOLON;
 	else if (str[min] == PIPE)
 		part->type = PIPE;
+	else
+		part->type = '\0';
 	if (str[min] == '\'' || str[min] == '"')
 		*r = str[min];
 	else
@@ -118,7 +120,7 @@ char		*handle_quot(char *line, t_data *part)
 //	MAYBE THIS FREE ISN'T NEEDED
 //	free_memory((void *)line);
 //		*************
-////	printf("quot: %s\n", dup);
+//	printf("quot: %s\n", dup);
 //		*************
 	return (dup);
 }
@@ -173,62 +175,6 @@ int 		concat_args(t_data *part, char *quot, char s)
 		return (-1);
 	return (0);
 }
-
-/*
-// t1 - symb before quots, t2 - symb after quots
-int 		concat_args(t_data *part, char *quot, char t1, char t2)
-{
-	char 	*tmp;
-	char 	**tmp_d;
-	size_t	f;
-
-//		*************
-//	printf("\nconcat_args input\n");
-	print_d_array(part->args);
-//		*************
-	if (t1 == ' ')
-	{
-		if (!(tmp_d = (char **)ft_calloc(2 + (t2 == ' '), sizeof(char *))))
-			return (-1);
-		tmp_d[0] = quot;
-		if (t2 == ' ')
-			tmp_d[1] = ft_strdup(" ");
-//		*************
-//		printf("concat_args tmp_d\n");
-		print_d_array(tmp_d);
-//		*************
-		if (!(part->args = ft_arrjoin_pro(part->args, tmp_d, t1)))
-			return (-1);
-	}
-	else
-	{
-		f = ft_arraylen(part->args);
-		free_memory(part->args[f - 1]);
-		tmp = part->args[f - 2];
-		if (!(part->args[f - 2] = ft_strjoin(part->args[f - 2], quot)))
-			return (-1);
-		free_memory(tmp);
-		if (t2 == ' ')
-		{
-			if (!(tmp_d = (char **)ft_calloc(2 + (t2 == ' '), sizeof(char *))))
-				return (-1);
-			tmp_d[0] = ft_strdup(" ");
-			if (!(part->args = ft_arrjoin_pro(part->args, tmp_d, t2)))
-				return (-1);
-//		*************
-//			printf("concat_args tmp_d\n");
-			print_d_array(tmp_d);
-//		*************
-		}
-	}
-	free_memory(quot);
-//		*************
-//	printf("concat_args result\n");
-	print_d_array(part->args);
-//		*************
-	return (0);
-}
-*/
 
 //	returns the part of str until redir symbol (include redir symbol)
 int 		get_part(const char *line, t_data *part)

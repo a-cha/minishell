@@ -56,12 +56,15 @@ void	processing(t_data *data)
 		while (data->args[++i])
 			free_memory(data->args[i]);
 //         parsed = parse(line);
-//		}
 	}
+}
+
+static char	*random_promt()
+{
 
 }
 
-int		main(int argc, char **argv, char **env)
+int			main(int argc, char **argv, char **env)
 {
 	t_data  *data;
 	char	*line;
