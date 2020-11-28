@@ -25,7 +25,8 @@ static void	sig_quit()
 static void	sig_int()
 {
 	sigint_flag = 1;
-	exit(EXIT_FAILURE);
+//	exit(EXIT_FAILURE);
+	return ;
 }
 
 void		signal_oper(void)

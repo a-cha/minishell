@@ -59,36 +59,53 @@ int 	max(int n1, int n2)
 /*
 ** Joins two null-terminated arrays and free pointers to them
 */
+int 	space_flag(char **res, char **arr1, char **arr2, int l, char flag)
+{
+	if (flag != ' ')
+	{
+		res[0] = arr1[l - (l != 0)];
+		if (!(arr1[l - (l != 0)] = ft_strjoin(arr1[l - (l != 0)], arr2[0])))
+		{
+			free_memory(res);
+			return (-1);
+		}
+		free_memory(res[0]);
+	}
+	return (0);
+}
+
 char	**ft_arrjoin_pro(char **arr1, char **arr2, char flag)
 {
 	size_t	i;
 	int 	l;
 	char	**res;
 
-	l = ft_arrlen(arr1);
 	if (!*arr1)
 		return (arr2);
 	if (!*arr2)
 		return (arr1);
+	l = ft_arrlen(arr1);
 //
-	int t = max(l + ft_arrlen(arr2) + (flag == ' ') + !(l), 2);
+//	int t = max(l + ft_arrlen(arr2) + (flag == ' ') + !(l), 2);
 	if (!(res = ft_calloc(8,
 					max(l + ft_arrlen(arr2) + (flag == ' ') + !(l), 2))))
 		return (NULL);
-	if (flag != ' ')
-	{
-		res[0] = arr1[l - (l != 0)];
-		if (!(arr1[l - (l != 0)] = ft_strjoin(arr1[l - (l != 0)], arr2[0])))
-			return (NULL);
-		free_memory(res[0]);
-	}
+	if ((space_flag(res, arr1, arr2, l, flag)) == -1)
+		return (NULL);
+//	if (flag != ' ')
+//	{
+//		res[0] = arr1[l - (l != 0)];
+//		if (!(arr1[l - (l != 0)] = ft_strjoin(arr1[l - (l != 0)], arr2[0])))
+//			return (NULL);
+//		free_memory(res[0]);
+//	}
 	i = -1;
 	while (++i < l + !(l))
 		res[i] = arr1[i];
 	l != 0 ? free_memory(arr1[i]) : 1;
 	i = !(l) ? 0 : i - 1;
 //
-	t = (l != 0 ? l : 1) + (flag != ' ');
+//	t = (l != 0 ? l : 1) + (flag != ' ');
 	while (arr2[++i - (l != 0 ? l : 1) + (flag != ' ')] && (*arr2))
 		res[i] = arr2[i - (l != 0 ? l : 1) + (flag != ' ')];
 	free_memory(arr1);
@@ -179,6 +196,7 @@ void	reset_t_data(t_data *data)
 		ft_arrayfree(data->args);
 	data->args = (char **)ft_calloc(1, sizeof(char **));
 	data->len = -1;
+//	need to utochnit'
 	data->infile = 0;
 	data->outfile = 1;
 }

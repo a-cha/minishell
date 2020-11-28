@@ -26,8 +26,18 @@ t_data	*shell_init(int argc, char **argv, char **env)
 		exit(EXIT_FAILURE);
 	}
 	if (!(data = ft_calloc(1, sizeof(t_data))))
-		ft_exit(data, EXIT_FAILURE);
-	data->env = dup_env(env);
+		exit(EXIT_FAILURE);
+	if (!(data->env = dup_env(env)))
+	{
+		free_memory(data);
+		exit(EXIT_FAILURE);
+	}
+	if (!(data->args = (char **)ft_calloc(1, sizeof(char *))))
+	{
+		free_memory(data);
+		ft_lstclear(&data->env, del_content);
+		exit(EXIT_FAILURE);
+	}
 	signal_oper();
 	return (data);
 }
@@ -57,6 +67,7 @@ void	processing(t_data *data)
 //			free_memory(data->args[i]);
 //         parsed = parse(line);
 	}
+
 }
 
 int			main(int argc, char **argv, char **env)
@@ -65,24 +76,26 @@ int			main(int argc, char **argv, char **env)
 	char	*line;
 	int 	n;
 
-	n = 0;
 	data = shell_init(argc, argv, env);
-	line = "ls -la";
 	while (1)
 	{
 		ft_putstr_fd("Вводи > ", 1);
-//		if (get_next_line(1, &line) == -1)
-//			ft_exit(data, last_status);
+		if ((get_next_line(0, &line)) == -1)
+			ft_exit(data, last_status);
 		errno = 0;
 		sigint_flag = 0;
 		reset_t_data(data);
+		n = 0;
 		while (*(line + n))
 		{
-			if ((n = parse(line, data)) < 0)
+			if ((n += parse(line + n, data)) < 0)
+			{
+				free_memory(line);
 				ft_exit(data, EXIT_FAILURE);
+			}
 			processing(data);
 		}
-		free_memory(data);
+		free_memory(line);
 	}
 	return (0);
 }

@@ -34,5 +34,8 @@ void		ft_exit(t_data *data, int exit_status)
 	free_memory(data);
 	if (exit_status == EXIT_FAILURE && errno)
 		print_error(0, strerror(errno), 1);
+	else
+		ft_putendl_fd("exit", data->output);
+	free_memory(data);
 	exit(exit_status);
 }
