@@ -85,16 +85,17 @@ int			main(int argc, char **argv, char **env)
 		errno = 0;
 		sigint_flag = 0;
 		reset_t_data(data);
-		while (*line)
+		n = 0;
+		while (*(line + n))
 		{
-			if ((n = parse(line, data)) < 0)
+			if ((n += parse(line + n, data)) < 0)
 			{
 				free_memory(line);
 				ft_exit(data, EXIT_FAILURE);
 			}
 			processing(data);
-			line += n;
 		}
+		free_memory(line);
 	}
 	return (0);
 }

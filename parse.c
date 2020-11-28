@@ -73,15 +73,20 @@ char 		*concatenate_env(char *dup, const char *line, size_t *s, t_data *part)
 	if (!(env = ft_substr(line, 0, f)))
 		return (NULL);
 	tmp = env;
-	if (!(env = find_env(&(part->env), env)))
+	if (*line == '?')
+	{
+		f = 1;
+		env = ft_itoa(last_status);
+	}
+	else if (!(env = find_env(&(part->env), env)))
 		env = ft_strdup("");
-	free_memory((void *)tmp);
+	free_memory(tmp);
 	tmp = dup;
 	if (!(dup = ft_strjoin(dup, env)))
 		return (NULL);
 	*s += f + 1;
-	free_memory((void *)tmp);
-	free_memory((void *)env);
+	free_memory(tmp);
+	free_memory(env);
 	return (dup);
 }
 
@@ -101,8 +106,8 @@ char		*handle_env(char *line, t_data *part)
 		dup1 = ft_substr(line, i, (s == -1 ? ft_strlen(line + i) : s));
 		tmp = dup;
 		dup = ft_strjoin(dup, dup1);
-		free_memory((void *)tmp);
-		free_memory((void *)dup1);
+		free_memory(tmp);
+		free_memory(dup1);
 		if (s == -1)
 			break ;
 		dup = concatenate_env(dup, line + i + s + 1, &s, part);
