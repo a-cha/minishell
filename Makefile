@@ -30,7 +30,7 @@ SRC :=				\
 ./srcs/cd.c			\
 ./srcs/echo.c		\
 ./srcs/env_utils.c	\
-./srcs/main.c		\
+main.c		\
 ./srcs/pwd.c		\
 utils_parse.c		\
 utils_lst.c		\
@@ -39,9 +39,10 @@ utils_lst.c		\
 ./srcs/exit.c		\
 ./srcs/unset.c		\
 ./srcs/signals.c	\
-./srcs/common_utils.c
+./srcs/common_utils.c\
+parse.c			\
 #tests_parsing.c	\
-#parse.c			\
+
 
 all: $(NAME)
 

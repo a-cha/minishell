@@ -52,16 +52,11 @@ void	processing(t_data *data)
 			env_unset(data);
 		else if (data->args[0])
 			extern_bin(data);
-		int i = -1;
-		while (data->args[++i])
-			free_memory(data->args[i]);
+//		int i = -1;
+//		while (data->args[++i])
+//			free_memory(data->args[i]);
 //         parsed = parse(line);
 	}
-}
-
-static char	*random_promt()
-{
-
 }
 
 int			main(int argc, char **argv, char **env)
@@ -70,22 +65,24 @@ int			main(int argc, char **argv, char **env)
 	char	*line;
 	int 	n;
 
+	n = 0;
 	data = shell_init(argc, argv, env);
+	line = "ls -la";
 	while (1)
 	{
 		ft_putstr_fd("Вводи > ", 1);
-		if (get_next_line(1, &line) == -1)
-			ft_exit(data, last_status);
+//		if (get_next_line(1, &line) == -1)
+//			ft_exit(data, last_status);
 		errno = 0;
 		sigint_flag = 0;
 		reset_t_data(data);
-		while (*line)
+		while (*(line + n))
 		{
 			if ((n = parse(line, data)) < 0)
 				ft_exit(data, EXIT_FAILURE);
 			processing(data);
-			line += n;
 		}
+		free_memory(data);
 	}
 	return (0);
 }

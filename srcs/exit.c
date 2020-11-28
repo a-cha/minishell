@@ -31,6 +31,7 @@ void		ft_exit(t_data *data, int exit_status)
 
 	ft_arrayfree(data->args);
 	ft_lstclear(&data->env, del_content);
+	free_memory(data);
 	if (exit_status == EXIT_FAILURE && errno)
 		print_error(0, strerror(errno), 1);
 	exit(exit_status);
