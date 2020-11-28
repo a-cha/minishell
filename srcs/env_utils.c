@@ -90,8 +90,7 @@ t_list		*find_env2(t_list **env_dup, char *str)
 	return (NULL);
 }
 
-// a=
-t_env		*env_to_cont(char *env) // a=
+t_env		*env_to_cont(char *env)
 {
 	t_env	*var;
 	char 	*tmp;
