@@ -55,18 +55,15 @@ void			extern_bin(t_data *data)
 
 	if (!(ar = ft_split(find_env(&data->env, "PATH"), ':')))
 		ft_exit(data, EXIT_FAILURE);
-	if (!(str = is_corr_path(ar, data->args[0])))
-	{
-		ft_arrayfree(ar);
-		ft_exit(data, EXIT_FAILURE);
-	}
+	str = is_corr_path(ar, data->args[0]);
 	if (!(env = list_to_array(data)))
 	{
+		free_memory(str);
 		ft_arrayfree(ar);
 		ft_exit(data, EXIT_FAILURE);
 	}
 	if ((child = fork()) < 0)
-		ft_putstr_fd(": process is can't open",1);
+		ft_exit(data, EXIT_FAILURE);
 	else if (child == 0)
 	{
 		execve((const char *) str, data->args, env);
@@ -74,6 +71,8 @@ void			extern_bin(t_data *data)
 		ft_putstr_fd(data->args[0], 1);
 		ft_putstr_fd(": command not found\n", 1);
 		last_status = 127;
+		ft_arrayfree(ar);
+		free_memory(str);
 	}
 	else
 	{
@@ -81,8 +80,9 @@ void			extern_bin(t_data *data)
 		if (WIFEXITED(status))
 			last_status = WEXITSTATUS(status);
 	}
+	free_memory(str);
 	ft_arrayfree(env);
-	ft_arrayfree(ar);
+
 }
 
 char			*is_corr_path(char **arr, char *str)
@@ -111,7 +111,7 @@ char			*is_corr_path(char **arr, char *str)
 //			if (stats.st_mode & W_OK)
 //				printf("write ");
 //			if (stats.st_mode & X_OK)
-//				printf("execute");
+//				printf("execute\n");
 //			printf("\nFile size: %lld", stats.st_size);
 			return (buff1);
 		}

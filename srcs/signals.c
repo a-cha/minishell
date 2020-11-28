@@ -24,12 +24,11 @@ static void	sig_quit()
 
 static void	sig_int()
 {
-	sigint_flag = 1;
-//	exit(EXIT_FAILURE);
-	return ;
+	exit(130);
 }
 
-void		signal_oper(void)
+
+void		signal_oper(t_data *data)
 {
 	signal(SIGQUIT, sig_quit);
 	signal(SIGINT, sig_int);
