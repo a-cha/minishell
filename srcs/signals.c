@@ -24,11 +24,20 @@ static void	sig_quit()
 
 static void	sig_int()
 {
-	exit(130);
+	int	exit_status;
+
+	if ((exit_status = process_status()) == -1)
+	{
+		ft_putstr_fd("\n", 1);
+		ft_putstr_fd("Вводи > ", 1);
+	}
+	else
+		ft_putstr_fd("\n", 1);
+
 }
 
 
-void		signal_oper(t_data *data)
+void		signal_oper()
 {
 	signal(SIGQUIT, sig_quit);
 	signal(SIGINT, sig_int);
