@@ -57,8 +57,6 @@ void	echo(t_data *data)
 			str = find_env(&data->env, tmp);
 			free(tmp);
 		}
-		if (!(ft_strcmp(data->args[i], "$?")))
-			ft_putnbr_fd(last_status, 1);
 		if (i == (data->len) - 1)
 		{
 			ft_putstr_fd(str, 1);
