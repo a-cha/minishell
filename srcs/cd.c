@@ -19,7 +19,7 @@ void	renew_pwd(t_list *env_dup, char *cd)
 
 	pwd = find_env1(&env_dup, "PWD");
 	oldpwd = find_env1(&env_dup, "OLDPWD");
-//	free(oldpwd->env_cont); Узанть что не так с утечками <- ТУТ
+	free_memory(oldpwd->env_cont);
 	oldpwd->env_cont = pwd->env_cont;
 	pwd->env_cont = cd;
 }

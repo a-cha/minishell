@@ -44,8 +44,8 @@ typedef struct		s_data
 	size_t			len;		// Len of args array
 	char			type;		// Type of break. If presented
 //	file descriptors for redirections (maybe there is another implementation)
-	int				input;
-	int 			output;
+	int				fd_input;
+	int 			fd_output;
 	int				infile;
 	int 			outfile;
 	t_list			*env;
