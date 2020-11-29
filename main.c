@@ -74,32 +74,16 @@ int 		read_stdin(t_data *data, char **line)
 {
 	int		gnl;
 
-//	if ((gnl = get_next_line(0, line)) == 1)
-//		return (1);
-	while ((gnl = get_next_line(0, line)) >= 0)
+	while ((gnl = get_next_line(0, line)) == 0)
 	{
-//		printf("line: >%s<\n", *line);
-		if (gnl == 0)
+		if (!**line)
 		{
-			while ((gnl = get_next_line(0, line)) == 0)
-				;
-			if (!**line)
-			{
-				last_status = 131;
-				ft_putendl_fd("exit suka", 1);
-				ft_exit(data, last_status);
-			}
+			last_status = 131;
+			ft_exit(data, last_status);
 		}
-		if (gnl == 1)
-			return (1);
 		free_memory(*line);
 	}
-	if ((gnl = get_next_line(0, line)) == -1)
-		return (-1);
-//	if (gnl == 0 && !*line)
-//	{
-//	}
-	return (1);
+	return (gnl);
 }
 
 int			main(int argc, char **argv, char **env)
@@ -107,7 +91,6 @@ int			main(int argc, char **argv, char **env)
 	t_data  *data;
 	char	*line;
 	int 	n;
-	int 	gnl;
 
 	data = shell_init(argc, argv, env);
 	while (1)
