@@ -44,14 +44,16 @@ int			redirections(char *line, t_data *part)
 	return ();
 }
 
-//{
-//	size_t	res;
-//	size_t	s;
-//
-//	res = ft_strlen(line);
-//	if ((s = is_symb(line, SEMICOLON)) < res)
-//	res = s;
-//	if ((s = is_symb(line, PIPE)) < res)
-//	res = s;
-//	return (res == ft_strlen(line) ? -1 : (int)res);
-//}
+/*
+//	save original fd
+	part->input = dup(0);
+	part->output = dup(1);
+//	open file here
+	part->outfile = open();
+	dup2(part->outfile, 1);
+//	open another here
+	part->outfile = open();
+	dup2(part->outfile, 1); // or 1 as a second argument
+//	return the original fd
+	dup2(part->output, 1);
+*/

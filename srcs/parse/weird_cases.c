@@ -26,7 +26,7 @@ static int	space(const char *str, int start, int len)
 
 static char	*ret_token(char t, int n)
 {
-	char 	*weird;
+	char	*weird;
 
 	weird = ft_calloc(n + 1, sizeof(char));
 	weird[0] = t;
@@ -37,23 +37,23 @@ static char	*ret_token(char t, int n)
 
 static char	*is_blank(const char *str, int start, int len)
 {
-	int 	s;
+	int		s;
 
 	if ((space(str, start, len)))
 	{
 		if ((s = is_linebreak(str + start + len + 1)) >= 0)
 		{
 			if (!space(str, start + len + 1, s))
-				return(ret_token(*(str + start + len), 1));
+				return (ret_token(*(str + start + len), 1));
 			else if (*(str + start + len) != *(str + start + len + 1 + s))
-				return(ret_token(*(str + start + len), 1));
+				return (ret_token(*(str + start + len), 1));
 			else
-				return(ret_token(*(str + start + len), 2));
+				return (ret_token(*(str + start + len), 2));
 		}
 		else if (*(str + start + len) == *(str + start + len - 1))
-			return(ret_token(*(str + start + len), 2));
+			return (ret_token(*(str + start + len), 2));
 		else
-			return(ret_token(*(str + start + len), 1));
+			return (ret_token(*(str + start + len), 1));
 	}
 	return (NULL);
 }
@@ -61,8 +61,8 @@ static char	*is_blank(const char *str, int start, int len)
 int			weird_cases(const char *line)
 {
 	size_t	i;
-	int 	s;
-	char 	*weird;
+	int		s;
+	char	*weird;
 
 	i = 0;
 	while ((s = is_linebreak(line + i)) >= 0)
