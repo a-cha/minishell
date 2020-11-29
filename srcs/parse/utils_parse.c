@@ -12,87 +12,51 @@
 
 #include "minishell.h"
 
-/*
-** Find out if symbol is escaped
-*/
-size_t	is_escaped(const char *line, size_t i)
+static int	is_quotmark(const char *line)
 {
-	size_t	n;
+	size_t	res;
+	size_t	s;
 
-	n = 0;
-	if (i != 0)
-	{
-		while ((i--) && line[i] == '\\')
-			n++;
-	}
-	return (n % 2);
+	res = ft_strlen(line);
+	if ((s = is_symb(line, '"')) < res)
+		res = s;
+	if ((s = is_symb(line, '\'')) < res)
+		res = s;
+	return (res == ft_strlen(line) ? -1 : (int)res);
 }
 
 /*
-** Finds first not escaped needed symbol in line
+** Returns pointer to first sign (pipe / semicolon / quotation marks)
 */
-int		is_symb(const char *line, char c)
+
+size_t		catch_first_sign(const char *str, t_data *part, char *r)
 {
-	size_t	i;
 	size_t	min;
-	char	*symb;
+	int		res;
 
-	i = 0;
-	min = ft_strlen(line);
-	while ((symb = ft_strchr(line + i, c)))
-	{
-		if (min > symb - line && !(is_escaped(line, symb - line)))
-		{
-			min = symb - line;
-			break ;
-		}
-		i += symb - line + 1;
-	}
-	return (min == ft_strlen(line) ? -1 : (int)min);
-}
-
-/*
-** Checks if symbol has escaped (or not escaped)
-*/
-void	escape_symb_line(char *dup)
-{
-	size_t	i;
-	size_t	r;
-
-	i = -1;
-	while (dup[++i])
-	{
-		if (dup[i] == '\\')
-		{
-			r = -1;
-			while (dup[i + ++r])
-				dup[i + r] = dup[i + r + 1];
-		}
-	}
-}
-
-void	escape_symb_quot(char *dup)
-{
-	size_t	i;
-	size_t	r;
-
-	i = -1;
-	while (dup[++i])
-	{
-		if (dup[i] == '\\' &&
-				(dup[i + 1] == '\\' || dup[i + 1] == '\"' || dup[i + 1] == '$'))
-		{
-			r = -1;
-			while (dup[i + ++r])
-				dup[i + r] = dup[i + r + 1];
-		}
-	}
+	min = ft_strlen(str);
+	if ((res = is_linebreak(str)) != -1 && res < min)
+		min = res;
+	if ((res = is_quotmark(str)) != -1 && res < min)
+		min = res;
+	if (str[min] == SEMICOLON)
+		part->type = SEMICOLON;
+	else if (str[min] == PIPE)
+		part->type = PIPE;
+	else
+		part->type = '\0';
+	if (str[min] == '\'' || str[min] == '"')
+		*r = str[min];
+	else
+		*r = '\0';
+	return (min);
 }
 
 /*
 ** Reset struct to the next round of parsing
 */
-void		reset_t_data(t_data *data)
+
+void			reset_t_data(t_data *data)
 {
 	if (data->args)
 		ft_arrayfree(data->args);
@@ -105,7 +69,7 @@ void		reset_t_data(t_data *data)
 }
 
 //	remove
-void 	print_d_array(char **array)
+void	print_d_array(char **array)
 {
 	size_t	i;
 

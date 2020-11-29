@@ -80,12 +80,15 @@ void				free_memory(void *memory);
 int					is_symb(const char *line, char c);
 void				escape_symb_line(char *dup);
 void				escape_symb_quot(char *dup);
-char				**ft_split_pro(char const *s, char c);
 t_list				*dup_env(char **env);
 void			 	print_d_array(char **array);
 void				reset_t_data(t_data *data);
 int					is_linebreak(const char *line);
 int					weird_cases(const char *line);
+char				*handle_env(char *line, t_data *part);
+int					is_closed_quot(const char *line, char r);
+char				**handle_line(char *line, t_data *part);
+char				*handle_quot(char *line, t_data *part);
 
 /*
 ** Prototypes for commands
