@@ -84,7 +84,8 @@ char				**ft_split_pro(char const *s, char c);
 t_list				*dup_env(char **env);
 void			 	print_d_array(char **array);
 void				reset_t_data(t_data *data);
-
+int					is_linebreak(const char *line);
+int					weird_cases(const char *line);
 
 /*
 ** Prototypes for commands

@@ -95,7 +95,7 @@ int			main(int argc, char **argv, char **env)
 	data = shell_init(argc, argv, env);
 	while (1)
 	{
-		ft_putstr_fd("Вводи > ", 1);
+		ft_putstr_fd("Давай > ", 1);
 		errno = 0;
 		sigint_flag = 0;
 		n = 0;

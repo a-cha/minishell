@@ -179,27 +179,12 @@ int 		get_part(const char *line, t_data *part)
 	return (i + s + (!(part->type) ? 0 : 1));
 }
 
-char		*weird_cases(const char *line)
-{
-	int 	i;
-	char 	*symb;
-
-	i = 0;
-
-	return (NULL);
-}
-
 int			parse(const char *line, t_data *part)
 {
 	int 	i;
-	char 	*weird;
 
-	if ((weird = weird_cases(line)))
+	if ((weird_cases(line)))
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token '", 1);
-		ft_putstr_fd(weird, 1);
-		ft_putstr_fd("'\n", 1);
-//		RUS should know
 		last_status = 258;
 		return (ft_strlen(line));
 	}

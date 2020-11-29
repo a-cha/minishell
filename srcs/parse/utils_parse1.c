@@ -4,7 +4,7 @@
 
 #include "minishell.h"
 
-static int	is_linebreak(const char *line)
+int			is_linebreak(const char *line)
 {
 	size_t	res;
 	size_t	s;
