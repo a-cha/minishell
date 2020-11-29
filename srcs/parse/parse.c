@@ -179,23 +179,34 @@ int 		get_part(const char *line, t_data *part)
 	return (i + s + (!(part->type) ? 0 : 1));
 }
 
+char		*weird_cases(const char *line)
+{
+	int 	i;
+	char 	*symb;
+
+	i = 0;
+
+	return (NULL);
+}
+
 int			parse(const char *line, t_data *part)
 {
 	int 	i;
+	char 	*weird;
 
-//	check weird cases (ls ;; ...)
-//	should return
-/*
-	ft_putstr_fd("minishell: ", 1);
-	ft_putstr_fd(": syntax error near unexpected token '", 1);
-	ft_putstr_fd(" //syntax// '\n", 1);
- 	last_status = 258;
-	return (ft_strlen(line));
-*/
-
+	if ((weird = weird_cases(line)))
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected token '", 1);
+		ft_putstr_fd(weird, 1);
+		ft_putstr_fd("'\n", 1);
+//		RUS should know
+		last_status = 258;
+		return (ft_strlen(line));
+	}
 	i = get_part(line, part);
 	return (i);
 }
+
 /*
 //	save original fd
 	part->input = dup(0);

@@ -23,7 +23,8 @@ t_list		*list_dup_sort(t_list **env)
 	t_env	*next_env;
 	t_env	*tmp_name;
 
-	start = ft_lstmap(*env, apply_nothing, del_content);
+	start = *env;
+	start = ft_lstmap(start, apply_nothing, del_content);
 	tmp = start;
 	while(tmp->next)
 	{

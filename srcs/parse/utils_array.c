@@ -76,7 +76,7 @@ char		**ft_arrjoin_pro(char **arr1, char **arr2, char flag)
 		return (arr1);
 	l = ft_arrlen(arr1);
 	if (!(res = ft_calloc(8,
-						  max(l + ft_arrlen(arr2) + (flag == ' ') + !(l), 2))))
+				max(l + ft_arrlen(arr2) + (flag == ' ') + !(l), 2))))
 		return (NULL);
 	if ((space_flag(res, arr1, arr2, l, flag)) == -1)
 		return (NULL);
@@ -91,3 +91,5 @@ char		**ft_arrjoin_pro(char **arr1, char **arr2, char flag)
 	free_memory(arr2);
 	return (res);
 }
+
+//	echo """""""""",         wtf     :""

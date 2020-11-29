@@ -12,29 +12,19 @@
 
 #include "get_next_line.h"
 
-static int	renew_params(char **remain, char *buf, char **line, char flag)
+static int	renew_params(char *buf, char **line)
 {
-	char	**choice;
 	char	*endline;
 
-	if (flag == 'b')
-		choice = &buf;
-	else
-		choice = remain;
-	if (!(endline = ft_strchr(*choice, '\n')))
+	if (!(endline = ft_strchr(buf, '\n')))
 	{
-		if (!(*line = ft_strjoin_pro(line, *choice)))
-			return (flag == 'r' ? free_buf(remain, 1) : 1);
-		if (flag == 'r')
-			free_buf(remain, 1);
+		if (!(*line = ft_strjoin_pro(line, buf)))
+			return (1);
 	}
 	else
 	{
 		*endline = '\0';
-		if (!(*line = ft_strjoin_pro(line, *choice)))
-			return (-1);
-		if (!(*remain = ft_substr_pro(choice,
-				ft_strlen(*choice) + 1, BUFFER_SIZE, flag)))
+		if (!(*line = ft_strjoin_pro(line, buf)))
 			return (-1);
 		return (1);
 	}
@@ -45,26 +35,20 @@ int			get_next_line(int fd, char **line)
 {
 	size_t		rd;
 	char		*buf;
-	static char	*remain[F_LIMIT];
+	int 		rp;
 
-	if (BUFFER_SIZE < 1 || fd < 0 || !line || 0 != read(fd, remain[fd], 0) ||
-		!(buf = (char *)malloc(BUFFER_SIZE + 1)))
+	if (BUFFER_SIZE < 1 || fd < 0 || !line ||
+						!(buf = (char *)malloc(BUFFER_SIZE + 1)))
 		return (-1);
 	*line = malloc(1);
 	**line = '\0';
-	if (remain[fd])
-	{
-		if ((rd = renew_params(&remain[fd], remain[fd], line, 'r')))
-			return (free_buf(&buf, rd));
-	}
-	while ((rd = read(fd, buf, BUFFER_SIZE)) > 0)
+	while ((rd = read(fd, buf, BUFFER_SIZE)) >= 0)
 	{
 		buf[rd] = '\0';
-		if ((rd = renew_params(&remain[fd], buf, line, 'b')))
+		if ((rp = renew_params(buf, line)))
+			return (free_buf(&buf, rp));
+		if (rd == 0 && !**line)
 			return (free_buf(&buf, rd));
 	}
-	free_buf(&remain[fd], 1);
-	if (rd == 0 && *buf == '\0')
-		exit(free_buf(&buf, 131));
 	return (free_buf(&buf, rd));
 }
