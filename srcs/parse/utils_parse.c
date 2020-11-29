@@ -12,6 +12,19 @@
 
 #include "minishell.h"
 
+int			is_linebreak(const char *line)
+{
+	size_t	res;
+	size_t	s;
+
+	res = ft_strlen(line);
+	if ((s = is_symb(line, SEMICOLON)) < res)
+		res = s;
+	if ((s = is_symb(line, PIPE)) < res)
+		res = s;
+	return (res == ft_strlen(line) ? -1 : (int)res);
+}
+
 static int	is_quotmark(const char *line)
 {
 	size_t	res;

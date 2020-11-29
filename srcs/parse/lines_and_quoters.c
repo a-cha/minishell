@@ -16,7 +16,7 @@
 ** Checks if symbol has escaped (or not escaped)
 */
 
-void			escape_symb_line(char *dup)
+static void		escape_symb_line(char *dup)
 {
 	size_t		i;
 	size_t		r;
@@ -33,7 +33,7 @@ void			escape_symb_line(char *dup)
 	}
 }
 
-void			escape_symb_quot(char *dup)
+static void		escape_symb_quot(char *dup)
 {
 	size_t		i;
 	size_t		r;
