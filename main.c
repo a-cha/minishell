@@ -111,16 +111,13 @@ int			main(int argc, char **argv, char **env)
 				free_memory(line);
 				ft_exit(data, EXIT_FAILURE);
 			}
-			if (data->type)
+			if (data->type == '|')
 				processing_pipe(data);
 			else
 				processing(data);
 			dup2(data->orig_input, 0);
 			dup2(data->orig_output, 1);
 		}
-//		Is it in right place? *** Put std file descriptors back ***
-		dup2(data->orig_input, 0);
-		dup2(data->orig_output, 1);
 		free_memory(line);
 	}
 	return (0);
