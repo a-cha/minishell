@@ -39,6 +39,8 @@ t_data	*shell_init(int argc, char **argv, char **env)
 		exit(EXIT_FAILURE);
 	}
 	*(data->args) = NULL;
+	data->orig_input = dup(0);
+	data->orig_output = dup(1);
 	signal_oper();
 	return (data);
 }
@@ -113,9 +115,12 @@ int			main(int argc, char **argv, char **env)
 				processing_pipe(data);
 			else
 				processing(data);
-			dup2(data->fd_input, 0);
-			dup2(data->fd_output, 1);
+			dup2(data->orig_input, 0);
+			dup2(data->orig_output, 1);
 		}
+//		Is it in right place? *** Put std file descriptors back ***
+		dup2(data->orig_input, 0);
+		dup2(data->orig_output, 1);
 		free_memory(line);
 	}
 	return (0);
