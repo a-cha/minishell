@@ -12,6 +12,21 @@
 
 #include "minishell.h"
 
+static int		ft_is_number(char *str)
+{
+	int i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (str[0] == '-')
+			i++;
+		if (ft_isdigit(str[i]) == 0)
+			return (0);
+	}
+	return (1);
+}
+
 void		print_error(char *er_status, char *er_mess, int new_line)
 {
 	ft_putstr_fd("minishell : ", 2);
@@ -27,8 +42,23 @@ void		print_error(char *er_status, char *er_mess, int new_line)
 
 void		ft_exit(t_data *data, int exit_status)
 {
-//	int e = data.exit;
-
+	if (data->args[1])
+	{
+		if (ft_is_number(data->args[1]) == 1)
+			exit_status = ft_atoi(data->args[1]);
+		else if (data->args[2])
+		{
+			ft_putstr_fd("exit\n", 1);
+			return (ft_putstr_fd("Вводи > exit: too many arguments\n", 1));
+		}
+		else
+		{
+			ft_putstr_fd("exit :", 1);
+			ft_putstr_fd(data->args[1], 1);
+			ft_putstr_fd(": numeric argument required\n", 1);
+			exit_status = -1;
+		}
+	}
 	ft_arrayfree(data->args);
 	ft_lstclear(&data->env, del_content);
 	if (exit_status == EXIT_FAILURE && errno)
@@ -38,3 +68,4 @@ void		ft_exit(t_data *data, int exit_status)
 	free_memory(data);
 	exit(exit_status);
 }
+

@@ -55,7 +55,8 @@ void			extern_bin(t_data *data)
 
 	if (!(ar = ft_split(find_env(&data->env, "PATH"), ':')))
 		ft_exit(data, EXIT_FAILURE);
-	str = is_corr_path(ar, data->args[0]);
+	if ((str = is_corr_path(ar, data->args[0])) == NULL)
+		str = data->args[0];
 	if (!(env = list_to_array(data)))
 	{
 		free_memory(str);
@@ -72,7 +73,8 @@ void			extern_bin(t_data *data)
 		ft_putstr_fd(": command not found\n", 1);
 		ft_arrayfree(ar);
 		free_memory(str);
-		exit(127);
+		last_status = 127;
+		return;
 	}
 	else
 	{
@@ -82,7 +84,6 @@ void			extern_bin(t_data *data)
 	}
 	free_memory(str);
 	ft_arrayfree(env);
-
 }
 
 char			*is_corr_path(char **arr, char *str)

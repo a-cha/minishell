@@ -44,10 +44,11 @@ typedef struct		s_data
 	size_t			len;		// Len of args array
 	char			type;		// Type of break. If presented
 //	file descriptors for redirections (maybe there is another implementation)
-	int				input;
-	int 			output;
+	int				fd_input;
+	int 			fd_output;
 	int				infile;
 	int 			outfile;
+	int				pipe_fd[2];
 	t_list			*env;
 }					t_data;
 
@@ -88,6 +89,10 @@ void			 	print_d_array(char **array);
 t_data 				*shell_init(int argc, char **argv, char **env);
 t_data				*malloc_shell(char **env);
 int 				process_status(void);
+void				processing(t_data *data);
+void				processing_pipe(t_data *data);
+void				child_process(t_data *data);
+void				parent_process(t_data *data, int pid);
 void				signal_oper();
 void				pwd(t_data *data);
 void				echo(t_data *data);
