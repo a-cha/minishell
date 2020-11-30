@@ -77,8 +77,6 @@ void			reset_t_data(t_data *data)
 	*(data->args) = NULL;
 	data->len = -1;
 //	need to utochnit' when we must reset this params? (redirects)
-	data->infile = 0;
-	data->outfile = 1;
 }
 
 //	remove

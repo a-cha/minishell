@@ -17,8 +17,8 @@ void				parent_process(t_data *data, int pid)
 	int status;
 
 	status = 0;
-	dup2(data->fd_input, 0);
-	dup2(data->fd_input, 1);
+	dup2(data->orig_input, 0);
+	dup2(data->orig_input, 1);
 	last_pid = pid;
 	while (status != -1)
 		status = process_status();
@@ -32,7 +32,6 @@ void				child_process(t_data *data)
 	processing(data);
 }
 
-
 static int			install_out_fd(t_data *data)
 {
 	int fd_out;
@@ -41,9 +40,20 @@ static int			install_out_fd(t_data *data)
 	if (data->type)
 	{
 		if (pipe(data->pipe_fd) == -1)
-			ft_exit(data, -1);
+			ft_exit(data, EXIT_FAILURE);
 		fd_out = dup(data->pipe_fd[1]);
 	}
+	if (data->outfile)
+	{
+		if (fd_out)
+			close(fd_out);
+		fd_out = data->outfile;
+	}
+	else if (!data->type)
+		fd_out = dup(data->orig_output);
+	if (data->pipe_fd[1])
+		close(data->pipe_fd[1]);
+	data->pipe_fd[0] = 0;
 	return (fd_out);
 }
 
@@ -51,11 +61,12 @@ static int 			install_in_fd(t_data *data)
 {
 	int fd_in;
 
-	fd_in = 0;
-	if (data->fd_input)
-		fd_in = data->fd_input;
+	if (data->infile)
+		fd_in = data->infile;
 	else if (data->pipe_fd[0])
 		fd_in = dup(data->pipe_fd[0]);
+	else
+		fd_in = dup(data->orig_input);
 	if (data->pipe_fd[0])
 		close(data->pipe_fd[0]);
 	data->pipe_fd[0] = 0;
@@ -66,18 +77,26 @@ void				processing_pipe(t_data *data)
 {
 	int fd_in;
 	int fd_out;
-	int pid;
+	int	pid;
 
 	fd_in = install_in_fd(data);
 	fd_out = install_out_fd(data);
+	dup2(fd_in, 0);
+	close(fd_in);
+	dup2(fd_out, 1);
+	close(fd_out);
 	printf("fd_in: %d, fd_out: %d\n", fd_in, fd_out);
 	pid = fork();
 	if (pid == -1)
-	{
-		ft_exit(data, -1);
-	}
-	else if (pid  == 0)
-		child_process(data);
+		ft_exit(data, EXIT_FAILURE);
+	else if (pid == 0)
+		if (data->pipe_fd[0])
+		{
+			close(data->pipe_fd[0]);
+			processing(data);
+		}
 	if (!data->type)
+	{
 		parent_process(data, pid);
+	}
 }

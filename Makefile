@@ -38,7 +38,7 @@ srcs/exit.c							\
 srcs/unset.c						\
 srcs/signals.c						\
 srcs/common_utils.c					\
-\
+srcs/processing_pipe.c				\
 srcs/parse/arrays.c					\
 srcs/parse/env_subst.c				\
 srcs/parse/lines_and_quoters.c		\
