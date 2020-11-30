@@ -45,6 +45,7 @@ srcs/unset.c				\
 srcs/signals.c				\
 srcs/common_utils.c			\
 srcs/parse/parse.c			\
+srcs/parse/weird_cases.c	\
 
 
 all: $(NAME)
