@@ -85,6 +85,7 @@ static int	get_part(const char *line, t_data *part)
 //		*************
 // 		ok with quoters with spaces
 		i += s + 2 + quot_marks(line + i, part, s, r);
+//	redirections(dup);
 	}
 //		*************
 //	printf("get_part\n");

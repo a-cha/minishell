@@ -78,6 +78,7 @@ char				*handle_env(char *line, t_data *part);
 int					is_closed_quot(const char *line, char r);
 char				**handle_line(char *line, t_data *part);
 char				*handle_quot(char *line, t_data *part);
+int					is_redir(const char *line, char *r);
 //	remove
 void			 	print_d_array(char **array);
 

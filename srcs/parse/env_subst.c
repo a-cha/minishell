@@ -27,14 +27,23 @@ static char	*concat_env(char *dup, const char *line, size_t *s, t_data *part)
 	if (*line == '?')
 	{
 		f = 1;
-		env = ft_itoa(last_status);
+		if (!(env = ft_itoa(last_status)))
+		{
+			free_memory(tmp);
+			return (NULL);
+		}
 	}
 	else if (!(env = find_env(&(part->env), env)))
-		env = ft_strdup("");
+	{
+		if (!(env = ft_strdup("")))
+		{
+			free_memory(tmp);
+			return (NULL);
+		}
+	}
 	free_memory(tmp);
 	tmp = dup;
-	if (!(dup = ft_strjoin(dup, env)))
-		return (NULL);
+	dup = ft_strjoin(dup, env);
 	*s += f + 1;
 	free_memory(tmp);
 	free_memory(env);
@@ -61,9 +70,13 @@ char		*handle_env(char *line, t_data *part)
 		free_memory(dup1);
 		if (s == -1)
 			break ;
-		tmp = dup;
-		dup = concat_env(dup, line + i + s + 1, &s, part);
-		free_memory(tmp);
+//		tmp = dup;
+		if (!(dup = concat_env(dup, line + i + s + 1, &s, part)))
+		{
+//			free_memory(tmp);
+			return (NULL);
+		}
+//		free_memory(tmp);
 		i += s;
 	}
 	return (dup);
