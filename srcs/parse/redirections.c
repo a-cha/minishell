@@ -12,35 +12,52 @@
 
 #include "minishell.h"
 
-void 		redir_right()
-{
-
-}
-
-void 		redir_left()
-{
-
-}
-
-void 		redir_d_right()
-{
-
-}
-
-char 		*get_filename(const char *line)
+static char	*get_filename(const char *line, char *flag)
 {
 	char 	*name;
 	size_t	i;
 	size_t	l;
 
-	i = -1;
-	while (line[++i] == ' ')
-		;
-	l = -1;
-	while (line[i + ++l] != ' ')
-		;
-	name = ft_substr(line, i, l);
+	i = 0;
+	name = NULL;
+	while (line[i] && line[i] == ' ')
+		i++;
+	l = 0;
+	while (line[i + l] && line[i + l] != ' ')
+		l++;
+	if (l == 0)
+		*flag = 1;
+	else
+	{
+		name = ft_substr(line, i, l);
+		ft_memset((void *)(line + i), ' ', l);
+	}
 	return (name);
+}
+
+static int	set_redir(char *name, char flag, t_data *part)
+{
+	if (flag == '<')
+	{
+		if ((part->infile = open(name, O_RDONLY)) < 0)
+			return (0);
+		dup2(part->infile, 0);
+	}
+	else if (flag == '>')
+	{
+		if ((part->outfile = open(name,
+									O_WRONLY | O_CREAT | O_TRUNC, 0644)) < 0)
+			return (0);
+		dup2(part->outfile, 1);
+	}
+	else if (flag == 'd')
+	{
+		if ((part->outfile = open(name,
+									O_WRONLY | O_CREAT | O_APPEND, 0644)) < 0)
+			return (0);
+		dup2(part->outfile, 1);
+	}
+	return (1);
 }
 
 int			is_redir(const char *line, char *r)
@@ -65,20 +82,41 @@ int			is_redir(const char *line, char *r)
 	return (res == ft_strlen(line) ? -1 : (int)res);
 }
 
-int			redirections(char *line, t_data *part)
+void		redirections(char *line, t_data *part)
 {
 	int 	i;
 	int 	s;
 	char 	r;
+	char	*name;
+	char 	flag;
 
 	i = 0;
+	flag = 0;
 	while ((s = is_redir(line + i, &r)) >= 0)
 	{
-		printf("%d\t%c\n", i + s, r);
-		i += s + 1 + (r == 'd');
+		ft_memset(line + i + s, ' ', 1 + (r == 'd'));
+		i += s + 1;
+		if (!(name = get_filename(line + i, &flag)) && flag == 1)
+//			further parse redir HOOOOOOOOW????
+			;
+		if (!(set_redir(name, r, part)))
+		{
+			free_memory(name);
+			ft_exit(part, EXIT_FAILURE);
+		}
+		free_memory(name);
 	}
-	return (0);
 }
+
+/*
+int 	main()
+{
+	char r;
+
+	redirections(">>sfr> vfs><ver>>e",NULL);
+}
+*/
+//	gcc srcs/parse/redirections.c srcs/parse/symbols.c libft/libft.a -I includes -I libft/includes
 
 /*
 //	save original fd
@@ -92,15 +130,4 @@ int			redirections(char *line, t_data *part)
 	dup2(part->outfile, 1); // or 1 as a second argument
 //	return the original fd
 	dup2(part->output, 1);
-*/
-
-/*
-int 	main()
-{
-	char r;
-
-//	printf("%s\n", get_filename("   fnlkerjnvs472674?fs    "));
-	redirections(">>sfr> vfs><ver>>e",NULL);
-}
-//gcc srcs/parse/redirections.c srcs/parse/symbols.c libft/libft.a -I includes -I libft/includes
 */

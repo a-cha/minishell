@@ -58,7 +58,8 @@ static int	get_part(const char *line, t_data *part)
 {
 	int 	i;
 	int 	s;
-	char 	**tmp_d;
+	char 	**str_args;
+	char 	*str;
 //	i can do without this variable (but this is just one string)
 	char	r;
 
@@ -66,11 +67,14 @@ static int	get_part(const char *line, t_data *part)
 	while (1)
 	{
 		s = catch_first_sign(line + i, part, &r);
-		tmp_d = part->args;
-		if (!(part->args = ft_arrjoin_pro(part->args, handle_line
-		(ft_substr(line, i, s), part), *(line + i))))
+//		tmp_d = part->args;
+		if (!(str = ft_substr(line, i, s)))
 			ft_exit(part, EXIT_FAILURE);
-		ft_arrayfree(tmp_d);
+		if (!(str_args = handle_line(str, part)))
+			ft_exit(part, EXIT_FAILURE);
+		if (!(part->args = ft_arrjoin_pro(part->args, str_args, *(line + i))))
+			ft_exit(part, EXIT_FAILURE);
+//		ft_arrayfree(tmp_d);
 //		*************
 //		printf("\nft_arrjoin_pro\n");
 //		print_d_array(part->args);

@@ -77,7 +77,8 @@ static int	is_wrong_redir(const char *str)
 	c = -1;
 	while (str[++c] && str[c] == ' ')
 		;
-	if (str[c] && (str[c] != ' ' && str[c] != '>' && str[c] != '<'))
+	if (str[c] && (str[c] != ' ' && str[c] != '>' && str[c] != '<')
+	&& str[c] != ';' && str[c] != '|' )
 		flag = 1;
 	if (flag == 0)
 		return (ret_token(0, 0, ft_strdup("newline")));

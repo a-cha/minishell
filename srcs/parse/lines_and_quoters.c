@@ -62,7 +62,7 @@ char		**handle_line(char *line, t_data *part)
 
 	dup = handle_env(line, part);
 	free_memory(line);
-//	redirections(dup);
+	redirections(dup, part);
 	escape_symb_line(dup);
 	ret = ft_split(dup, ' ');
 	free_memory(dup);

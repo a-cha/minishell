@@ -17,8 +17,8 @@ void				parent_process(t_data *data, int pid)
 	int status;
 
 	status = 0;
-	dup2(data->fd_input, 0);
-	dup2(data->fd_input, 1);
+	dup2(data->orig_input, 0);
+	dup2(data->orig_input, 1);
 	last_pid = pid;
 	while (status != -1)
 		status = process_status();
@@ -52,8 +52,8 @@ static int 			install_in_fd(t_data *data)
 	int fd_in;
 
 	fd_in = 0;
-	if (data->fd_input)
-		fd_in = data->fd_input;
+	if (data->orig_input)
+		fd_in = data->orig_input;
 	else if (data->pipe_fd[0])
 		fd_in = dup(data->pipe_fd[0]);
 	if (data->pipe_fd[0])

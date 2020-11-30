@@ -22,7 +22,7 @@ t_data	*shell_init(int argc, char **argv, char **env)
 
 	if (argc != 1)
 	{
-		print_error(argv[0], "You must not have arguments", 1);
+		print_error(argv[0], "The program must not have arguments", 1);
 		exit(EXIT_FAILURE);
 	}
 	if (!(data = ft_calloc(1, sizeof(t_data))))
@@ -41,6 +41,8 @@ t_data	*shell_init(int argc, char **argv, char **env)
 	*(data->args) = NULL;
 	data->orig_input = dup(0);
 	data->orig_output = dup(1);
+	data->infile = -1;
+	data->outfile = -1;
 	signal_oper();
 	return (data);
 }
@@ -97,7 +99,7 @@ int			main(int argc, char **argv, char **env)
 	data = shell_init(argc, argv, env);
 	while (1)
 	{
-		ft_putstr_fd("Давай > ", 1);
+		ft_putstr_fd("minihell > ", 1);
 		errno = 0;
 		sigint_flag = 0;
 		n = 0;
@@ -115,12 +117,10 @@ int			main(int argc, char **argv, char **env)
 				processing_pipe(data);
 			else
 				processing(data);
-			dup2(data->orig_input, 0);
-			dup2(data->orig_output, 1);
 		}
 		free_memory(line);
 	}
 	return (0);
 }
-//	sega:
+//	segfault:
 //	echo """""""""",         wtf     :""

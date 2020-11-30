@@ -59,24 +59,29 @@ char		*handle_env(char *line, t_data *part)
 	size_t	s;
 
 	i = 0;
-	dup = ft_strdup("");
+	if (!(dup = ft_strdup("")))
+		ft_exit(part, EXIT_FAILURE);
 	while (1)
 	{
 		s = is_symb(line + i, '$');
-		dup1 = ft_substr(line, i, (s == -1 ? ft_strlen(line + i) : s));
+		if (!(dup1 = ft_substr(line, i, (s == -1 ? ft_strlen(line + i) : s))))
+		{
+			free_memory(dup);
+			ft_exit(part, EXIT_FAILURE);
+		}
 		tmp = dup;
-		dup = ft_strjoin(dup, dup1);
+		if (!(dup = ft_strjoin(dup, dup1)))
+		{
+			free_memory(tmp);
+			free_memory(dup1);
+			ft_exit(part, EXIT_FAILURE);
+		}
 		free_memory(tmp);
 		free_memory(dup1);
 		if (s == -1)
 			break ;
-//		tmp = dup;
 		if (!(dup = concat_env(dup, line + i + s + 1, &s, part)))
-		{
-//			free_memory(tmp);
-			return (NULL);
-		}
-//		free_memory(tmp);
+			ft_exit(part, EXIT_FAILURE);
 		i += s;
 	}
 	return (dup);
