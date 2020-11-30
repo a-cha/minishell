@@ -48,6 +48,7 @@ typedef struct		s_data
 	int 			fd_output;
 	int				infile;
 	int 			outfile;
+	int				pipe_fd[2];
 	t_list			*env;
 }					t_data;
 
@@ -92,6 +93,10 @@ void				reset_t_data(t_data *data);
 t_data 				*shell_init(int argc, char **argv, char **env);
 t_data				*malloc_shell(char **env);
 int 				process_status(void);
+void				processing(t_data *data);
+void				processing_pipe(t_data *data);
+void				child_process(t_data *data);
+void				parent_process(t_data *data, int pid);
 void				signal_oper();
 void				pwd(t_data *data);
 void				echo(t_data *data);

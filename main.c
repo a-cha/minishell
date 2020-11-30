@@ -109,7 +109,12 @@ int			main(int argc, char **argv, char **env)
 				free_memory(line);
 				ft_exit(data, EXIT_FAILURE);
 			}
-			processing(data);
+			if (data->type)
+				processing_pipe(data);
+			else
+				processing(data);
+			dup2(data->fd_input, 0);
+			dup2(data->fd_output, 1);
 		}
 		free_memory(line);
 	}

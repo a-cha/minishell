@@ -33,6 +33,7 @@ srcs/env_utils.c			\
 main.c						\
 srcs/pwd.c					\
 srcs/utils.c				\
+srcs/processing_pipe.c		\
 srcs/parse/utils_parse.c	\
 srcs/parse/utils_parse1.c	\
 srcs/parse/utils_array.c	\
@@ -44,6 +45,7 @@ srcs/unset.c				\
 srcs/signals.c				\
 srcs/common_utils.c			\
 srcs/parse/parse.c			\
+
 
 all: $(NAME)
 
