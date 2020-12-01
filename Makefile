@@ -50,7 +50,6 @@ srcs/parse/weird_cases.c			\
 utils_lst.c							\
 main.c								\
 srcs/parse/redirections.c			\
-srcs/processing_pipe.c
 
 all: $(NAME)
 

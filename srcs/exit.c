@@ -59,6 +59,10 @@ void		ft_exit(t_data *data, int exit_status)
 			exit_status = -1;
 		}
 	}
+	if (data->infile)
+		close(data->infile);
+	if (data->outfile)
+		close(data->outfile);
 	ft_arrayfree(data->args);
 	ft_lstclear(&data->env, del_content);
 	if (exit_status == EXIT_FAILURE && errno)

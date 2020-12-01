@@ -95,6 +95,7 @@ int			main(int argc, char **argv, char **env)
 	t_data  *data;
 	char	*line;
 	int 	n;
+	int tmp;
 
 	data = shell_init(argc, argv, env);
 	while (1)
@@ -119,6 +120,8 @@ int			main(int argc, char **argv, char **env)
 				processing(data);
 		}
 		free_memory(line);
+		tmp = dup(0);
+		printf("%d\n", tmp);
 	}
 	return (0);
 }
