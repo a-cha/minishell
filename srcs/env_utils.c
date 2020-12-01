@@ -15,7 +15,7 @@
 /*
 ** Duplicate & sort list. Returns a new sorted list.
 */
-t_list		*list_dup_sort(t_list **env)
+t_list		*list_dup_sort(const t_data *data)
 {
 	t_list	*tmp;
 	t_list	*start;
@@ -23,8 +23,7 @@ t_list		*list_dup_sort(t_list **env)
 	t_env	*next_env;
 	t_env	*tmp_name;
 
-	start = *env;
-	start = ft_lstmap(start, apply_nothing, del_content);
+	start = ft_lstmap(data->env, copy_t_env, del_content);
 	tmp = start;
 	while(tmp->next)
 	{
