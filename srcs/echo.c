@@ -53,7 +53,8 @@ void	echo(t_data *data)
 		str = data->args[i];
 		if (!(is_first_symbol(data->args[i], '$')))
 		{
-			tmp = ft_substr(data->args[i], 1, ft_strlen(data->args[i]));
+			if (!(tmp = ft_substr(data->args[i], 1, ft_strlen(data->args[i]))))
+				ft_exit(data, EXIT_FAILURE);
 			str = find_env(&data->env, tmp);
 			free(tmp);
 		}
@@ -63,7 +64,8 @@ void	echo(t_data *data)
 			break;
 		}
 		ft_putstr_fd(str, 1);
-		ft_putstr_fd(" ", 1);
+		if (data->args[i + 1])
+			ft_putstr_fd(" ", 1);
 	}
 	if (flag == 0)
 		ft_putstr_fd("\n", 1);

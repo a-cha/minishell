@@ -58,7 +58,6 @@ void				child_process(t_data *data)
 	if (data->pipe_fd[0])
 		close(data->pipe_fd[0]);
 	if (our_command(data) == 0)
-//		ft_exit(data, last_status);
 		exit(0);
 	if (!(ar = ft_split(find_env(&data->env, "PATH"), ':')))
 		ft_exit(data, EXIT_FAILURE);
@@ -141,7 +140,7 @@ void				processing_pipe(t_data *data)
 	close(fd_in);
 	dup2(fd_out, 1);
 	close(fd_out);
-	printf("fd_in: %d, fd_out: %d\n", fd_in, fd_out);
+//	printf("fd_in: %d, fd_out: %d\n", fd_in, fd_out);
 	pid = fork();
 	if (pid == -1)
 		ft_exit(data, EXIT_FAILURE);
