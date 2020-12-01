@@ -119,6 +119,7 @@ int			main(int argc, char **argv, char **env)
 			else
 				processing(data);
 		}
+		reset_t_data(data);
 		free_memory(line);
 		tmp = dup(0);
 		printf("%d\n", tmp);

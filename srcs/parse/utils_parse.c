@@ -71,9 +71,9 @@ size_t		catch_first_sign(const char *str, t_data *part, char *r)
 
 void			reset_t_data(t_data *data)
 {
-//	MEMORY PROBLEMS HERE (free hasn't allocated pointer)
-//	if (data->args)
-//		ft_arrayfree(data->args);
+//	MEMORY PROBLEMS HERE (free doesn't allocated pointer)
+	if (data->args)
+		ft_arrayfree(data->args);
 	data->args = (char **)ft_calloc(1, sizeof(char **));
 	*(data->args) = NULL;
 	data->len = -1;
