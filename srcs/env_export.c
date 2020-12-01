@@ -88,12 +88,11 @@ void		env_export(t_data *data)
 			set_new_env(data);
 		else
 			rewrite_cont(data, env);
-		new_list = list_dup_sort(&data->env);
-		ft_lstclear(&new_list, del_content);
 		return ;
 	}
-	new_list = list_dup_sort(&data->env);
+	new_list = list_dup_sort(data);
 	print_exp_list(&new_list, data);
+//	чистит лист в дате
 	ft_lstclear(&new_list, del_content);
 }
 

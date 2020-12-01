@@ -48,8 +48,9 @@ srcs/parse/utils_parse.c			\
 srcs/parse/weird_cases.c			\
 \
 utils_lst.c							\
-main.c								\
 srcs/parse/redirections.c			\
+main.c								\
+#tests/tests_parsing.c				\
 
 all: $(NAME)
 
