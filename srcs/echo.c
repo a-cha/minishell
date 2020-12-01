@@ -47,7 +47,10 @@ void	echo(t_data *data)
 	tmp = NULL;
 	if (data->args[1])
 		if (!(ft_strcmp(data->args[1], "-n")))
-			i++ && flag++;
+		{
+			i++;
+			flag++;
+		}
 	while (data->args[++i])
 	{
 		str = data->args[i];
