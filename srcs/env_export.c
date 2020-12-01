@@ -14,14 +14,11 @@
 
 void		set_new_env(t_data *data)
 {
-	t_list	*tmp;
 	int 	i;
 
 	i = 0;
-	tmp = data->env;
 	while (data->args[++i])
-		ft_lstadd_back(&tmp, ft_lstnew(env_to_cont(data->args[i])));
-	ft_lstdelone(tmp, del_content);
+		ft_lstadd_back(&data->env, ft_lstnew(env_to_cont(data->args[i])));
 }
 
 void	rewrite_cont(t_data *data, t_env *env)
