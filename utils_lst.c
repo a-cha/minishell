@@ -23,7 +23,26 @@ void	del_content(void *elem)
 	elem = NULL;
 }
 
-void	*apply_nothing(void *elem)
+void	*copy_t_env(void *elem)
 {
-	return (elem);
+	t_env *env;
+	t_env *el_env;
+
+	if ((env = (t_env *)malloc(sizeof(t_env))))
+	{
+		el_env = elem;
+		if (!(env->env_name = ft_strdup(el_env->env_name)))
+		{
+			free_memory(env);
+			return (NULL);
+		}
+		if (!(env->env_cont = ft_strdup(el_env->env_cont)))
+		{
+			free_memory(env);
+			free_memory(env->env_name);
+			return (NULL);
+		}
+		env->is_equal = el_env->is_equal;
+	}
+	return (env);
 }
