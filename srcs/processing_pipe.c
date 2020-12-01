@@ -32,6 +32,7 @@ void				child_process(t_data *data)
 	processing(data);
 }
 
+
 static int			install_out_fd(t_data *data)
 {
 	int fd_out;
@@ -40,7 +41,7 @@ static int			install_out_fd(t_data *data)
 	if (data->type)
 	{
 		if (pipe(data->pipe_fd) == -1)
-			ft_exit(data, EXIT_FAILURE);
+			ft_exit(data, -1);
 		fd_out = dup(data->pipe_fd[1]);
 	}
 	if (data->outfile)
@@ -61,8 +62,9 @@ static int 			install_in_fd(t_data *data)
 {
 	int fd_in;
 
-	if (data->infile)
-		fd_in = data->infile;
+	fd_in = 0;
+	if (data->orig_input)
+		fd_in = data->orig_input;
 	else if (data->pipe_fd[0])
 		fd_in = dup(data->pipe_fd[0]);
 	else
@@ -96,7 +98,5 @@ void				processing_pipe(t_data *data)
 			processing(data);
 		}
 	if (!data->type)
-	{
 		parent_process(data, pid);
-	}
 }

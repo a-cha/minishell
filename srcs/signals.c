@@ -29,7 +29,7 @@ static void	sig_int()
 	if ((exit_status = process_status()) == -1)
 	{
 		ft_putstr_fd("\n", 1);
-		ft_putstr_fd("Вводи > ", 1);
+		ft_putstr_fd("minihell > ", 1);
 	}
 	else
 		ft_putstr_fd("\n", 1);

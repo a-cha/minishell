@@ -79,6 +79,9 @@ add_executable(minishell
         errors.c
         main.c
         srcs/parse/redirections.c
-        utils_lst.c srcs/parse/env_subst.c srcs/parse/lines_and_quoters.c)
+        srcs/processing_pipe.c
+        utils_lst.c
+        srcs/parse/env_subst.c
+        srcs/parse/lines_and_quoters.c)
 
 target_link_libraries(minishell libft.a)
