@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static char	*get_filename(const char *line, char *flag)
+static char	*get_filename(const char *line, int *flag)
 {
 	char 	*name;
 	size_t	i;
@@ -35,27 +35,25 @@ static char	*get_filename(const char *line, char *flag)
 	return (name);
 }
 
-static int	set_redir(char *name, char flag, t_data *part)
+int			set_redir(char *name, char flag, t_data *part)
 {
 	if (flag == '<')
 	{
+		if (part->infile >= 0)
+			close(part->infile);
 		if ((part->infile = open(name, O_RDONLY)) < 0)
 			return (0);
 		dup2(part->infile, 0);
 	}
-	else if (flag == '>')
+	else
 	{
+		if (part->outfile >= 0)
+			close(part->outfile);
 		if ((part->outfile = open(name,
-									O_WRONLY | O_CREAT | O_TRUNC, 0644)) < 0)
+		O_WRONLY | O_CREAT | (flag == '>' ? O_TRUNC : O_APPEND), 0644)) < 0)
 			return (0);
 		dup2(part->outfile, 1);
-	}
-	else if (flag == 'd')
-	{
-		if ((part->outfile = open(name,
-									O_WRONLY | O_CREAT | O_APPEND, 0644)) < 0)
-			return (0);
-		dup2(part->outfile, 1);
+		printf("fd: %d\n", part->outfile);
 	}
 	return (1);
 }
@@ -82,30 +80,29 @@ int			is_redir(const char *line, char *r)
 	return (res == ft_strlen(line) ? -1 : (int)res);
 }
 
-void		redirections(char *line, t_data *part)
+int 		redirections(char *line, t_data *part, char *r)
 {
 	int 	i;
 	int 	s;
-	char 	r;
 	char	*name;
-	char 	flag;
+	int 	flag;
 
 	i = 0;
-	flag = 0;
-	while ((s = is_redir(line + i, &r)) >= 0)
+	flag = -1;
+	while ((s = is_redir(line + i, r)) >= 0)
 	{
-		ft_memset(line + i + s, ' ', 1 + (r == 'd'));
+		ft_memset(line + i + s, ' ', 1 + (*r == 'd'));
 		i += s + 1;
 		if (!(name = get_filename(line + i, &flag)) && flag == 1)
-//			further parse redir HOOOOOOOOW????
-			;
-		if (!(set_redir(name, r, part)))
+			flag = split_words_count(line, ' ');
+		if (!(set_redir(name, *r, part)))
 		{
 			free_memory(name);
 			ft_exit(part, EXIT_FAILURE);
 		}
 		free_memory(name);
 	}
+	return (flag);
 }
 
 /*
@@ -127,7 +124,7 @@ int 	main()
 	dup2(part->outfile, 1);
 //	open another here
 	part->outfile = open();
-	dup2(part->outfile, 1); // or 1 as a second argument
+	dup2(part->outfile, 1);
 //	return the original fd
-	dup2(part->output, 1);
+	dup2(part->orig_output, 1);
 */

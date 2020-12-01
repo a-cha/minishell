@@ -60,6 +60,8 @@ static int	get_part(const char *line, t_data *part)
 	int 	s;
 	char 	**str_args;
 	char 	*str;
+	int 	redir;
+	char	re;
 //	i can do without this variable (but this is just one string)
 	char	r;
 
@@ -70,8 +72,9 @@ static int	get_part(const char *line, t_data *part)
 //		tmp_d = part->args;
 		if (!(str = ft_substr(line, i, s)))
 			ft_exit(part, EXIT_FAILURE);
-		if (!(str_args = handle_line(str, part)))
+		if (!(str_args = handle_line(str, part, &redir, &re)))
 			ft_exit(part, EXIT_FAILURE);
+//		get redirect here
 		if (!(part->args = ft_arrjoin_pro(part->args, str_args, *(line + i))))
 			ft_exit(part, EXIT_FAILURE);
 //		ft_arrayfree(tmp_d);

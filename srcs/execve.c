@@ -41,7 +41,7 @@ static char		**list_to_array(t_data *data)
 		free_memory(tmp);
 		lst = lst->next;
 	}
-	env[++i] = NULL;
+	env[i + 1] = NULL;
 	return (env);
 }
 
@@ -56,7 +56,11 @@ void			extern_bin(t_data *data)
 	if (!(ar = ft_split(find_env(&data->env, "PATH"), ':')))
 		ft_exit(data, EXIT_FAILURE);
 	if ((str = is_corr_path(ar, data->args[0])) == NULL)
-		str = data->args[0];
+		if (!(str = ft_strdup(data->args[0])))
+		{
+			ft_arrayfree(ar);
+			ft_exit(data, EXIT_FAILURE);
+		}
 	if (!(env = list_to_array(data)))
 	{
 		free_memory(str);

@@ -118,6 +118,7 @@ int			main(int argc, char **argv, char **env)
 			else
 				processing(data);
 		}
+		reset_t_data(data);
 		free_memory(line);
 	}
 	return (0);
