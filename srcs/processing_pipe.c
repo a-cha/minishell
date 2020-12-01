@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int 				our_command(t_data *data)
+int 				our_command(t_data *data)
 {
 	if(data->args[0])
 	{
@@ -136,6 +136,8 @@ void				processing_pipe(t_data *data)
 	pid = 0;
 	fd_in = install_in_fd(data);
 	fd_out = install_out_fd(data);
+	printf("fd_in %d\n", data->pipe_fd[0]);
+	printf("fd_out %d\n", data->pipe_fd[1]);
 	dup2(fd_in, 0);
 	close(fd_in);
 	dup2(fd_out, 1);

@@ -41,8 +41,8 @@ t_data	*shell_init(int argc, char **argv, char **env)
 	*(data->args) = NULL;
 	data->orig_input = dup(0);
 	data->orig_output = dup(1);
-	data->infile = -1;
-	data->outfile = -1;
+//	data->infile = -1;
+//	data->outfile = -1;
 	signal_oper();
 	return (data);
 }
@@ -124,6 +124,7 @@ int			main(int argc, char **argv, char **env)
 		free_memory(line);
 		tmp = dup(0);
 		printf("%d\n", tmp);
+		close(tmp);
 	}
 	return (0);
 }
