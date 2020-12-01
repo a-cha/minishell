@@ -122,10 +122,12 @@ int			main(int argc, char **argv, char **env)
 		}
 		reset_t_data(data);
 		free_memory(line);
-		tmp = dup(0);
-		printf("%d\n", tmp);
+//		tmp = dup(0);
+//		printf("%d\n", tmp);
+//		close(tmp);
 	}
 	return (0);
 }
+
 //	segfault:
 //	echo """""""""",         wtf     :""

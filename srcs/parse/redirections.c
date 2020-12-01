@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static char	*get_filename(const char *line, int *flag)
+static char	*get_filename(const char *line, char *flag)
 {
 	char 	*name;
 	size_t	i;
@@ -80,29 +80,30 @@ int			is_redir(const char *line, char *r)
 	return (res == ft_strlen(line) ? -1 : (int)res);
 }
 
-int 		redirections(char *line, t_data *part, char *r)
+void		redirections(char *line, t_data *part)
 {
 	int 	i;
 	int 	s;
+	char 	r;
 	char	*name;
-	int 	flag;
+	char 	flag;
 
 	i = 0;
-	flag = -1;
-	while ((s = is_redir(line + i, r)) >= 0)
+	flag = 0;
+	while ((s = is_redir(line + i, &r)) >= 0)
 	{
-		ft_memset(line + i + s, ' ', 1 + (*r == 'd'));
+		ft_memset(line + i + s, ' ', 1 + (r == 'd'));
 		i += s + 1;
 		if (!(name = get_filename(line + i, &flag)) && flag == 1)
-			flag = split_words_count(line, ' ');
-		if (!(set_redir(name, *r, part)))
+//			further parse redir HOOOOOOOOW????
+			;
+		if (!(set_redir(name, r, part)))
 		{
 			free_memory(name);
 			ft_exit(part, EXIT_FAILURE);
 		}
 		free_memory(name);
 	}
-	return (flag);
 }
 
 /*
@@ -124,7 +125,7 @@ int 	main()
 	dup2(part->outfile, 1);
 //	open another here
 	part->outfile = open();
-	dup2(part->outfile, 1);
+	dup2(part->outfile, 1); // or 1 as a second argument
 //	return the original fd
-	dup2(part->orig_output, 1);
+	dup2(part->output, 1);
 */

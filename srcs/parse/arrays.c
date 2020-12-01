@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arrays.c                                           :+:      :+:    :+:   */
+/*   array_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sadolph <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -15,7 +15,6 @@
 /*
 ** Frees null-terminated array
 */
-
 void		ft_arrayfree(char **array)
 {
 	size_t	i;
@@ -29,7 +28,6 @@ void		ft_arrayfree(char **array)
 /*
 ** Counts lines in null-terminated array
 */
-
 int			ft_arrlen(char **array)
 {
 	int		i;
@@ -43,7 +41,6 @@ int			ft_arrlen(char **array)
 /*
 ** Returns max value
 */
-
 static int	max(int n1, int n2)
 {
 	return (n1 > n2 ? n1 : n2);
@@ -64,11 +61,10 @@ static int	space_flag(char **res, char **arr1, char **arr2, int l)
 /*
 ** Joins two null-terminated arrays and free pointers to them
 */
-
 char		**ft_arrjoin_pro(char **arr1, char **arr2, char flag)
 {
 	size_t	i;
-	int		l;
+	int 	l;
 	char	**res;
 
 	if (!*arr1)
@@ -79,7 +75,7 @@ char		**ft_arrjoin_pro(char **arr1, char **arr2, char flag)
 	if (!(res = ft_calloc(8,
 				max(l + ft_arrlen(arr2) + (flag == ' ') + !(l), 2))))
 		return (NULL);
-	if (flag == ' ')
+	if (flag != ' ')
 		if ((space_flag(res, arr1, arr2, l)) < 0)
 			return (NULL);
 	i = -1;
@@ -93,3 +89,5 @@ char		**ft_arrjoin_pro(char **arr1, char **arr2, char flag)
 	free_memory(arr2);
 	return (res);
 }
+
+//	echo """""""""",         wtf     :""
