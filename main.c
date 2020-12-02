@@ -89,7 +89,6 @@ int 		read_stdin(t_data *data, char **line)
 	}
 	return (gnl);
 }
-
 int			main(int argc, char **argv, char **env)
 {
 	t_data  *data;
@@ -128,6 +127,5 @@ int			main(int argc, char **argv, char **env)
 	}
 	return (0);
 }
-
 //	segfault:
 //	echo """""""""",         wtf     :""

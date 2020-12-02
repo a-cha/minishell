@@ -25,6 +25,13 @@ static int	space(const char *str, int start, int len)
 		return (0);
 	return (1);
 }
+//while (i < len && is_symb(&str[start + i], ' ') &&
+//is_symb(&str[start + i], ';') && is_symb(&str[start + i], '|') &&
+//is_symb(&str[start + i], '>') && is_symb(&str[start + i], '<'))
+//i++;
+//if (len != 0 && !is_symb(&str[start + i], ' ') &&
+//!is_symb(&str[start + i], ';') && !is_symb(&str[start + i], '|') &&
+//!is_symb(&str[start + i], '>') && !is_symb(&str[start + i], '<'))
 
 static int	ret_token(char t, int n, char *str)
 {
@@ -85,6 +92,27 @@ static int	is_wrong_redir(const char *str)
 	return (0);
 }
 
+char 		is_in_quots(const char *line, size_t n)
+{
+	size_t	i;
+	int 	s;
+	int 	f;
+
+	i = 0;
+	while ((s = is_quotmark(line + i)) >= 0)
+	{
+		if ((f = is_closed_quot(line, *(line + i + s + 1))) >= 0)
+		{
+			if (s < n && n < f)
+				return (1);
+		}
+		else
+			return (1);
+		i += s + f + 2;
+	}
+	return (0);
+}
+
 int			weird_cases(const char *line)
 {
 	size_t	i;
@@ -95,14 +123,16 @@ int			weird_cases(const char *line)
 	while ((s = is_redir(line + i, &r)) >= 0)
 	{
 		i += s + 1 + (r == 'd');
-		if ((is_wrong_redir(line + i)))
-			return (1);
+		if (!is_in_quots(line, i - 1))
+			if ((is_wrong_redir(line + i)))
+				return (1);
 	}
 	i = 0;
 	while ((s = is_linebreak(line + i)) >= 0)
 	{
-		if ((is_blank(line, i, s)))
-			return (1);
+		if (!is_in_quots(line, i + s))
+			if ((is_blank(line, i, s)))
+				return (1);
 		i += s + 1;
 	}
 	return (0);

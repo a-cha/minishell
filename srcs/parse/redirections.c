@@ -23,10 +23,14 @@ static char	*get_filename(const char *line, char *flag)
 	while (line[i] && line[i] == ' ')
 		i++;
 	l = 0;
-	while (line[i + l] && line[i + l] != ' ')
+	while (line[i + l] && !is_symb(&line[i + l], ' ') && line[i + l] != ';'
+			&& line[i + l] != '|' && line[i + l] != '>' && line[i + l] != '<')
 		l++;
-	if (l == 0)
+	if (line[i + l] == '\'' || line[i + l] == '"')
+	{
 		*flag = 1;
+		return (NULL);
+	}
 	else
 	{
 		name = ft_substr(line, i, l);
@@ -80,6 +84,49 @@ int			is_redir(const char *line, char *r)
 	return (res == ft_strlen(line) ? -1 : (int)res);
 }
 
+char 		*get_filename_pro(const char *line, t_data *part)
+{
+	char	*name;
+	char 	*tmp;
+	char 	*quot;
+	char 	*dup;
+	size_t	i;
+	int 	s;
+	int 	f;
+	size_t	fin;
+
+	i = 0;
+	while (1)
+	{
+ 		if ((fin = is_linebreak(line + i)) < 0)
+		{
+			fin = ft_strlen(line + i);
+			break ;
+		}
+		if (!is_in_quots(line, fin))
+			break ;
+		i += fin + 1;
+	}
+	name = ft_substr(line, 0, fin);
+	i = 0;
+	dup = ft_strdup("");
+	while (1)
+	{
+		if ((s = is_quotmark(name + i) < 0))
+			break ;
+		if ((f = is_closed_quot(name + s + 1, *(name + s))) < 0)
+			f = ft_strlen(name + s + 1);
+		quot = (*(name + s) == '\'' ? ft_substr(line, s + 1, f) :
+				handle_quot(ft_substr(line, s + 1, f), part));
+		dup = ft_substr(name, i, s);
+		tmp = dup;
+		dup = ft_strjoin(dup, quot);
+		free_memory(tmp);
+	}
+	free_memory(name);
+	return (dup);
+}
+
 void		redirections(char *line, t_data *part)
 {
 	int 	i;
@@ -94,9 +141,17 @@ void		redirections(char *line, t_data *part)
 	{
 		ft_memset(line + i + s, ' ', 1 + (r == 'd'));
 		i += s + 1;
-		if (!(name = get_filename(line + i, &flag)) && flag == 1)
-//			further parse redir HOOOOOOOOW????
-			;
+		if (!(name = get_filename(line + i, &flag)))
+		{
+			if (flag == 1)
+			{
+				if (!(name = get_filename_pro(line + i, part)))
+					ft_exit(part, EXIT_FAILURE);
+			}
+			else
+				ft_exit(part, EXIT_FAILURE);
+		}
+		printf("flag: %d\n", flag);
 		if (!(set_redir(name, r, part)))
 		{
 			free_memory(name);

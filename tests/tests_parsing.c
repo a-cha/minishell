@@ -8,6 +8,7 @@
 int		is_linebreak(const char *str);
 int		is_quotmark(const char *str);
 size_t	catch_first_sign(const char *str, t_data *part, char *r);
+char 		is_in_quots(const char *line, size_t n);
 
 int			main(int ac, char **av, char **env)
 {
@@ -18,7 +19,10 @@ int			main(int ac, char **av, char **env)
 	char	**args;
 	size_t	i;
 
-//
+/*
+//	is_in_quots
+		printf("%d\n", is_in_quots("echo \"hello><; world\"", 12));
+*/
 /*
 	t_data	*part;
 	int 	n;
@@ -43,12 +47,14 @@ int			main(int ac, char **av, char **env)
 	}
 	//		call here processing functions
 */
+/*
 //	test ft_arrjoin_pro
 	args = ft_arrjoin_pro(ft_split("a b c", ' '),
 					   ft_split("d e f", ' '), ' ');
 	i = -1;
 	while (args[++i] != NULL)
 		printf(">%s<\n", args[i]);
+*/
 /*
 //	test handle_quot
 	part->env = dup_env(env);

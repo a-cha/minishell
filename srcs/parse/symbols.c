@@ -45,10 +45,8 @@ static size_t	is_escaped(const char *line, size_t i)
 
 	n = 0;
 	if (i != 0)
-	{
 		while ((i--) && line[i] == '\\')
 			n++;
-	}
 	return (n % 2);
 }
 

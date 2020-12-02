@@ -25,7 +25,7 @@ int			is_linebreak(const char *line)
 	return (res == ft_strlen(line) ? -1 : (int)res);
 }
 
-static int	is_quotmark(const char *line)
+int			is_quotmark(const char *line)
 {
 	size_t	res;
 	size_t	s;
@@ -71,12 +71,12 @@ size_t		catch_first_sign(const char *str, t_data *part, char *r)
 
 void			reset_t_data(t_data *data)
 {
-//	MEMORY PROBLEMS HERE (free doesn't allocated pointer)
 	if (data->args)
 		ft_arrayfree(data->args);
 	data->args = (char **)ft_calloc(1, sizeof(char **));
 	*(data->args) = NULL;
 	data->len = -1;
+//	why this strings commented?
 //	if (data->infile >= 0)
 //	{
 //		close(data->infile);

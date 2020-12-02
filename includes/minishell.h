@@ -82,6 +82,8 @@ char				*handle_quot(char *line, t_data *part);
 void				redirections(char *line, t_data *part);
 int					is_redir(const char *line, char *r);
 int					set_redir(char *name, char flag, t_data *part);
+int					is_quotmark(const char *line);
+char		 		is_in_quots(const char *line, size_t n);
 //	remove
 void			 	print_d_array(char **array);
 

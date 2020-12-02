@@ -58,8 +58,6 @@ static int	get_part(const char *line, t_data *part)
 {
 	int 	i;
 	int 	s;
-	char 	**tmp_d;
-//	i can do without this variable (but this is just one string)
 	char	r;
 
 	i = 0;
@@ -69,27 +67,10 @@ static int	get_part(const char *line, t_data *part)
 		if (!(part->args = ft_arrjoin_pro(part->args, handle_line
 		(ft_substr(line, i, s), part), *(line + i))))
 			ft_exit(part, EXIT_FAILURE);
-//		*************
-//		printf("\nft_arrjoin_pro\n");
-//		print_d_array(part->args);
-//		printf("\n");
-//		*************
 		if (!r)
 			break ;
-//		*************
-//		printf("\nft_arrjoin_pro\n");
-//		print_d_array(part->args);
-//		printf("\n");
-//		*************
-// 		ok with quoters with spaces
 		i += s + 2 + quot_marks(line + i, part, s, r);
-//	redirections(dup);
 	}
-//		*************
-//	printf("get_part\n");
-//	print_d_array(part->args);
-//	printf("\n");
-//		*************
 	return (i + s + (!(part->type) ? 0 : 1));
 }
 

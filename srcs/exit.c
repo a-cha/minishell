@@ -42,6 +42,7 @@ void		print_error(char *er_status, char *er_mess, int new_line)
 
 void		ft_exit(t_data *data, int exit_status)
 {
+//	здесь должен быть костыль на случай отсутствия первого аргумента (выход по Ctrl+D)
 	if (data->args[1])
 	{
 		if (ft_is_number(data->args[1]) == 1)

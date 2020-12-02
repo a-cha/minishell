@@ -33,9 +33,17 @@ static char	*concat_env(char *dup, const char *line, size_t *s, t_data *part)
 			return (NULL);
 		}
 	}
-	else if (!(env = find_env(&(part->env), env)))
+	else if (!(env = find_env(&(part->env), tmp)))
 	{
 		if (!(env = ft_strdup("")))
+		{
+			free_memory(tmp);
+			return (NULL);
+		}
+	}
+	else
+	{
+		if (!(env = ft_strdup(env)))
 		{
 			free_memory(tmp);
 			return (NULL);
