@@ -52,8 +52,8 @@ void			extern_bin(t_data *data)
 	int 		child;
 	int			status;
 	char 		**env;
-	int			fd_in;
-	int 		fd_out;
+//	int			fd_in;
+//	int 		fd_out;
 
 	if (!(ar = ft_split(find_env(&data->env, "PATH"), ':')))
 		ft_exit(data, EXIT_FAILURE);
@@ -69,12 +69,12 @@ void			extern_bin(t_data *data)
 		ft_arrayfree(ar);
 		ft_exit(data, EXIT_FAILURE);
 	}
-	fd_in = install_in_fd(data);
-	fd_out = install_out_fd(data);
-	dup2(fd_in, 0);
-	close(fd_in);
-	dup2(fd_out, 1);
-	close(fd_out);
+//	fd_in = install_in_fd(data);
+//	fd_out = install_out_fd(data);
+//	dup2(fd_in, 0);
+//	close(fd_in);
+//	dup2(fd_out, 1);
+//	close(fd_out);
 	if ((child = fork()) < 0)
 		ft_exit(data, EXIT_FAILURE);
 	else if (child == 0)

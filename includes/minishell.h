@@ -90,6 +90,7 @@ void			 	print_d_array(char **array);
 */
 t_data 				*shell_init(int argc, char **argv, char **env);
 t_data				*malloc_shell(char **env);
+void				new_processing(t_data *data);
 int 				process_status(void);
 void				processing(t_data *data);
 void				processing_pipe(t_data *data);
@@ -97,7 +98,7 @@ void				child_process(t_data *data);
 char				**list_to_array(t_data *data);
 int 				install_in_fd(t_data *data);
 int					install_out_fd(t_data *data);
-void				parent_process(t_data *data, int pid);
+void				parent_process(t_data *data, pid_t pid);
 void				signal_oper();
 void				pwd(t_data *data);
 void				echo(t_data *data);
