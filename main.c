@@ -113,17 +113,19 @@ int			main(int argc, char **argv, char **env)
 				free_memory(line);
 				ft_exit(data, EXIT_FAILURE);
 			}
-//			print_d_array(data->args);
 			if (data->type == '|')
-				processing_pipe(data);
+				new_processing(data);
+//			print_d_array(data->args);
+//			if (data->type == '|')
+//				processing_pipe(data);
 			else
 				processing(data);
 		}
 		reset_t_data(data);
 		free_memory(line);
-//		tmp = dup(0);
-//		printf("%d\n", tmp);
-//		close(tmp);
+		tmp = dup(0);
+		printf("%d\n", tmp);
+		close(tmp);
 	}
 	return (0);
 }

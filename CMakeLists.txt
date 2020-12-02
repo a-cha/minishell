@@ -81,8 +81,6 @@ add_executable(minishell
         srcs/processing_pipe.c
         utils_lst.c
         srcs/parse/env_subst.c
-        srcs/parse/lines_and_quoters.c
-#        tests/tests_parsing.c
-        )
+        srcs/parse/lines_and_quoters.c srcs/new_processing.c)
 
 target_link_libraries(minishell libft.a)

@@ -91,8 +91,12 @@ void			reset_t_data(t_data *data)
 		data->infile = 0;
 	if (data->outfile == -1)
 		data->outfile = 0;
-	dup2(data->orig_input, 0);
-	dup2(data->orig_output, 1);
+//	close fd after redirections
+	if (data->type != '|')
+	{
+		dup2(data->orig_input, 0);
+		dup2(data->orig_output, 1);
+	}
 }
 
 //	remove

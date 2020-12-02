@@ -40,8 +40,8 @@ void				parent_process(t_data *data, int pid)
 	int status;
 
 	status = 0;
-	dup2(data->orig_input, 0);
-	dup2(data->orig_output, 1);
+//	dup2(data->orig_input, 0);
+//	dup2(data->orig_output, 1);
 	last_pid = pid;
 	while (status != -1)
 		status = process_status();
@@ -55,9 +55,9 @@ void				child_process(t_data *data)
 	char 		**env;
 
 	last_status = 0;
-	if (data->pipe_fd[0])
-		close(data->pipe_fd[0]);
-	if (our_command(data) == 0)
+//	if (data->pipe_fd[0])
+//		close(data->pipe_fd[0]);
+	if (our_command(data) == 1)
 		exit(0);
 	if (!(ar = ft_split(find_env(&data->env, "PATH"), ':')))
 		ft_exit(data, EXIT_FAILURE);
@@ -95,6 +95,7 @@ int			install_out_fd(t_data *data)
 		if (pipe(data->pipe_fd) == -1)
 			ft_exit(data, EXIT_FAILURE);
 		fd_out = dup(data->pipe_fd[1]);
+		printf("fd_out %d\n", data->pipe_fd[1]);
 	}
 	if (data->outfile)
 	{
