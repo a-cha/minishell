@@ -75,13 +75,13 @@ void				child_process(t_data *data)
 		printf("minishell: %s: %s\n", str, strerror(errno));
 		free_memory(str);
 		ft_arrayfree(env);
-//		ft_exit(data, 126);
-		exit(126);
+		ft_exit(data, 126);
+//		exit(126);
 	}
 	free_memory(str);
 	ft_arrayfree(env);
-//	ft_exit(data, 127);
-	exit(127);
+	ft_exit(data, 127);
+//	exit(127);
 }
 
 

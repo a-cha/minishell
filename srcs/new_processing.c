@@ -20,8 +20,8 @@ void	new_processing(t_data *data)
 
 	if (pipe(data->pipe_fd) < 0)
 		ft_exit(data, EXIT_FAILURE);
-	printf("%d\n", data->pipe_fd[0]);
-	printf("%d\n", data->pipe_fd[1]);
+//	printf("%d\n", data->pipe_fd[0]);
+//	printf("%d\n", data->pipe_fd[1]);
 
 	pid = fork();
 	if (pid == -1)
@@ -38,10 +38,10 @@ void	new_processing(t_data *data)
 	{
 		dup2(data->pipe_fd[0], 0);
 		close(data->pipe_fd[1]);
-		waitpid(pid, &status, 0);
+//		waitpid(pid, &status, 0);
 //		read(data->pipe_fd[0], buff, 9);
 //		write(data->orig_output, buff, 10);
-//		parent_process(data, pid);
+		parent_process(data, pid);
 		close(data->pipe_fd[0]);
 	}
 }
