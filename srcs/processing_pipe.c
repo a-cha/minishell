@@ -12,25 +12,37 @@
 
 #include "minishell.h"
 
+static int             for_return(t_data *data, void (*f)(t_data *data))
+{
+	f(data);
+	return (0);
+}
+
 int 				our_command(t_data *data)
 {
 	if(data->args[0])
 	{
-		if (ft_strcmp(data->args[0], "cd") == 0)
-			cd(data);
-		else if (ft_strcmp(data->args[0], "pwd") == 0)
-			pwd(data);
-		else if (ft_strcmp(data->args[0], "echo") == 0)
-			echo(data);
-		else if (!(ft_strcmp(data->args[0], "env")))
-			test_env_list(&data->env);
-		else if (!(ft_strcmp(data->args[0], "exit")))
-			ft_exit(data, last_status);
+		if (!(ft_strcmp(data->args[0], "cd")))
+			return(for_return(data, cd));
+		else if (!(ft_strcmp(data->args[0], "pwd")))
+			return(for_return(data, pwd));
+		else if (!(ft_strcmp(data->args[0], "echo")))
+			return(for_return(data, echo));
 		else if (!(ft_strcmp(data->args[0], "export")))
-			env_export(data);
+			return(for_return(data, env_export));
 		else if (!(ft_strcmp(data->args[0], "unset")))
-			env_unset(data);
-		return (0);
+			return(for_return(data, env_unset));
+		else if (!(ft_strcmp(data->args[0], "env")))
+		{
+			test_env_list(&data->env);
+			return (0);
+		}
+		else if (!(ft_strcmp(data->args[0], "exit")))
+		{
+			ft_exit(data, last_status);
+			return (0);
+		}
+		return (1);
 	}
 	return (1);
 }
@@ -57,8 +69,8 @@ void				child_process(t_data *data)
 	last_status = 0;
 //	if (data->pipe_fd[0])
 //		close(data->pipe_fd[0]);
-	if (our_command(data) == 1)
-		exit(0);
+	if (our_command(data) == 0)
+		exit(EXIT_SUCCESS);
 	if (!(ar = ft_split(find_env(&data->env, "PATH"), ':')))
 		ft_exit(data, EXIT_FAILURE);
 	if ((str = is_corr_path(ar, data->args[0])) == NULL)

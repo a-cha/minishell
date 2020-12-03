@@ -86,16 +86,18 @@ void			extern_bin(t_data *data)
 		ft_arrayfree(ar);
 		free_memory(str);
 		last_status = 127;
-		exit(127);
+		ft_exit(data, 127);
 	}
 	else
 	{
-		waitpid(child ,&status, 0);
-		if (WIFEXITED(status))
-			last_status = WEXITSTATUS(status);
+		parent_process(data, child);
+//		waitpid(child ,&status, 0);
+//		if (WIFEXITED(status))
+//			last_status = WEXITSTATUS(status);
 	}
 	free_memory(str);
 	ft_arrayfree(env);
+//	ft_exit(data, 127);
 }
 
 char			*is_corr_path(char **arr, char *str)
@@ -123,10 +125,11 @@ char			*is_corr_path(char **arr, char *str)
 //				printf("read ");
 //			if (stats.st_mode & W_OK)
 //				printf("write ");
-//			if (stats.st_mode & X_OK)
+			if (stats.st_mode & X_OK)
+				return (buff1);
 //				printf("execute\n");
 //			printf("\nFile size: %lld", stats.st_size);
-			return (buff1);
+
 		}
 		free_memory(buff1);
 	}

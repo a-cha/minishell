@@ -18,7 +18,17 @@ void		set_new_env(t_data *data)
 
 	i = 0;
 	while (data->args[++i])
+	{
+		if (data->args[i][0] == '=')
+		{
+			ft_putstr_fd("minihell: export: '", 1);
+			ft_putstr_fd(data->args[i], 1);
+			ft_putstr_fd("': not a valid identifier\n", 1);
+			last_status = 1;
+			break;
+		}
 		ft_lstadd_back(&data->env, ft_lstnew(env_to_cont(data->args[i])));
+	}
 }
 
 void	rewrite_cont(t_data *data, t_env *env)

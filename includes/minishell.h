@@ -100,7 +100,7 @@ void				child_process(t_data *data);
 char				**list_to_array(t_data *data);
 int 				install_in_fd(t_data *data);
 int					install_out_fd(t_data *data);
-void				parent_process(t_data *data, pid_t pid);
+void				parent_process(t_data *data,int pid);
 void				signal_oper();
 void				pwd(t_data *data);
 void				echo(t_data *data);
