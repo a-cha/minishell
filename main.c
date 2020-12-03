@@ -32,7 +32,7 @@ t_data	*shell_init(int argc, char **argv, char **env)
 		free_memory(data);
 		exit(EXIT_FAILURE);
 	}
-	if (!(data->args = (char **)ft_calloc(1, sizeof(char *))))
+	if (!(data->args = (char **)ft_calloc(1, sizeof(char **))))
 	{
 		free_memory(data);
 		ft_lstclear(&data->env, del_content);
@@ -41,8 +41,8 @@ t_data	*shell_init(int argc, char **argv, char **env)
 	*(data->args) = NULL;
 	data->orig_input = dup(0);
 	data->orig_output = dup(1);
-//	data->infile = -1;
-//	data->outfile = -1;
+	data->infile = -1;
+	data->outfile = -1;
 	signal_oper();
 	return (data);
 }

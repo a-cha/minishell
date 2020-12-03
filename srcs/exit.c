@@ -42,7 +42,6 @@ void		print_error(char *er_status, char *er_mess, int new_line)
 
 void		ft_exit(t_data *data, int exit_status)
 {
-//	здесь должен быть костыль на случай отсутствия первого аргумента (выход по Ctrl+D)
 	if (data->args[1])
 	{
 		if (ft_is_number(data->args[1]) == 1)
@@ -50,7 +49,7 @@ void		ft_exit(t_data *data, int exit_status)
 		else if (data->args[2])
 		{
 			ft_putstr_fd("exit\n", 1);
-			return (ft_putstr_fd("Вводи > exit: too many arguments\n", 1));
+			return (ft_putstr_fd("minihell > exit: too many arguments\n", 1));
 		}
 		else
 		{
@@ -60,9 +59,9 @@ void		ft_exit(t_data *data, int exit_status)
 			exit_status = -1;
 		}
 	}
-	if (data->infile)
+	if (data->infile >= 0)
 		close(data->infile);
-	if (data->outfile)
+	if (data->outfile >= 0)
 		close(data->outfile);
 	ft_arrayfree(data->args);
 	ft_lstclear(&data->env, del_content);
@@ -73,4 +72,3 @@ void		ft_exit(t_data *data, int exit_status)
 	free_memory(data);
 	exit(exit_status);
 }
-

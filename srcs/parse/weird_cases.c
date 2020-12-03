@@ -17,11 +17,13 @@ static int	space(const char *str, int start, int len)
 	size_t	i;
 
 	i = 0;
-	while (i < len && str[start + i] == ' ' && str[start + i] != ';'
-	&& str[start + i] != '|' && str[start + i] != '>' && str[start + i] != '<')
+	while (i < len && is_symb(&str[start + i], ' ') &&
+	is_symb(&str[start + i], ';') && is_symb(&str[start + i], '|') &&
+	is_symb(&str[start + i], '>') && is_symb(&str[start + i], '<'))
 		i++;
-	if (len != 0 && str[start + i] != ' ' && str[start + i] != ';'
-	&& str[start + i] != '|' && str[start + i] != '>' && str[start + i] != '<')
+	if (len != 0 && !is_symb(&str[start + i], ' ') &&
+	!is_symb(&str[start + i], ';') && !is_symb(&str[start + i], '|') &&
+	!is_symb(&str[start + i], '>') && !is_symb(&str[start + i], '<'))
 		return (0);
 	return (1);
 }
@@ -113,6 +115,12 @@ char 		is_in_quots(const char *line, size_t n)
 	return (0);
 }
 
+int			set_status()
+{
+	last_status = 258;
+	return (1);
+}
+
 int			weird_cases(const char *line)
 {
 	size_t	i;
@@ -125,14 +133,14 @@ int			weird_cases(const char *line)
 		i += s + 1 + (r == 'd');
 		if (!is_in_quots(line, i - 1))
 			if ((is_wrong_redir(line + i)))
-				return (1);
+				return (set_status());
 	}
 	i = 0;
 	while ((s = is_linebreak(line + i)) >= 0)
 	{
 		if (!is_in_quots(line, i + s))
 			if ((is_blank(line, i, s)))
-				return (1);
+				return (set_status());
 		i += s + 1;
 	}
 	return (0);
