@@ -83,10 +83,10 @@ void			extern_bin(t_data *data)
 		ft_putstr_fd("minishell: ", 1);
 		ft_putstr_fd(data->args[0], 1);
 		ft_putstr_fd(": command not found\n", 1);
-		ft_arrayfree(ar);
 		free_memory(str);
+		ft_arrayfree(ar);
 		last_status = 127;
-		ft_exit(data, 127);
+		exit(127);
 	}
 	else
 	{
