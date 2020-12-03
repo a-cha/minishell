@@ -82,20 +82,20 @@ void				child_process(t_data *data)
 		ft_exit(data, EXIT_FAILURE);
 	}
 	execve((const char *)str, data->args, env);
+//	need to set correct errno and write error to 2 fd
 	if (errno == 13)
 	{
 		printf("minishell: %s: %s\n", str, strerror(errno));
 		free_memory(str);
 		ft_arrayfree(env);
-		ft_exit(data, 126);
-//		exit(126);
+//		ft_exit(data, 126);
+		exit(126);
 	}
 	free_memory(str);
 	ft_arrayfree(env);
-	ft_exit(data, 127);
-//	exit(127);
+//	ft_exit(data, 127);
+	exit(127);
 }
-
 
 int			install_out_fd(t_data *data)
 {

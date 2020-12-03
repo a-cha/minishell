@@ -21,9 +21,9 @@ void		set_new_env(t_data *data)
 	{
 		if (data->args[i][0] == '=')
 		{
-			ft_putstr_fd("minihell: export: '", 1);
-			ft_putstr_fd(data->args[i], 1);
-			ft_putstr_fd("': not a valid identifier\n", 1);
+			ft_putstr_fd("minihell: export: '", 2);
+			ft_putstr_fd(data->args[i], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
 			last_status = 1;
 			break;
 		}

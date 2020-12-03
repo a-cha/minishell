@@ -17,7 +17,7 @@ void	pwd(t_data *data)
 	char	*pwd;
 
 	if ((pwd = getcwd(NULL, 0)) == NULL)
-		ft_putstr_fd("error\n", 1);
+		ft_putstr_fd("error\n", 2);
 	else
 	{
 		ft_putstr_fd(pwd, 1);

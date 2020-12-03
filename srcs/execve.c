@@ -80,9 +80,9 @@ void			extern_bin(t_data *data)
 	else if (child == 0)
 	{
 		execve((const char *) str, data->args, env);
-		ft_putstr_fd("minishell: ", 1);
-		ft_putstr_fd(data->args[0], 1);
-		ft_putstr_fd(": command not found\n", 1);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(data->args[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
 		free_memory(str);
 		ft_arrayfree(ar);
 		last_status = 127;
