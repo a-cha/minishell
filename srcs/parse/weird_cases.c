@@ -17,23 +17,14 @@ static int	space(const char *str, int start, int len)
 	size_t	i;
 
 	i = 0;
-	while (i < len && is_symb(&str[start + i], ' ') &&
-	is_symb(&str[start + i], ';') && is_symb(&str[start + i], '|') &&
-	is_symb(&str[start + i], '>') && is_symb(&str[start + i], '<'))
+	while (i < len && str[start + i] == ' ' && str[start + i] != ';'
+	&& str[start + i] != '|' && str[start + i] != '>' && str[start + i] != '<')
 		i++;
-	if (len != 0 && !is_symb(&str[start + i], ' ') &&
-	!is_symb(&str[start + i], ';') && !is_symb(&str[start + i], '|') &&
-	!is_symb(&str[start + i], '>') && !is_symb(&str[start + i], '<'))
+	if (len != 0 && str[start + i] != ' ' && str[start + i] != ';'
+	&& str[start + i] != '|' && str[start + i] != '>' && str[start + i] != '<')
 		return (0);
 	return (1);
 }
-//while (i < len && is_symb(&str[start + i], ' ') &&
-//is_symb(&str[start + i], ';') && is_symb(&str[start + i], '|') &&
-//is_symb(&str[start + i], '>') && is_symb(&str[start + i], '<'))
-//i++;
-//if (len != 0 && !is_symb(&str[start + i], ' ') &&
-//!is_symb(&str[start + i], ';') && !is_symb(&str[start + i], '|') &&
-//!is_symb(&str[start + i], '>') && !is_symb(&str[start + i], '<'))
 
 static int	ret_token(char t, int n, char *str)
 {
@@ -48,9 +39,9 @@ static int	ret_token(char t, int n, char *str)
 	}
 	else
 		weird = str;
-	ft_putstr_fd("minishell: syntax error near unexpected token `", 1);
-	ft_putstr_fd(weird, 1);
-	ft_putstr_fd("'\n", 1);
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	ft_putstr_fd(weird, 2);
+	ft_putstr_fd("'\n", 2);
 	free_memory(weird);
 	return (1);
 }
@@ -86,8 +77,7 @@ static int	is_wrong_redir(const char *str)
 	c = -1;
 	while (str[++c] && str[c] == ' ')
 		;
-	if (str[c] && (str[c] != ' ' && str[c] != '>' && str[c] != '<')
-	&& str[c] != ';' && str[c] != '|' )
+	if (str[c] && (str[c] != ' ' && str[c] != '>' && str[c] != '<'))
 		flag = 1;
 	if (flag == 0)
 		return (ret_token(0, 0, ft_strdup("newline")));

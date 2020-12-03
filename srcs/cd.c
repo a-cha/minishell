@@ -49,5 +49,4 @@ void	cd(t_data *data)
 	last_status = 0;
 	cd = getcwd(NULL, 0);
 	renew_pwd(data->env, cd);
-	free(cd);
 }

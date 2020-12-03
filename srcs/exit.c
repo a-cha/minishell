@@ -49,14 +49,14 @@ void		ft_exit(t_data *data, int exit_status)
 			exit_status = ft_atoi(data->args[1]);
 		else if (data->args[2])
 		{
-			ft_putstr_fd("exit\n", 1);
-			return (ft_putstr_fd("minihell > exit: too many arguments\n", 1));
+			ft_putstr_fd("exit\n", 2);
+			return (ft_putstr_fd("minihell > exit: too many arguments\n", 2));
 		}
 		else
 		{
-			ft_putstr_fd("exit :", 1);
-			ft_putstr_fd(data->args[1], 1);
-			ft_putstr_fd(": numeric argument required\n", 1);
+			ft_putstr_fd("exit :", 2);
+			ft_putstr_fd(data->args[1], 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
 			exit_status = -1;
 		}
 	}
