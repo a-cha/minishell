@@ -94,6 +94,7 @@ void			extern_bin(t_data *data)
 		if (WIFEXITED(status))
 			last_status = WEXITSTATUS(status);
 	}
+	ft_arrayfree(ar);
 	free_memory(str);
 	ft_arrayfree(env);
 }
