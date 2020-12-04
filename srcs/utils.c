@@ -31,7 +31,6 @@ void			reset_t_data(t_data *data)
 	data->args = (char **)ft_calloc(1, sizeof(char **));
 	*(data->args) = NULL;
 	data->len = -1;
-//	why this strings commented?
 	if (data->infile >= 0)
 	{
 		close(data->infile);
@@ -42,6 +41,7 @@ void			reset_t_data(t_data *data)
 		close(data->outfile);
 		data->outfile = -1;
 	}
+	data->flag_redir = 0;
 //	what is this?
 //	if (data->infile == -1)
 //		data->infile = 0;
