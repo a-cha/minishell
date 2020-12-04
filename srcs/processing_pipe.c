@@ -111,7 +111,6 @@ int			install_out_fd(t_data *data)
 		if (pipe(data->pipe_fd) == -1)
 			ft_exit(data, EXIT_FAILURE);
 		fd_out = dup(data->pipe_fd[1]);
-		printf("fd_out %d\n", data->pipe_fd[1]);
 	}
 	if (data->outfile)
 	{

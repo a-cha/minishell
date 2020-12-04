@@ -18,8 +18,16 @@ void	new_processing(t_data *data)
 	int status;
 	char buff[10];
 
-	if (pipe(data->pipe_fd) < 0)
-		ft_exit(data, EXIT_FAILURE);
+	if (data->flag_redir == 0)
+	{
+		if (pipe(data->pipe_fd) < 0)
+			ft_exit(data, EXIT_FAILURE);
+	}
+	else
+	{
+		data->pipe_fd[0] = data->infile;
+		data->pipe_fd[1] = data->outfile;
+	}
 //	printf("%d\n", data->pipe_fd[0]);
 //	printf("%d\n", data->pipe_fd[1]);
 
