@@ -89,5 +89,3 @@ char		**ft_arrjoin_pro(char **arr1, char **arr2, char flag)
 	free_memory(arr2);
 	return (res);
 }
-
-//	echo """""""""",         wtf     :""

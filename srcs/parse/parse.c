@@ -67,6 +67,8 @@ static int	get_part(const char *line, t_data *part)
 		if (!(part->args = ft_arrjoin_pro(part->args, handle_line
 		(ft_substr(line, i, s), part), *(line + i))))
 			ft_exit(part, EXIT_FAILURE);
+//		if (!part->flag_redir)
+//			part->type = '\0';
 		if (!r)
 			break ;
 		i += s + 2 + quot_marks(line + i, part, s, r);
@@ -78,10 +80,12 @@ int			parse(const char *line, t_data *part)
 {
 	int 	i;
 
-	if ((weird_cases(line)))
+	if ((i = weird_cases(line)))
 	{
-		last_status = 258;
-		return (ft_strlen(line));
+		if (i < 0)
+			ft_exit(part, EXIT_FAILURE);
+		else
+			return (ft_strlen(line));
 	}
 	i = get_part(line, part);
 	return (i);

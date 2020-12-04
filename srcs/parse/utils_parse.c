@@ -54,7 +54,7 @@ size_t		catch_first_sign(const char *str, t_data *part, char *r)
 		min = res;
 	if (str[min] == SEMICOLON)
 		part->type = SEMICOLON;
-	else if (str[min] == PIPE && !part->flag_redir)
+	else if (str[min] == PIPE)
 		part->type = PIPE;
 	else
 		part->type = '\0';
