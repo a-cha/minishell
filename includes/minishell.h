@@ -46,6 +46,7 @@ typedef struct		s_data
 //	file descriptors for redirections (maybe there is another implementation)
 	int				orig_input;
 	int 			orig_output;
+	char			flag_redir;
 	int				infile;
 	int 			outfile;
 	int				pipe_fd[2];
