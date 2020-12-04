@@ -99,6 +99,7 @@ void		redirections(char *line, t_data *part)
 		free_memory(name);
 		part->flag_redir = 1;
 	}
+
 }
 
 /*

@@ -56,12 +56,14 @@ typedef struct		s_data
 /*
 ** Defines for parsing
 */
+
 # define SEMICOLON (59)
 # define PIPE (124)
 
 /*
 ** Prototypes for parsing
 */
+
 size_t				catch_first_sign(const char *str, t_data *part, char *r);
 int					parse(const char *line, t_data *part);
 void				ft_arrayfree(char **array);
@@ -91,6 +93,7 @@ void			 	print_d_array(char **array);
 /*
 ** Prototypes for commands
 */
+
 t_data 				*shell_init(int argc, char **argv, char **env);
 t_data				*malloc_shell(char **env);
 void				new_processing(t_data *data);

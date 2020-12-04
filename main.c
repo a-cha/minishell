@@ -94,7 +94,6 @@ int			main(int argc, char **argv, char **env)
 	t_data  *data;
 	char	*line;
 	int 	n;
-	int tmp;
 
 	data = shell_init(argc, argv, env);
 	while (1)
@@ -107,7 +106,6 @@ int			main(int argc, char **argv, char **env)
 			ft_exit(data, EXIT_FAILURE);
 		while (*(line + n))
 		{
-			reset_t_data(data);
 			if ((n += parse(line + n, data)) < 0)
 			{
 				free_memory(line);
@@ -120,6 +118,7 @@ int			main(int argc, char **argv, char **env)
 //				processing_pipe(data);
 			else
 				processing(data);
+			reset_t_data(data);
 		}
 		reset_t_data(data);
 		free_memory(line);
@@ -127,7 +126,4 @@ int			main(int argc, char **argv, char **env)
 //		printf("%d\n", tmp);
 //		close(tmp);
 	}
-	return (0);
 }
-//	segfault:
-//	echo """""""""",         wtf     :""
