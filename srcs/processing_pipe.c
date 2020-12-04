@@ -67,6 +67,7 @@ void				child_process(t_data *data)
 	char 		**env;
 
 	last_status = 0;
+	errno = 0;
 //	if (data->pipe_fd[0])
 //		close(data->pipe_fd[0]);
 	if (our_command(data) == 0)
@@ -74,7 +75,7 @@ void				child_process(t_data *data)
 	if (!(ar = ft_split(find_env(&data->env, "PATH"), ':')))
 		ft_exit(data, EXIT_FAILURE);
 	if ((str = is_corr_path(ar, data->args[0])) == NULL)
-		str = data->args[0];
+		str = ft_strdup(data->args[0]);
 	if (!(env = list_to_array(data)))
 	{
 		free_memory(str);
@@ -82,18 +83,21 @@ void				child_process(t_data *data)
 		ft_exit(data, EXIT_FAILURE);
 	}
 	execve((const char *)str, data->args, env);
-//	need to set correct errno and write error to 2 fd
 	if (errno == 13)
 	{
-		printf("minishell: %s: %s\n", str, strerror(errno));
+
 		free_memory(str);
 		ft_arrayfree(env);
-//		ft_exit(data, 126);
+		ft_arrayfree(ar);
 		exit(126);
 	}
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(data->args[0], 2);
+	ft_putstr_fd(": command not found\n", 2);
 	free_memory(str);
+	ft_arrayfree(ar);
 	ft_arrayfree(env);
-//	ft_exit(data, 127);
+	last_status = 127;
 	exit(127);
 }
 

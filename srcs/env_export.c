@@ -19,13 +19,13 @@ void		set_new_env(t_data *data)
 	i = 0;
 	while (data->args[++i])
 	{
-		if (data->args[i][0] == '=')
+		if (data->args[i][0] == '=' || ft_isdigit(data->args[i][0]))
 		{
 			ft_putstr_fd("minihell: export: '", 2);
 			ft_putstr_fd(data->args[i], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
 			last_status = 1;
-			break;
+			continue ;
 		}
 		ft_lstadd_back(&data->env, ft_lstnew(env_to_cont(data->args[i])));
 	}
@@ -65,7 +65,7 @@ void       print_exp_list(t_list **env_dup, t_data *data)
 	while (tmp)
 	{
 		env = tmp->content;
-		if (is_first_symbol(env->env_name, '_') == 1 ||
+		if (is_first_symbol(env->env_name, '_') == 0 ||
 				(env->env_name[1] && is_first_symbol(env->env_name + 1, '_')))
 		{
 			ft_putstr_fd("declare -x ", 1);
