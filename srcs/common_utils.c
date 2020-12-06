@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int 		process_status(void)
+int	process_status(void)
 {
 	int			child;
 	int			status;

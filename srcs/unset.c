@@ -31,7 +31,7 @@ static t_list	*find_prev(t_list **env_dup, char *str)
 	return (NULL);
 }
 
-void 		remove_elem(t_list **env_dup, char *str)
+void			remove_elem(t_list **env_dup, char *str)
 {
 	t_list		*prev;
 	t_list		*tmp;
@@ -50,10 +50,10 @@ void 		remove_elem(t_list **env_dup, char *str)
 	}
 }
 
-void		env_unset(t_data *data)
+void			env_unset(t_data *data)
 {
-	t_env	*env;
-	int		i;
+	t_env		*env;
+	int			i;
 
 	i = 0;
 	while (data->args[++i])
@@ -62,7 +62,7 @@ void		env_unset(t_data *data)
 		if (env == NULL)
 		{
 			last_status = 1;
-			return;
+			return ;
 		}
 		if (!(ft_strcmp(data->args[i], env->env_name)))
 			remove_elem(&data->env, data->args[i]);

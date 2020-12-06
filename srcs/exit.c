@@ -27,7 +27,7 @@ static int		ft_is_number(char *str)
 	return (1);
 }
 
-void		print_error(char *er_status, char *er_mess, int new_line)
+void				print_error(char *er_status, char *er_mess, int new_line)
 {
 	ft_putstr_fd("minishell : ", 2);
 	if (er_status)
@@ -40,9 +40,8 @@ void		print_error(char *er_status, char *er_mess, int new_line)
 		ft_putstr_fd("\n", 2);
 }
 
-void		ft_exit(t_data *data, int exit_status)
+void				ft_exit(t_data *data, int exit_status)
 {
-//	здесь должен быть костыль на случай отсутствия первого аргумента (выход по Ctrl+D)
 	if (data->args[0] && data->args[1])
 	{
 		if (ft_is_number(data->args[1]) == 1)

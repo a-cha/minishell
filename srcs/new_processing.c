@@ -15,8 +15,6 @@
 void	new_processing(t_data *data)
 {
 	pid_t pid;
-	int status;
-	char buff[10];
 
 	if (data->flag_redir == 0)
 	{
@@ -28,9 +26,6 @@ void	new_processing(t_data *data)
 		data->pipe_fd[0] = data->infile;
 		data->pipe_fd[1] = data->outfile;
 	}
-//	printf("%d\n", data->pipe_fd[0]);
-//	printf("%d\n", data->pipe_fd[1]);
-
 	pid = fork();
 	if (pid == -1)
 		ft_exit(data, EXIT_FAILURE);
@@ -38,7 +33,6 @@ void	new_processing(t_data *data)
 	{
 		dup2(data->pipe_fd[1], 1);
 		close(data->pipe_fd[0]);
-//		dup2(data->pipe_fd[1], 1);
 		child_process(data);
 		close(data->pipe_fd[1]);
 	}
@@ -46,9 +40,6 @@ void	new_processing(t_data *data)
 	{
 		dup2(data->pipe_fd[0], 0);
 		close(data->pipe_fd[1]);
-//		waitpid(pid, &status, 0);
-//		read(data->pipe_fd[0], buff, 9);
-//		write(data->orig_output, buff, 10);
 		parent_process(data, pid);
 		close(data->pipe_fd[0]);
 	}
