@@ -65,6 +65,7 @@ void				child_process(t_data *data)
 	char		**ar;
 	char		*str;
 	char 		**env;
+	char 		*check;
 
 	last_status = 0;
 	errno = 0;
@@ -72,10 +73,27 @@ void				child_process(t_data *data)
 //		close(data->pipe_fd[0]);
 	if (our_command(data) == 0)
 		exit(EXIT_SUCCESS);
-	if (!(ar = ft_split(find_env(&data->env, "PATH"), ':')))
-		ft_exit(data, EXIT_FAILURE);
-	if ((str = is_corr_path(ar, data->args[0])) == NULL)
-		str = ft_strdup(data->args[0]);
+//	if (!(ar = ft_split(find_env(&data->env, "PATH"), ':')))
+//		ft_exit(data, EXIT_FAILURE);
+//	if ((str = is_corr_path(ar, data->args[0])) == NULL)
+//		str = ft_strdup(data->args[0]);
+	check = find_env(&data->env, "PATH");
+	if (data->args[0][0] != '/' && check != NULL)
+	{
+		if (!(ar = ft_split(check, ':')))
+			ft_exit(data, EXIT_FAILURE);
+//		if (!(ar = ft_split(find_env(&data->env, "PATH"), ':')))
+//			ft_exit(data, EXIT_FAILURE);
+		if ((str = is_corr_path(ar, data->args[0])) == NULL)
+			if (!(str = ft_strdup(data->args[0])))
+			{
+				ft_arrayfree(ar);
+				ft_exit(data, EXIT_FAILURE);
+			}
+	}
+	else
+		if (!(str = ft_strdup(data->args[0])))
+			ft_exit(data, EXIT_FAILURE);
 	if (!(env = list_to_array(data)))
 	{
 		free_memory(str);

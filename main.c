@@ -32,7 +32,7 @@ t_data	*shell_init(int argc, char **argv, char **env)
 		free_memory(data);
 		exit(EXIT_FAILURE);
 	}
-	if (!(data->args = (char **)ft_calloc(1, sizeof(char **))))
+	if (!(data->args = (char **)ft_calloc(1, sizeof(char *))))
 	{
 		free_memory(data);
 		ft_lstclear(&data->env, del_content);

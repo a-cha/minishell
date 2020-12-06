@@ -50,19 +50,28 @@ void			extern_bin(t_data *data)
 	char		**ar;
 	char		*str;
 	int 		child;
-	int			status;
 	char 		**env;
+	char		*check;
 //	int			fd_in;
 //	int 		fd_out;
 
-	if (!(ar = ft_split(find_env(&data->env, "PATH"), ':')))
-		ft_exit(data, EXIT_FAILURE);
-	if ((str = is_corr_path(ar, data->args[0])) == NULL)
-		if (!(str = ft_strdup(data->args[0])))
-		{
-			ft_arrayfree(ar);
+	check = find_env(&data->env, "PATH");
+	if (data->args[0][0] != '/' && check != NULL)
+	{
+		if (!(ar = ft_split(check, ':')))
 			ft_exit(data, EXIT_FAILURE);
-		}
+//		if (!(ar = ft_split(find_env(&data->env, "PATH"), ':')))
+//			ft_exit(data, EXIT_FAILURE);
+		if ((str = is_corr_path(ar, data->args[0])) == NULL)
+			if (!(str = ft_strdup(data->args[0])))
+			{
+				ft_arrayfree(ar);
+				ft_exit(data, EXIT_FAILURE);
+			}
+	}
+	else
+		if (!(str = ft_strdup(data->args[0])))
+			ft_exit(data, EXIT_FAILURE);
 	if (!(env = list_to_array(data)))
 	{
 		free_memory(str);
@@ -75,7 +84,8 @@ void			extern_bin(t_data *data)
 //	close(fd_in);
 //	dup2(fd_out, 1);
 //	close(fd_out);
-	if ((child = fork()) < 0)
+	child = fork();
+	if (child == -1)
 		ft_exit(data, EXIT_FAILURE);
 	else if (child == 0)
 	{
@@ -84,7 +94,9 @@ void			extern_bin(t_data *data)
 		ft_putstr_fd(data->args[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
 		free_memory(str);
-		ft_arrayfree(ar);
+		if (data->args[0][0] != '/' && check != NULL)
+			ft_arrayfree(ar);
+		ft_arrayfree(env);
 		last_status = 127;
 		exit(127);
 	}
@@ -95,7 +107,8 @@ void			extern_bin(t_data *data)
 //		if (WIFEXITED(status))
 //			last_status = WEXITSTATUS(status);
 	}
-	ft_arrayfree(ar);
+	if (data->args[0][0] != '/' && check != NULL)
+		ft_arrayfree(ar);
 	free_memory(str);
 	ft_arrayfree(env);
 //	ft_exit(data, 127);
