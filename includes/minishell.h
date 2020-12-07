@@ -80,7 +80,7 @@ int					is_linebreak(const char *line);
 int					weird_cases(const char *line);
 char				*handle_env(char *line, t_data *part);
 int					is_closed_quot(const char *line, char r);
-char				**handle_line(char *line, t_data *part);
+char				**handle_line(const char *line, int s, int f, t_data *part);
 char				*handle_quot(char *line, t_data *part);
 void				redirections(char *line, t_data *part);
 int					is_redir(const char *line, char *r);
