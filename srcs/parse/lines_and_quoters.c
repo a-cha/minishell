@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 /*
-** Checks if symbol has escaped (or not escaped)
+** If there are escaped symbols in string, put string in order
 */
 
 static void		escape_symb_line(char *dup)
@@ -55,13 +55,11 @@ static void		escape_symb_quot(char *dup)
 ** Handle line & quot part
 */
 
-char		**handle_line(const char *line, int s, int f, t_data *part)
+char			**handle_line(const char *line, int s, int f, t_data *part)
 {
-	char 	*dup;
-	char 	*tmp;
-	char 	**ret;
-//	crutch for redirections
-//	char	r;
+	char		*dup;
+	char		*tmp;
+	char		**ret;
 
 	if (!(dup = ft_substr(line, s, f)))
 		ft_exit(part, EXIT_FAILURE);
@@ -76,9 +74,9 @@ char		**handle_line(const char *line, int s, int f, t_data *part)
 	return (ret);
 }
 
-char		*handle_quot(char *line, t_data *part)
+char			*handle_quot(char *line, t_data *part)
 {
-	char 	*dup;
+	char		*dup;
 
 	dup = handle_env(line, part);
 	free_memory(line);

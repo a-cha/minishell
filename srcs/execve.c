@@ -12,7 +12,16 @@
 
 #include "minishell.h"
 
-char			**list_to_array(t_data *data)
+static void	*free_and_exit(char **array, char *str)
+{
+	if (array)
+		ft_arrayfree(array);
+	if (str)
+		free_memory(str);
+	return (NULL);
+}
+
+char		**list_to_array(t_data *data)
 {
 	char		**env;
 	int			i;
@@ -28,16 +37,9 @@ char			**list_to_array(t_data *data)
 	{
 		current = lst->content;
 		if (!(tmp = ft_strjoin(current->env_name, "=")))
-		{
-			free_memory(env);
-			return (NULL);
-		}
+			return (free_and_exit(env, NULL));
 		if (!(env[++i] = ft_strjoin(tmp, current->env_cont)))
-		{
-			free_memory(env);
-			free_memory(tmp);
-			return (NULL);
-		}
+			return (free_and_exit(env, tmp));
 		free_memory(tmp);
 		lst = lst->next;
 	}

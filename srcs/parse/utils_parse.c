@@ -12,6 +12,11 @@
 
 #include "minishell.h"
 
+/*
+** Finds first linebreak (pipe / semicolon) and returns index of it's position
+** If there are no linebreaks returns -1
+*/
+
 int			is_linebreak(const char *line)
 {
 	size_t	res;
@@ -24,6 +29,11 @@ int			is_linebreak(const char *line)
 		res = s;
 	return (res == ft_strlen(line) ? -1 : (int)res);
 }
+
+/*
+** Finds first quotation mark and returns index of it's position
+** If there are no quotation marks returns -1
+*/
 
 int			is_quotmark(const char *line)
 {
@@ -39,7 +49,7 @@ int			is_quotmark(const char *line)
 }
 
 /*
-** Returns pointer to first sign (pipe / semicolon / quotation marks)
+** Returns pointer to first sign (pipe / semicolon / quotation mark)
 */
 
 size_t		catch_first_sign(const char *str, t_data *part, char *r)
@@ -63,14 +73,4 @@ size_t		catch_first_sign(const char *str, t_data *part, char *r)
 	else
 		*r = '\0';
 	return (min);
-}
-
-//	remove
-void	print_d_array(char **array)
-{
-	size_t	i;
-
-	i = -1;
-	while (array[++i])
-		printf(">%s<\n", array[i]);
 }
