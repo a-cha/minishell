@@ -22,6 +22,7 @@
 # include <sys/stat.h>
 # include <stdlib.h>
 # include <signal.h>
+# include <string.h>
 
 extern int			sigint_flag;
 extern int			last_pid;

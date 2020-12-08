@@ -47,33 +47,6 @@ t_data	*shell_init(int argc, char **argv, char **env)
 	return (data);
 }
 
-void	processing(t_data *data)
-{
-	if(data->args[0])
-	{
-		if (ft_strcmp(data->args[0], "cd") == 0)
-			cd(data);
-		else if (ft_strcmp(data->args[0], "pwd") == 0)
-			pwd(data);
-		else if (ft_strcmp(data->args[0], "echo") == 0)
-			echo(data);
-		else if (!(ft_strcmp(data->args[0], "env")))
-			test_env_list(&data->env);
-		else if (!(ft_strcmp(data->args[0], "exit")))
-			ft_exit(data, last_status);
-		else if (!(ft_strcmp(data->args[0], "export")))
-			env_export(data);
-		else if (!(ft_strcmp(data->args[0], "unset")))
-			env_unset(data);
-		else if (data->args[0])
-			extern_bin(data);
-//		int i = -1;
-//		while (data->args[++i])
-//			free_memory(data->args[i]);
-//         parsed = parse(line);
-	}
-}
-
 int 		read_stdin(t_data *data, char **line)
 {
 	int		gnl;
@@ -108,19 +81,9 @@ static void		execution(t_data *data)
 	if (pid == -1)
 		ft_exit(data, EXIT_FAILURE);
 	else if (pid == 0)
-	{
-//		dup2(data->pipe_fd[1], 1);
-//		close(data->pipe_fd[0]);
 		child_process(data);
-//		close(data->pipe_fd[1]);
-	}
 	else
-	{
-//		dup2(data->pipe_fd[0], 0);
-//		close(data->pipe_fd[1]);
 		parent_process(data, pid);
-//		close(data->pipe_fd[0]);
-	}
 }
 
 int			main(int argc, char **argv, char **env)
@@ -146,20 +109,10 @@ int			main(int argc, char **argv, char **env)
 				ft_exit(data, EXIT_FAILURE);
 			}
 			execution(data);
-//			if (data->type == '|')
-//				new_processing(data);
-////			print_d_array(data->args);
-////			if (data->type == '|')
-////				processing_pipe(data);
-//			else
-//				processing(data);
 			if (*(line + n))
 				reset_t_data(data);
 		}
 		reset_t_data(data);
 		free_memory(line);
-//		tmp = dup(0);
-//		printf("%d\n", tmp);
-//		close(tmp);
 	}
 }

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	*free_and_exit(char **array, char *str)
+static void		*free_and_exit(char **array, char *str)
 {
 	if (array)
 		ft_arrayfree(array);
@@ -21,7 +21,7 @@ static void	*free_and_exit(char **array, char *str)
 	return (NULL);
 }
 
-char		**list_to_array(t_data *data)
+char			**list_to_array(t_data *data)
 {
 	char		**env;
 	int			i;
@@ -45,58 +45,6 @@ char		**list_to_array(t_data *data)
 	}
 	env[i + 1] = NULL;
 	return (env);
-}
-
-void			extern_bin(t_data *data)
-{
-	char		**ar;
-	char		*str;
-	int			child;
-	char		**env;
-	char		*check;
-
-	check = find_env(&data->env, "PATH");
-	if (data->args[0][0] != '/' && check != NULL)
-	{
-		if (!(ar = ft_split(check, ':')))
-			ft_exit(data, EXIT_FAILURE);
-		if ((str = is_corr_path(ar, data->args[0])) == NULL)
-			if (!(str = ft_strdup(data->args[0])))
-			{
-				ft_arrayfree(ar);
-				ft_exit(data, EXIT_FAILURE);
-			}
-	}
-	else if (!(str = ft_strdup(data->args[0])))
-		ft_exit(data, EXIT_FAILURE);
-	if (!(env = list_to_array(data)))
-	{
-		free_memory(str);
-		ft_arrayfree(ar);
-		ft_exit(data, EXIT_FAILURE);
-	}
-	child = fork();
-	if (child == -1)
-		ft_exit(data, EXIT_FAILURE);
-	else if (child == 0)
-	{
-		execve((const char *)str, data->args, env);
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(data->args[0], 2);
-		ft_putstr_fd(": command not found\n", 2);
-		free_memory(str);
-		if (data->args[0][0] != '/' && check != NULL)
-			ft_arrayfree(ar);
-		ft_arrayfree(env);
-		last_status = 127;
-		exit(127);
-	}
-	else
-		parent_process(data, child);
-	if (data->args[0][0] != '/' && check != NULL)
-		ft_arrayfree(ar);
-	free_memory(str);
-	ft_arrayfree(env);
 }
 
 char			*is_corr_path(char **arr, char *str)
@@ -125,4 +73,33 @@ char			*is_corr_path(char **arr, char *str)
 		free_memory(buff1);
 	}
 	return (NULL);
+}
+
+int					our_command(t_data *data)
+{
+	if (data->args[0])
+	{
+		if (!(ft_strcmp(data->args[0], "cd")))
+			return (for_return(data, cd));
+		else if (!(ft_strcmp(data->args[0], "pwd")))
+			return (for_return(data, pwd));
+		else if (!(ft_strcmp(data->args[0], "echo")))
+			return (for_return(data, echo));
+		else if (!(ft_strcmp(data->args[0], "export")))
+			return (for_return(data, env_export));
+		else if (!(ft_strcmp(data->args[0], "unset")))
+			return (for_return(data, env_unset));
+		else if (!(ft_strcmp(data->args[0], "env")))
+		{
+			test_env_list(&data->env);
+			return (0);
+		}
+		else if (!(ft_strcmp(data->args[0], "exit")))
+		{
+			ft_exit(data, last_status);
+			return (0);
+		}
+		return (1);
+	}
+	return (1);
 }
