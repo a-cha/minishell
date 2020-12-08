@@ -68,9 +68,15 @@ char		**ft_arrjoin_pro(char **arr1, char **arr2, char flag)
 	char	**res;
 
 	if (!*arr1)
+	{
+		free_memory(arr2);
 		return (arr2);
+	}
 	if (!*arr2)
+	{
+		free_memory(arr1);
 		return (arr1);
+	}
 	l = ft_arrlen(arr1);
 	if (!(res = ft_calloc(8,
 				max(l + ft_arrlen(arr2) + (flag == ' ') + !(l), 2))))
