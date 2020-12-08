@@ -50,7 +50,7 @@ static char	*concat_env(char *dup, const char *line, size_t *s, t_data *part)
 	return (dup);
 }
 
-void		free_and_exit(char *s1, char *s2, t_data *part, char flag)
+int			free_and_exit(char *s1, char *s2, t_data *part, char flag)
 {
 	if (s1)
 		free_memory(s1);
@@ -58,6 +58,7 @@ void		free_and_exit(char *s1, char *s2, t_data *part, char flag)
 		free_memory(s2);
 	if (flag == 1)
 		ft_exit(part, EXIT_FAILURE);
+	return (1);
 }
 
 char		*handle_env(char *line, t_data *part)
