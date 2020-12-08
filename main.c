@@ -118,7 +118,8 @@ int			main(int argc, char **argv, char **env)
 //				processing_pipe(data);
 			else
 				processing(data);
-			reset_t_data(data);
+			if (*(line + n))
+				reset_t_data(data);
 		}
 		reset_t_data(data);
 		free_memory(line);

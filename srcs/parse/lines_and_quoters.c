@@ -55,18 +55,23 @@ static void		escape_symb_quot(char *dup)
 ** Handle line & quot part
 */
 
-char		**handle_line(char *line, t_data *part)
+char		**handle_line(const char *line, int s, int f, t_data *part)
 {
 	char 	*dup;
+	char 	*tmp;
 	char 	**ret;
 //	crutch for redirections
 //	char	r;
 
-	dup = handle_env(line, part);
-	free_memory(line);
+	if (!(dup = ft_substr(line, s, f)))
+		ft_exit(part, EXIT_FAILURE);
+	tmp = dup;
+	dup = handle_env(dup, part);
+	free_memory(tmp);
 	redirections(dup, part);
 	escape_symb_line(dup);
-	ret = ft_split(dup, ' ');
+	if (!(ret = ft_split(dup, ' ')))
+		ft_exit(part, EXIT_FAILURE);
 	free_memory(dup);
 	return (ret);
 }

@@ -12,21 +12,19 @@
 
 #include "minishell.h"
 
-//	replace to is_symb
 static int	space(const char *str, int start, int len)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < len && is_symb(&str[start + i], ' ') && is_symb(&str[start + i], ';')
-	&& str[start + i] != '|' && str[start + i] != '>' && str[start + i] != '<')
+	while (i < len && !is_symb(&str[start + i], ' '))
 		i++;
-	if (str[start + i] && len != 0 && str[start + i] != ' ' && str[start + i] != ';'
-	&& str[start + i] != '|' && str[start + i] != '>' && str[start + i] != '<')
+	if (str[start + i] && len != 0 && is_symb(&str[start + i], ' ') &&
+	is_symb(&str[start + i], ';') && is_symb(&str[start + i], '|')
+	&& is_symb(&str[start + i], '>') && is_symb(&str[start + i], '<'))
 		return (0);
 	return (1);
 }
-//		while (i < len && is_symb(&str[start + i], ' ') && is_symb(&str[start + i], ';')
 
 static int	ret_token(char t, int n, char *str)
 {
@@ -74,16 +72,20 @@ static int	is_blank(const char *str, int start, int len)
 static int	is_wrong_redir(const char *str)
 {
 	size_t	c;
-	char	flag;
 	char	*m;
 
-	flag = 0;
 	c = -1;
-	while (str[++c] && str[c] == ' ')
+	while (str[++c] && !is_symb(&str[c], ' '))
 		;
-	if (str[c] && (str[c] != ' ' && str[c] != '>' && str[c] != '<'))
-		flag = 1;
-	if (flag == 0)
+	if (is_symb(&str[c], ' ') &&
+	is_symb(&str[c], ';') && is_symb(&str[c], '|'))
+		;
+	else
+		return (ret_token(*(str + c), 1, NULL));
+	if (str[c] && is_symb(&str[c], ' ') &&
+	is_symb(&str[c], '>') && is_symb(&str[c], '<'))
+		;
+	else
 	{
 		if (!(m = ft_strdup("newline")))
 			return (-1);
@@ -126,17 +128,18 @@ int 		is_closed_pipe(const char *line)
 
 	if (!(dup = ft_strdup(line)))
 		return (-1);
-	if ((pipe = ft_strrchr(dup, '|')))
+	if ((pipe = ft_strrchr(dup, '|')) && !is_symb(pipe, '|'))
 	{
-		*pipe = '\0';
 		if (!is_in_quots(dup, pipe - dup))
-			if (space(dup, (int)(pipe - dup), ft_strlen(dup + (int)(pipe - dup))))
+			if (space(dup, (int)(pipe - dup) + 1,
+			 				ft_strlen(dup + (int)(pipe - dup + 1))))
 			{
 				free_memory(dup);
 				if (!(dup = ft_strdup("newline")))
 					return (-1);
 				return (ret_token(0, 0, dup));
 			}
+		*pipe = '\0';
 	}
 	free_memory(dup);
 	return (0);
@@ -150,20 +153,20 @@ int			weird_cases(const char *line)
 	int 	ret;
 
 	i = 0;
-	while ((s = is_redir(line + i, &r)) >= 0)
-	{
-		i += s + 1 + (r == 'd');
-		if (!is_in_quots(line, i - 1))
-			if ((ret = is_wrong_redir(line + i)))
-				return (ret < 0 ? -1 : set_status(258));
-	}
-	i = 0;
 	while ((s = is_linebreak(line + i)) >= 0)
 	{
 		if (!is_in_quots(line, i + s))
 			if ((is_blank(line, i, s)))
 				return (set_status(258));
 		i += s + 1;
+	}
+	i = 0;
+	while ((s = is_redir(line + i, &r)) >= 0)
+	{
+		i += s + 1 + (r == 'd');
+		if (!is_in_quots(line, i - 1))
+			if ((ret = is_wrong_redir(line + i)))
+				return (ret < 0 ? -1 : set_status(258));
 	}
 	if ((ret = is_closed_pipe(line)))
 		return (ret < 0 ? -1 : set_status(258));
