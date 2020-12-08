@@ -50,7 +50,6 @@ srcs/parse/weird_cases.c			\
 srcs/parse/utils_weird_cases.c		\
 srcs/parse/redirections.c			\
 main.c								\
-#tests/tests_parsing.c				\
 
 all: $(NAME)
 

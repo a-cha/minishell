@@ -15,7 +15,15 @@
 int		g_last_status = 0;
 int		g_last_pid = 0;
 
-t_data	*shell_init(int argc, char **argv, char **env)
+static void		set_fd(t_data *data)
+{
+	data->orig_input = dup(0);
+	data->orig_output = dup(1);
+	data->infile = -1;
+	data->outfile = -1;
+}
+
+t_data			*shell_init(int argc, char **argv, char **env)
 {
 	t_data	*data;
 
@@ -38,15 +46,12 @@ t_data	*shell_init(int argc, char **argv, char **env)
 		exit(EXIT_FAILURE);
 	}
 	*(data->args) = NULL;
-	data->orig_input = dup(0);
-	data->orig_output = dup(1);
-	data->infile = -1;
-	data->outfile = -1;
+	set_fd(data);
 	signal_oper();
 	return (data);
 }
 
-int 		read_stdin(t_data *data, char **line)
+int				read_stdin(t_data *data, char **line)
 {
 	int		gnl;
 
@@ -65,7 +70,7 @@ int 		read_stdin(t_data *data, char **line)
 static void		execution(t_data *data)
 {
 	int		in_fd;
-	int 	out_fd;
+	int		out_fd;
 	pid_t	pid;
 
 	if (our_command_if_no_pipe(data) != 1)
@@ -85,11 +90,11 @@ static void		execution(t_data *data)
 		parent_process(data, pid);
 }
 
-int			main(int argc, char **argv, char **env)
+int				main(int argc, char **argv, char **env)
 {
-	t_data  *data;
+	t_data	*data;
 	char	*line;
-	int 	n;
+	int		n;
 
 	data = shell_init(argc, argv, env);
 	while (1)

@@ -40,7 +40,6 @@ typedef struct		s_data
 	char			type;
 	int				orig_input;
 	int				orig_output;
-	char			flag_redir;
 	int				infile;
 	int				outfile;
 	int				pipe_fd[2];
@@ -89,13 +88,10 @@ int					set_status(int stat);
 */
 
 t_data				*shell_init(int argc, char **argv, char **env);
-void				new_processing(t_data *data);
 int					process_status(void);
 int					our_command(t_data *data);
 int					our_command_if_no_pipe(t_data *data);
 int					for_return(t_data *data, void (*f)(t_data *data));
-void				processing(t_data *data);
-void				processing_pipe(t_data *data);
 void				child_process(t_data *data);
 char				**list_to_array(t_data *data);
 int					install_in_fd(t_data *data);
@@ -107,21 +103,17 @@ void				echo(t_data *data);
 void				cd(t_data *data);
 char				*find_env(t_list **env_dup, char *str);
 t_env				*find_env1(t_list **env_dup, char *str);
-t_list				*find_env2(t_list **env_dup, char *str);
 void				remove_elem(t_list **env_dup, char *str);
 int					is_first_symbol(const char *str, char c);
 char				*is_corr_path(char **arr, char *str);
 void				env_export(t_data *data);
 void				test_env_list(t_list **env_dup);
-void				extern_bin(t_data *data);
 t_env				*env_to_cont(char *env);
 void				ft_exit(t_data *data, int exit_status);
 void				env_unset(t_data *data);
 void				print_exp_list(t_list **env_dup, t_data *data);
-int					is_last_symbol(const char *str, char c);
 t_env				*chek_env(t_data *data);
 void				rewrite_cont(t_data *data, t_env *env);
-void				*ctrl_c(t_data *data);
 void				print_error(char *er_status, char *er_mess, int new_line);
 
 #endif
