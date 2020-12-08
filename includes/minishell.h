@@ -98,6 +98,8 @@ t_data 				*shell_init(int argc, char **argv, char **env);
 t_data				*malloc_shell(char **env);
 void				new_processing(t_data *data);
 int 				process_status(void);
+int 				our_command(t_data *data);
+int 				our_command_if_no_pipe(t_data *data);
 void				processing(t_data *data);
 void				processing_pipe(t_data *data);
 void				child_process(t_data *data);

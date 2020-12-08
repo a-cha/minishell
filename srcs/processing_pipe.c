@@ -18,6 +18,26 @@ static int             for_return(t_data *data, void (*f)(t_data *data))
 	return (0);
 }
 
+int 				our_command_if_no_pipe(t_data *data)
+{
+	if(data->args[0] && data->type != '|')
+	{
+		if (!(ft_strcmp(data->args[0], "cd")))
+			return(for_return(data, cd));
+		else if (!(ft_strcmp(data->args[0], "export")))
+			return(for_return(data, env_export));
+		else if (!(ft_strcmp(data->args[0], "unset")))
+			return(for_return(data, env_unset));
+		else if (!(ft_strcmp(data->args[0], "exit")))
+		{
+			ft_exit(data, last_status);
+			return (0);
+		}
+		return (1);
+	}
+	return (1);
+}
+
 int 				our_command(t_data *data)
 {
 	if(data->args[0])
@@ -52,8 +72,8 @@ void				parent_process(t_data *data, int pid)
 	int status;
 
 	status = 0;
-//	dup2(data->orig_input, 0);
-//	dup2(data->orig_output, 1);
+	dup2(data->orig_input, 0);
+	dup2(data->orig_output, 1);
 	last_pid = pid;
 	while (status != -1)
 		status = process_status();
@@ -69,8 +89,8 @@ void				child_process(t_data *data)
 
 	last_status = 0;
 	errno = 0;
-//	if (data->pipe_fd[0])
-//		close(data->pipe_fd[0]);
+	if (data->pipe_fd[0])
+		close(data->pipe_fd[0]);
 	if (our_command(data) == 0)
 		exit(EXIT_SUCCESS);
 //	if (!(ar = ft_split(find_env(&data->env, "PATH"), ':')))
@@ -130,7 +150,7 @@ int			install_out_fd(t_data *data)
 			ft_exit(data, EXIT_FAILURE);
 		fd_out = dup(data->pipe_fd[1]);
 	}
-	if (data->outfile)
+	if (data->outfile >= 0)
 	{
 		if (fd_out)
 			close(fd_out);
@@ -149,7 +169,7 @@ int 			install_in_fd(t_data *data)
 	int fd_in;
 
 	fd_in = 0;
-	if (data->infile)
+	if (data->infile >= 0)
 		fd_in = data->infile;
 	else if (data->pipe_fd[0])
 		fd_in = dup(data->pipe_fd[0]);

@@ -48,9 +48,9 @@ void		reset_t_data(t_data *data)
 //	if (data->outfile == -1)
 //		data->outfile = 0;
 //	close fd after redirections
-	if (data->type != '|')
-	{
+//	if (data->type != '|')
+//	{
 		dup2(data->orig_input, 0);
 		dup2(data->orig_output, 1);
-	}
+//	}
 }
