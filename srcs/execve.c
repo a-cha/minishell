@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void		*free_and_exit(char **array, char *str)
+static void		*free_and_exit_1(char **array, char *str)
 {
 	if (array)
 		ft_arrayfree(array);
@@ -37,9 +37,9 @@ char			**list_to_array(t_data *data)
 	{
 		current = lst->content;
 		if (!(tmp = ft_strjoin(current->env_name, "=")))
-			return (free_and_exit(env, NULL));
+			return (free_and_exit_1(env, NULL));
 		if (!(env[++i] = ft_strjoin(tmp, current->env_cont)))
-			return (free_and_exit(env, tmp));
+			return (free_and_exit_1(env, tmp));
 		free_memory(tmp);
 		lst = lst->next;
 	}
