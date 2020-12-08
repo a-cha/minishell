@@ -40,7 +40,6 @@ typedef struct		s_data
 	char			type;
 	int				orig_input;
 	int				orig_output;
-	char			flag_redir;
 	int				infile;
 	int				outfile;
 	int				pipe_fd[2];
@@ -83,6 +82,7 @@ int					max(int n1, int n2);
 int					space(const char *str, int start, int len);
 int					ret_token(char t, int n, char *str);
 int					set_status(int stat);
+void				free_and_exit(char *s1, char *s2, t_data *part, char flag);
 
 /*
 ** Prototypes for commands
@@ -107,7 +107,6 @@ void				echo(t_data *data);
 void				cd(t_data *data);
 char				*find_env(t_list **env_dup, char *str);
 t_env				*find_env1(t_list **env_dup, char *str);
-t_list				*find_env2(t_list **env_dup, char *str);
 void				remove_elem(t_list **env_dup, char *str);
 int					is_first_symbol(const char *str, char c);
 char				*is_corr_path(char **arr, char *str);
