@@ -47,13 +47,6 @@ typedef struct		s_data
 }					t_data;
 
 /*
-** Defines for parsing
-*/
-
-# define SEMICOLON (59)
-# define PIPE (124)
-
-/*
 ** Prototypes for parsing
 */
 

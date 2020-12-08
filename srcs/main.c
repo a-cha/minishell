@@ -109,7 +109,8 @@ int				main(int argc, char **argv, char **env)
 			if ((n += parse(line + n, data)) < 0)
 				free_and_exit(line, NULL, data, 1);
 			execution(data);
-			reset_t_data(data);
+			if (*(line + n))
+				reset_t_data(data);
 		}
 		reset_t_data(data);
 		free_memory(line);

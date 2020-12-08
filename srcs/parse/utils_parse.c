@@ -23,9 +23,9 @@ int			is_linebreak(const char *line)
 	size_t	s;
 
 	res = ft_strlen(line);
-	if ((s = is_symb(line, SEMICOLON)) < res)
+	if ((s = is_symb(line, ';')) < res)
 		res = s;
-	if ((s = is_symb(line, PIPE)) < res)
+	if ((s = is_symb(line, '|')) < res)
 		res = s;
 	return (res == ft_strlen(line) ? -1 : (int)res);
 }
@@ -62,10 +62,8 @@ size_t		catch_first_sign(const char *str, t_data *part, char *r)
 		min = res;
 	if ((res = is_quotmark(str)) != -1 && res < min)
 		min = res;
-	if (str[min] == SEMICOLON)
-		part->type = SEMICOLON;
-	else if (str[min] == PIPE)
-		part->type = PIPE;
+	if (str[min] == '|')
+		part->type = '|';
 	else
 		part->type = '\0';
 	if (str[min] == '\'' || str[min] == '"')
