@@ -18,6 +18,17 @@ void		free_memory(void *memory)
 	memory = NULL;
 }
 
+int			free_and_exit(char *s1, char *s2, t_data *part, char flag)
+{
+	if (s1)
+		free_memory(s1);
+	if (s2)
+		free_memory(s2);
+	if (flag == 1)
+		ft_exit(part, EXIT_FAILURE);
+	return (1);
+}
+
 /*
 ** Returns max value
 */

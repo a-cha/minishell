@@ -36,29 +36,22 @@ static char	*concat_env(char *dup, const char *line, size_t *s, t_data *part)
 	size_t	f;
 
 	f = 0;
+	if (ft_isdigit(*line))
+		line++;
 	while ((line[f]) && ((ft_isalnum(line[f])) || line[f] == '_'))
 		f++;
 	if (!(env = ft_substr(line, 0, f)))
 		ft_exit(part, EXIT_FAILURE);
-	if (!(env = fill_env(env, *line, &f, part)))
+	if (ft_isdigit(*(line - 1)))
+		;
+	else if (!(env = fill_env(env, *line, &f, part)))
 		ft_exit(part, EXIT_FAILURE);
 	tmp = dup;
 	dup = ft_strjoin(dup, env);
-	*s += f + 1;
+	*s += f + 1 + ft_isdigit(*(line - 1));
 	free_memory(tmp);
 	free_memory(env);
 	return (dup);
-}
-
-int			free_and_exit(char *s1, char *s2, t_data *part, char flag)
-{
-	if (s1)
-		free_memory(s1);
-	if (s2)
-		free_memory(s2);
-	if (flag == 1)
-		ft_exit(part, EXIT_FAILURE);
-	return (1);
 }
 
 char		*handle_env(char *line, t_data *part)
