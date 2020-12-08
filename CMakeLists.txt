@@ -76,7 +76,7 @@ add_executable(minishell
         srcs/signals.c
         srcs/unset.c
         srcs/utils.c
-        main.c
+        srcs/main.c
         srcs/parse/redirections.c
         srcs/processing_pipe.c
         srcs/parse/env_subst.c
