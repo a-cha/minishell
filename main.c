@@ -59,8 +59,8 @@ int				read_stdin(t_data *data, char **line)
 	{
 		if (!**line)
 		{
-			g_last_status = 131;
-			ft_exit(data, g_last_pid);
+			g_last_status = 0;
+			ft_exit(data, g_last_status);
 		}
 		free_memory(*line);
 	}

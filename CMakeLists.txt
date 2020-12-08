@@ -81,7 +81,6 @@ add_executable(minishell
         srcs/processing_pipe.c
         srcs/parse/env_subst.c
         srcs/parse/lines_and_quoters.c
-        srcs/new_processing.c
         srcs/parse/utils_weird_cases.c
         srcs/fd_utils.c)
 
