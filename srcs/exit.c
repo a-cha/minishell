@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int		ft_is_number(char *str)
+static int			ft_is_number(char *str)
 {
 	int i;
 
@@ -40,17 +40,18 @@ void				print_error(char *er_status, char *er_mess, int new_line)
 		ft_putstr_fd("\n", 2);
 }
 
-void				ft_exit(t_data *data, int exit_status)
+static	int			error_arguments(t_data *data, int exit_status)
 {
 	if (data->args[0] && data->args[1])
 	{
-		if (ft_is_number(data->args[1]) == 1)
-			exit_status = ft_atoi(data->args[1]);
-		else if (data->args[2])
+		if (data->args[2])
 		{
 			ft_putstr_fd("exit\n", 2);
-			return (ft_putstr_fd("minihell > exit: too many arguments\n", 2));
+			ft_putstr_fd("minihell > exit: too many arguments\n", 2);
+			return (-1);
 		}
+		if (ft_is_number(data->args[1]) == 1)
+			exit_status = ft_atoi(data->args[1]);
 		else
 		{
 			ft_putstr_fd("exit :", 2);
@@ -59,6 +60,13 @@ void				ft_exit(t_data *data, int exit_status)
 			exit_status = -1;
 		}
 	}
+	return (exit_status);
+}
+
+void				ft_exit(t_data *data, int exit_status)
+{
+	if ((exit_status = error_arguments(data, exit_status)) == -1)
+		return ;
 	if (data->infile >= 0)
 		close(data->infile);
 	if (data->outfile >= 0)

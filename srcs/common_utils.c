@@ -12,10 +12,10 @@
 
 #include "minishell.h"
 
-int	process_status(void)
+int			process_status(void)
 {
-	int			child;
-	int			status;
+	int		child;
+	int		status;
 
 	if ((child = waitpid(-1, &status, 0)) == -1)
 		return (-1);
@@ -35,4 +35,36 @@ int			is_first_symbol(const char *str, char c)
 	else if (str[0] == c)
 		return (0);
 	return (-1);
+}
+
+char		*find_env(t_list **env_dup, char *str)
+{
+	t_list	*tmp;
+	t_env	*env;
+
+	tmp = *env_dup;
+	while (tmp)
+	{
+		env = tmp->content;
+		if (!(ft_strcmp((const char *)env->env_name, str)))
+			return (env->env_cont);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+t_env		*find_env1(t_list **env_dup, char *str)
+{
+	t_list	*tmp;
+	t_env	*env;
+
+	tmp = *env_dup;
+	while (tmp)
+	{
+		env = tmp->content;
+		if (!(ft_strcmp((const char *)env->env_name, str)))
+			return (env);
+		tmp = tmp->next;
+	}
+	return (NULL);
 }

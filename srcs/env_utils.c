@@ -12,9 +12,6 @@
 
 #include "minishell.h"
 
-/*
-** Duplicate & sort list. Returns a new sorted list.
-*/
 t_list		*list_dup_sort(const t_data *data)
 {
 	t_list	*tmp;
@@ -25,7 +22,7 @@ t_list		*list_dup_sort(const t_data *data)
 
 	start = ft_lstmap(data->env, copy_t_env, del_content);
 	tmp = start;
-	while(tmp->next)
+	while (tmp->next)
 	{
 		cur_env = tmp->content;
 		next_env = tmp->next->content;
@@ -40,38 +37,6 @@ t_list		*list_dup_sort(const t_data *data)
 		tmp = tmp->next;
 	}
 	return (start);
-}
-
-char		*find_env(t_list **env_dup, char *str)
-{
-	t_list	*tmp;
-	t_env	*env;
-
-	tmp = *env_dup;
-	while (tmp)
-	{
-		env = tmp->content;
-		if (!(ft_strcmp((const char *)env->env_name, str)))
-			return (env->env_cont);
-		tmp = tmp->next;
-	}
-	return (NULL);
-}
-
-t_env		*find_env1(t_list **env_dup, char *str)
-{
-	t_list	*tmp;
-	t_env	*env;
-
-	tmp = *env_dup;
-	while (tmp)
-	{
-		env = tmp->content;
-		if (!(ft_strcmp((const char *)env->env_name, str)))
-			return (env);
-		tmp = tmp->next;
-	}
-	return (NULL);
 }
 
 t_list		*find_env2(t_list **env_dup, char *str)
@@ -93,7 +58,7 @@ t_list		*find_env2(t_list **env_dup, char *str)
 t_env		*env_to_cont(char *env)
 {
 	t_env	*var;
-	char 	*tmp;
+	char	*tmp;
 
 	var = (t_env *)malloc(sizeof(t_env));
 	tmp = ft_strchr(env, '=');
@@ -120,8 +85,9 @@ t_list		*dup_env(char **env)
 
 void		test_env_list(t_list **env_dup)
 {
-	t_list *tmp;
-	t_env  *env;
+	t_list	*tmp;
+	t_env	*env;
+
 	tmp = *env_dup;
 	while (tmp)
 	{
@@ -136,4 +102,3 @@ void		test_env_list(t_list **env_dup)
 		tmp = tmp->next;
 	}
 }
-

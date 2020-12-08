@@ -14,7 +14,7 @@
 
 void		set_new_env(t_data *data)
 {
-	int 	i;
+	int		i;
 
 	i = 0;
 	while (data->args[++i])
@@ -34,21 +34,22 @@ void		set_new_env(t_data *data)
 void		rewrite_cont(t_data *data, t_env *env)
 {
 	int		i;
-	char 	*tmp;
+	int		count;
+	char	*tmp;
 	char	*name;
-	char 	*cont;
+	char	*cont;
 
 	i = 0;
 	while (data->args[++i])
 	{
 		tmp = ft_strchr(data->args[i], '=');
 		name = ft_substr(data->args[i], 0, tmp - data->args[i]);
-		cont = ft_substr(data->args[i], tmp - data->args[i] + 1, ft_strlen
-		(data->args[i]));
+		count = ft_strlen(data->args[i]);
+		cont = ft_substr(data->args[i], tmp - data->args[i] + 1, count);
 		if (!ft_strcmp(env->env_name, name))
 		{
 			free_memory(env->env_cont);
-			env->env_cont = (char *) malloc(sizeof(char) * (ft_strlen(cont) +
+			env->env_cont = (char *)malloc(sizeof(char) * (ft_strlen(cont) +
 					1));
 			env->env_cont = cont;
 		}
@@ -87,7 +88,7 @@ void		print_exp_list(t_list **env_dup, t_data *data)
 void		env_export(t_data *data)
 {
 	t_list	*new_list;
-	t_env 	*env;
+	t_env	*env;
 
 	if (data->args[1])
 	{
@@ -100,17 +101,16 @@ void		env_export(t_data *data)
 	}
 	new_list = list_dup_sort(data);
 	print_exp_list(&new_list, data);
-//	чистит лист в дате
 	ft_lstclear(&new_list, del_content);
 }
 
 t_env		*chek_env(t_data *data)
 {
 	t_list	*list;
-	t_env 	*env;
+	t_env	*env;
 	char	*str;
-	char 	*tmp;
-	int 	i;
+	char	*tmp;
+	int		i;
 
 	i = 0;
 	while (data->args[++i])

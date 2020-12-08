@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void		sig_quit()
+static void			sig_quit(int i)
 {
 	int	exit_status;
 
@@ -22,7 +22,7 @@ static void		sig_quit()
 		write(2, "Quit: 3\n", 8);
 }
 
-static void		sig_int()
+static void			sig_int(int i)
 {
 	int	exit_status;
 
@@ -35,7 +35,7 @@ static void		sig_int()
 		ft_putstr_fd("\n", 1);
 }
 
-void			signal_oper()
+void				signal_oper(void)
 {
 	signal(SIGQUIT, sig_quit);
 	signal(SIGINT, sig_int);

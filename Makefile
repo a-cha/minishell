@@ -46,7 +46,6 @@ srcs/parse/parse.c					\
 srcs/parse/symbols.c				\
 srcs/parse/utils_parse.c			\
 srcs/parse/weird_cases.c			\
-srcs/new_processing.c				\
 utils_lst.c							\
 srcs/parse/redirections.c			\
 main.c								\

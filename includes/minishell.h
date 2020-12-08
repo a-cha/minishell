@@ -107,7 +107,7 @@ char				**list_to_array(t_data *data);
 int 				install_in_fd(t_data *data);
 int					install_out_fd(t_data *data);
 void				parent_process(t_data *data,int pid);
-void				signal_oper();
+void				signal_oper(void);
 void				pwd(t_data *data);
 void				echo(t_data *data);
 void				cd(t_data *data);
