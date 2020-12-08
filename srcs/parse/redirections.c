@@ -14,7 +14,7 @@
 
 static char	*get_filename(const char *line)
 {
-	char 	*name;
+	char	*name;
 	size_t	i;
 	size_t	l;
 
@@ -40,7 +40,6 @@ int			set_redir(char *name, char flag, t_data *part)
 			close(part->infile);
 		if ((part->infile = open(name, O_RDONLY)) < 0)
 			return (0);
-//		dup2(part->infile, 0);
 	}
 	else
 	{
@@ -49,7 +48,6 @@ int			set_redir(char *name, char flag, t_data *part)
 		if ((part->outfile = open(name,
 		O_WRONLY | O_CREAT | (flag == '>' ? O_TRUNC : O_APPEND), 0644)) < 0)
 			return (0);
-//		dup2(part->outfile, 1);
 	}
 	printf("fd: %d\n", part->outfile);
 	return (1);
@@ -79,9 +77,9 @@ int			is_redir(const char *line, char *r)
 
 void		redirections(char *line, t_data *part)
 {
-	int 	i;
-	int 	s;
-	char 	r;
+	int		i;
+	int		s;
+	char	r;
 	char	*name;
 
 	i = 0;
@@ -99,29 +97,4 @@ void		redirections(char *line, t_data *part)
 		free_memory(name);
 		part->flag_redir = 1;
 	}
-
 }
-
-/*
-int 	main()
-{
-	char r;
-
-	redirections(">>sfr> vfs><ver>>e",NULL);
-}
-*/
-//	gcc srcs/parse/redirections.c srcs/parse/symbols.c libft/libft.a -I includes -I libft/includes
-
-/*
-//	save original fd
-	part->input = dup(0);
-	part->output = dup(1);
-//	open file here
-	part->outfile = open();
-	dup2(part->outfile, 1);
-//	open another here
-	part->outfile = open();
-	dup2(part->outfile, 1); // or 1 as a second argument
-//	return the original fd
-	dup2(part->output, 1);
-*/

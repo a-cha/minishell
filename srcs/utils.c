@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 /*
-** Frees pointer and turns it to NULL
+** Frees pointer's content and turns it to NULL
 */
 void		free_memory(void *memory)
 {
@@ -30,7 +30,6 @@ void		reset_t_data(t_data *data)
 	ft_arrayfree(data->args);
 	data->args = (char **)ft_calloc(1, sizeof(char **));
 	*(data->args) = NULL;
-	data->len = -1;
 	if (data->infile >= 0)
 	{
 		close(data->infile);
@@ -53,4 +52,51 @@ void		reset_t_data(t_data *data)
 		dup2(data->orig_input, 0);
 		dup2(data->orig_output, 1);
 //	}
+}
+
+/*
+** Returns max value
+*/
+
+int			max(int n1, int n2)
+{
+	return (n1 > n2 ? n1 : n2);
+}
+
+/*
+** Functions for correct use of the ft_lstmap
+*/
+
+void		del_content(void *elem)
+{
+	t_env	*env;
+
+	env = elem;
+	free_memory(env->env_name);
+	free_memory(env->env_cont);
+	free_memory(elem);
+}
+
+void		*copy_t_env(void *elem)
+{
+	t_env	*env;
+	t_env	*el_env;
+
+	if ((env = (t_env *)malloc(sizeof(t_env))))
+	{
+		el_env = elem;
+		if (!(env->env_name = ft_strdup(el_env->env_name)))
+		{
+			free_memory(env);
+			return (NULL);
+		}
+		if (!(env->env_cont = ft_strdup(el_env->env_cont)))
+		{
+			free_memory(env);
+			free_memory(env->env_name);
+			return (NULL);
+		}
+		env->is_equal = el_env->is_equal;
+	}
+	return (env);
 }

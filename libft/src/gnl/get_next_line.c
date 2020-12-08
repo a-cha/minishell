@@ -35,7 +35,7 @@ int			get_next_line(int fd, char **line)
 {
 	size_t		rd;
 	char		*buf;
-	int 		rp;
+	int			rp;
 
 	if (BUFFER_SIZE < 1 || fd < 0 || !line ||
 						!(buf = (char *)malloc(BUFFER_SIZE + 1)))

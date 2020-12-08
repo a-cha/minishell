@@ -16,10 +16,10 @@
 ** Find out if quotation marks closed
 */
 
-int			is_closed_quot(const char *line, char r)
+int				is_closed_quot(const char *line, char r)
 {
-	char	*tmp;
-	int 	f;
+	char		*tmp;
+	int			f;
 
 	f = -2;
 	if (r == '\'')

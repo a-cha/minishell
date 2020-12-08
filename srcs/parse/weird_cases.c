@@ -12,41 +12,6 @@
 
 #include "minishell.h"
 
-static int	space(const char *str, int start, int len)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < len && !is_symb(&str[start + i], ' '))
-		i++;
-	if (str[start + i] && len != 0 && is_symb(&str[start + i], ' ') &&
-	is_symb(&str[start + i], ';') && is_symb(&str[start + i], '|')
-	&& is_symb(&str[start + i], '>') && is_symb(&str[start + i], '<'))
-		return (0);
-	return (1);
-}
-
-static int	ret_token(char t, int n, char *str)
-{
-	char	*weird;
-
-	if (!str)
-	{
-		if (!(weird = ft_calloc(n + 1, sizeof(char))))
-			return (-1);
-		weird[0] = t;
-		if (n == 2)
-			weird[1] = t;
-	}
-	else
-		weird = str;
-	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-	ft_putstr_fd(weird, 2);
-	ft_putstr_fd("'\n", 2);
-	free_memory(weird);
-	return (1);
-}
-
 static int	is_blank(const char *str, int start, int len)
 {
 	int		s;
@@ -94,11 +59,11 @@ static int	is_wrong_redir(const char *str)
 	return (0);
 }
 
-char 		is_in_quots(const char *line, size_t n)
+char		is_in_quots(const char *line, size_t n)
 {
 	size_t	i;
-	int 	s;
-	int 	f;
+	int		s;
+	int		f;
 
 	i = 0;
 	while ((s = is_quotmark(line + i)) >= 0)
@@ -115,13 +80,7 @@ char 		is_in_quots(const char *line, size_t n)
 	return (0);
 }
 
-int			set_status(int stat)
-{
-	last_status = stat;
-	return (1);
-}
-
-int 		is_closed_pipe(const char *line)
+int			is_closed_pipe(const char *line)
 {
 	char	*pipe;
 	char	*dup;
@@ -132,7 +91,7 @@ int 		is_closed_pipe(const char *line)
 	{
 		if (!is_in_quots(dup, pipe - dup))
 			if (space(dup, (int)(pipe - dup) + 1,
-			 				ft_strlen(dup + (int)(pipe - dup + 1))))
+						ft_strlen(dup + (int)(pipe - dup + 1))))
 			{
 				free_memory(dup);
 				if (!(dup = ft_strdup("newline")))
@@ -150,7 +109,7 @@ int			weird_cases(const char *line)
 	size_t	i;
 	int		s;
 	char	r;
-	int 	ret;
+	int		ret;
 
 	i = 0;
 	while ((s = is_linebreak(line + i)) >= 0)

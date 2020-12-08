@@ -22,33 +22,27 @@
 # include <sys/stat.h>
 # include <stdlib.h>
 # include <signal.h>
-// delete
-#include <stdio.h>
-#include <string.h>
 
-extern int				sigint_flag;
-extern int				last_pid;
-extern int				last_status;
+extern int			sigint_flag;
+extern int			last_pid;
+extern int			last_status;
 
 typedef struct		s_env
 {
-	char 			*env_name;
-	char 			*env_cont;
-	char 			is_equal;
+	char			*env_name;
+	char			*env_cont;
+	char			is_equal;
 }					t_env;
 
 typedef struct		s_data
 {
-	char			**args;		// First element - command (ECHO, CD etc.), further - arguments (may be flags)
-//	maybe we don't need len?
-	size_t			len;		// Len of args array
-	char			type;		// Type of break. If presented
-//	file descriptors for redirections (maybe there is another implementation)
+	char			**args;
+	char			type;
 	int				orig_input;
-	int 			orig_output;
+	int				orig_output;
 	char			flag_redir;
 	int				infile;
-	int 			outfile;
+	int				outfile;
 	int				pipe_fd[2];
 	t_list			*env;
 }					t_data;
@@ -86,27 +80,28 @@ void				redirections(char *line, t_data *part);
 int					is_redir(const char *line, char *r);
 int					set_redir(char *name, char flag, t_data *part);
 int					is_quotmark(const char *line);
-char		 		is_in_quots(const char *line, size_t n);
-//	remove
-void			 	print_d_array(char **array);
+char				is_in_quots(const char *line, size_t n);
+int					max(int n1, int n2);
+int					space(const char *str, int start, int len);
+int					ret_token(char t, int n, char *str);
+int					set_status(int stat);
 
 /*
 ** Prototypes for commands
 */
 
-t_data 				*shell_init(int argc, char **argv, char **env);
-t_data				*malloc_shell(char **env);
+t_data				*shell_init(int argc, char **argv, char **env);
 void				new_processing(t_data *data);
-int 				process_status(void);
-int 				our_command(t_data *data);
-int 				our_command_if_no_pipe(t_data *data);
+int					process_status(void);
+int					our_command(t_data *data);
+int					our_command_if_no_pipe(t_data *data);
 void				processing(t_data *data);
 void				processing_pipe(t_data *data);
 void				child_process(t_data *data);
 char				**list_to_array(t_data *data);
-int 				install_in_fd(t_data *data);
+int					install_in_fd(t_data *data);
 int					install_out_fd(t_data *data);
-void				parent_process(t_data *data,int pid);
+void				parent_process(t_data *data, int pid);
 void				signal_oper();
 void				pwd(t_data *data);
 void				echo(t_data *data);
@@ -114,19 +109,19 @@ void				cd(t_data *data);
 char				*find_env(t_list **env_dup, char *str);
 t_env				*find_env1(t_list **env_dup, char *str);
 t_list				*find_env2(t_list **env_dup, char *str);
-void 				remove_elem(t_list **env_dup, char *str);
+void				remove_elem(t_list **env_dup, char *str);
 int					is_first_symbol(const char *str, char c);
 char				*is_corr_path(char **arr, char *str);
 void				env_export(t_data *data);
-void       			test_env_list(t_list **env_dup);
+void				test_env_list(t_list **env_dup);
 void				extern_bin(t_data *data);
 t_env				*env_to_cont(char *env);
 void				ft_exit(t_data *data, int exit_status);
 void				env_unset(t_data *data);
-void       			print_exp_list(t_list **env_dup, t_data *data);
+void				print_exp_list(t_list **env_dup, t_data *data);
 int					is_last_symbol(const char *str, char c);
-t_env 				*chek_env(t_data *data);
-void 				rewrite_cont(t_data *data, t_env *env);
+t_env				*chek_env(t_data *data);
+void				rewrite_cont(t_data *data, t_env *env);
 void				*ctrl_c(t_data *data);
 void				print_error(char *er_status, char *er_mess, int new_line);
 

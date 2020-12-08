@@ -18,13 +18,20 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 	t_list	*save;
 	void	*new;
 
-	if (!lst || !f || !(new = f(lst->content)) || !(copy = ft_lstnew(new)))
+	if (!lst || !f || !(new = f(lst->content)))
+		return (NULL);
+	if (!(copy = ft_lstnew(new)))
 		return (NULL);
 	save = copy;
 	while (lst->next)
 	{
 		lst = lst->next;
-		if (!(new = f(lst->content)) || !(copy->next = ft_lstnew(new)))
+		if (!(new = f(lst->content)))
+		{
+			ft_lstclear(&save, del);
+			return (NULL);
+		}
+		if (!(copy->next = ft_lstnew(new)))
 		{
 			ft_lstclear(&save, del);
 			return (NULL);

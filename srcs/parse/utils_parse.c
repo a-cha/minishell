@@ -64,13 +64,3 @@ size_t		catch_first_sign(const char *str, t_data *part, char *r)
 		*r = '\0';
 	return (min);
 }
-
-//	remove
-void	print_d_array(char **array)
-{
-	size_t	i;
-
-	i = -1;
-	while (array[++i])
-		printf(">%s<\n", array[i]);
-}
