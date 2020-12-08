@@ -35,7 +35,7 @@ void		echo(t_data *data)
 		}
 		while (data->args[++i])
 		{
-			if (i == (data->len) - 1)
+			if (i == ft_arrlen(data->args) - 1)
 			{
 				ft_putstr_fd(data->args[i], 1);
 				break ;
