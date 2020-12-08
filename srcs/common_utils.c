@@ -27,3 +27,12 @@ int	process_status(void)
 		last_status = status;
 	return (status);
 }
+
+int			is_first_symbol(const char *str, char c)
+{
+	if (!str)
+		return (-1);
+	else if (str[0] == c)
+		return (0);
+	return (-1);
+}

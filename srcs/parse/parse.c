@@ -64,7 +64,7 @@ static int	get_part(const char *line, t_data *part)
 	while (1)
 	{
 		s = catch_first_sign(line + i, part, &r);
-		ft_arrayfree(part->args);
+//		ft_arrayfree(part->args);
 		if (!(part->args = ft_arrjoin_pro(part->args, handle_line
 		(ft_substr(line, i, s), part), *(line + i))))
 			ft_exit(part, EXIT_FAILURE);

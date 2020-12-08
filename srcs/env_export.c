@@ -104,15 +104,6 @@ void		env_export(t_data *data)
 	ft_lstclear(&new_list, del_content);
 }
 
-int			is_first_symbol(const char *str, char c)
-{
-	if (!str)
-		return (-1);
-	else if (str[0] == c)
-		return (0);
-	return (-1);
-}
-
 t_env		*chek_env(t_data *data)
 {
 	t_list	*list;

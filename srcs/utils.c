@@ -15,7 +15,7 @@
 /*
 ** Frees pointer and turns it to NULL
 */
-void	free_memory(void *memory)
+void		free_memory(void *memory)
 {
 	free(memory);
 	memory = NULL;
@@ -25,7 +25,7 @@ void	free_memory(void *memory)
 ** Reset struct to the next round of parsing & processing
 */
 
-void			reset_t_data(t_data *data)
+void		reset_t_data(t_data *data)
 {
 	ft_arrayfree(data->args);
 	data->args = (char **)ft_calloc(1, sizeof(char **));
