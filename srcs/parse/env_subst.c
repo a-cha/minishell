@@ -19,7 +19,7 @@ static char	*fill_env(char *env, char q, size_t *f, t_data *part)
 	if (q == '?')
 	{
 		*f = 1;
-		ret = ft_itoa(last_status);
+		ret = ft_itoa(g_last_status);
 	}
 	else if (!(ret = find_env(&(part->env), env)))
 		ret = ft_strdup("");
