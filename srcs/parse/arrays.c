@@ -69,12 +69,12 @@ char		**ft_arrjoin_pro(char **arr1, char **arr2, char flag)
 
 	if (!*arr1)
 	{
-		free_memory(arr2);
+		free_memory(arr1);
 		return (arr2);
 	}
 	if (!*arr2)
 	{
-		free_memory(arr1);
+		free_memory(arr2);
 		return (arr1);
 	}
 	l = ft_arrlen(arr1);
