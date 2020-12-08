@@ -89,6 +89,40 @@ int 		read_stdin(t_data *data, char **line)
 	}
 	return (gnl);
 }
+
+static void		execution(t_data *data)
+{
+	int		in_fd;
+	int 	out_fd;
+	pid_t	pid;
+
+	if (our_command_if_no_pipe(data) != 1)
+		return ;
+	in_fd = install_in_fd(data);
+	out_fd = install_out_fd(data);
+	dup2(in_fd, 0);
+	close(in_fd);
+	dup2(out_fd, 1);
+	close(out_fd);
+	pid = fork();
+	if (pid == -1)
+		ft_exit(data, EXIT_FAILURE);
+	else if (pid == 0)
+	{
+//		dup2(data->pipe_fd[1], 1);
+//		close(data->pipe_fd[0]);
+		child_process(data);
+//		close(data->pipe_fd[1]);
+	}
+	else
+	{
+//		dup2(data->pipe_fd[0], 0);
+//		close(data->pipe_fd[1]);
+		parent_process(data, pid);
+//		close(data->pipe_fd[0]);
+	}
+}
+
 int			main(int argc, char **argv, char **env)
 {
 	t_data  *data;
@@ -111,13 +145,14 @@ int			main(int argc, char **argv, char **env)
 				free_memory(line);
 				ft_exit(data, EXIT_FAILURE);
 			}
-			if (data->type == '|')
-				new_processing(data);
-//			print_d_array(data->args);
+			execution(data);
 //			if (data->type == '|')
-//				processing_pipe(data);
-			else
-				processing(data);
+//				new_processing(data);
+////			print_d_array(data->args);
+////			if (data->type == '|')
+////				processing_pipe(data);
+//			else
+//				processing(data);
 			if (*(line + n))
 				reset_t_data(data);
 		}

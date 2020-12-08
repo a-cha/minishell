@@ -40,7 +40,7 @@ int			set_redir(char *name, char flag, t_data *part)
 			close(part->infile);
 		if ((part->infile = open(name, O_RDONLY)) < 0)
 			return (0);
-		dup2(part->infile, 0);
+//		dup2(part->infile, 0);
 	}
 	else
 	{
@@ -49,7 +49,7 @@ int			set_redir(char *name, char flag, t_data *part)
 		if ((part->outfile = open(name,
 		O_WRONLY | O_CREAT | (flag == '>' ? O_TRUNC : O_APPEND), 0644)) < 0)
 			return (0);
-		dup2(part->outfile, 1);
+//		dup2(part->outfile, 1);
 	}
 	printf("fd: %d\n", part->outfile);
 	return (1);

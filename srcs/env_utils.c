@@ -118,7 +118,7 @@ t_list		*dup_env(char **env)
 	return (env_dup);
 }
 
-void       test_env_list(t_list **env_dup)
+void		test_env_list(t_list **env_dup)
 {
 	t_list *tmp;
 	t_env  *env;

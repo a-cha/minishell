@@ -31,7 +31,7 @@ void		set_new_env(t_data *data)
 	}
 }
 
-void	rewrite_cont(t_data *data, t_env *env)
+void		rewrite_cont(t_data *data, t_env *env)
 {
 	int		i;
 	char 	*tmp;
@@ -56,10 +56,10 @@ void	rewrite_cont(t_data *data, t_env *env)
 	}
 }
 
-void       print_exp_list(t_list **env_dup, t_data *data)
+void		print_exp_list(t_list **env_dup, t_data *data)
 {
-	t_list *tmp;
-	t_env  *env;
+	t_list	*tmp;
+	t_env	*env;
 
 	tmp = *env_dup;
 	while (tmp)
@@ -104,16 +104,7 @@ void		env_export(t_data *data)
 	ft_lstclear(&new_list, del_content);
 }
 
-int		is_first_symbol(const char *str, char c)
-{
-	if (!str)
-		return (-1);
-	else if (str[0] == c)
-		return (0);
-	return (-1);
-}
-
-t_env 	*chek_env(t_data *data)
+t_env		*chek_env(t_data *data)
 {
 	t_list	*list;
 	t_env 	*env;

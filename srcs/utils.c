@@ -15,7 +15,7 @@
 /*
 ** Frees pointer and turns it to NULL
 */
-void	free_memory(void *memory)
+void		free_memory(void *memory)
 {
 	free(memory);
 	memory = NULL;
@@ -25,7 +25,7 @@ void	free_memory(void *memory)
 ** Reset struct to the next round of parsing & processing
 */
 
-void			reset_t_data(t_data *data)
+void		reset_t_data(t_data *data)
 {
 	ft_arrayfree(data->args);
 	data->args = (char **)ft_calloc(1, sizeof(char **));
@@ -48,9 +48,9 @@ void			reset_t_data(t_data *data)
 //	if (data->outfile == -1)
 //		data->outfile = 0;
 //	close fd after redirections
-	if (data->type != '|')
-	{
+//	if (data->type != '|')
+//	{
 		dup2(data->orig_input, 0);
 		dup2(data->orig_output, 1);
-	}
+//	}
 }
