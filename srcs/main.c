@@ -101,9 +101,10 @@ int				main(int argc, char **argv, char **env)
 	{
 		ft_putstr_fd("minihell > ", 1);
 		errno = 0;
-		n = 0;
 		if ((read_stdin(data, &line)) == -1)
 			ft_exit(data, EXIT_FAILURE);
+		if ((n = weird_cases(line)))
+			n = n < 0 ? free_and_exit(line, NULL, data, 1) : ft_strlen(line);
 		while (*(line + n))
 		{
 			if ((n += parse(line + n, data)) < 0)

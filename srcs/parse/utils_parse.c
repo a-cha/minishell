@@ -62,7 +62,9 @@ size_t		catch_first_sign(const char *str, t_data *part, char *r)
 		min = res;
 	if ((res = is_quotmark(str)) != -1 && res < min)
 		min = res;
-	if (str[min] == '|')
+	if (str[min] == ';')
+		part->type = ';';
+	else if (str[min] == '|')
 		part->type = '|';
 	else
 		part->type = '\0';

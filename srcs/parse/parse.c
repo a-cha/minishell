@@ -46,7 +46,7 @@ static int	quot_marks(const char *line, t_data *part, int s, char r)
 	return (f);
 }
 
-static int	get_part(const char *line, t_data *part)
+int			parse(const char *line, t_data *part)
 {
 	int		i;
 	int		s;
@@ -64,19 +64,4 @@ static int	get_part(const char *line, t_data *part)
 		i += s + 2 + quot_marks(line + i, part, s, r);
 	}
 	return (i + s + (!(part->type) ? 0 : 1));
-}
-
-int			parse(const char *line, t_data *part)
-{
-	int		i;
-
-	if ((i = weird_cases(line)))
-	{
-		if (i < 0)
-			ft_exit(part, EXIT_FAILURE);
-		else
-			return (ft_strlen(line));
-	}
-	i = get_part(line, part);
-	return (i);
 }
