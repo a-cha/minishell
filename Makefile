@@ -49,7 +49,7 @@ srcs/parse/utils_parse.c			\
 srcs/parse/weird_cases.c			\
 srcs/parse/utils_weird_cases.c		\
 srcs/parse/redirections.c			\
-main.c								\
+srcs/main.c								\
 
 all: $(NAME)
 

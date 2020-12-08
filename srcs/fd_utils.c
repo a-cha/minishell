@@ -48,7 +48,7 @@ int						install_out_fd(t_data *data)
 			close(fd_out);
 		fd_out = data->outfile;
 	}
-	else if (!data->type)
+	else if (data->type != '|')
 		fd_out = dup(data->orig_output);
 	if (data->pipe_fd[1])
 		close(data->pipe_fd[1]);
