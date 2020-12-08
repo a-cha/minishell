@@ -61,6 +61,6 @@ int			ret_token(char t, int n, char *str)
 
 int			set_status(int stat)
 {
-	last_status = stat;
+	g_last_status = stat;
 	return (1);
 }

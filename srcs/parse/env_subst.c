@@ -19,7 +19,7 @@ static char	*fill_env(char *env, char q, size_t *f, t_data *part)
 	if (q == '?')
 	{
 		*f = 1;
-		ret = ft_itoa(last_status);
+		ret = ft_itoa(g_last_status);
 	}
 	else if (!(ret = find_env(&(part->env), env)))
 		ret = ft_strdup("");
@@ -50,7 +50,7 @@ static char	*concat_env(char *dup, const char *line, size_t *s, t_data *part)
 	return (dup);
 }
 
-static void	free_and_exit(char *s1, char *s2, t_data *part, char flag)
+void		free_and_exit(char *s1, char *s2, t_data *part, char flag)
 {
 	if (s1)
 		free_memory(s1);

@@ -39,22 +39,6 @@ t_list		*list_dup_sort(const t_data *data)
 	return (start);
 }
 
-t_list		*find_env2(t_list **env_dup, char *str)
-{
-	t_list	*tmp;
-	t_env	*env;
-
-	tmp = *env_dup;
-	while (tmp)
-	{
-		env = tmp->content;
-		if (!(ft_strcmp((const char *)env->env_name, str)))
-			return (tmp);
-		tmp = tmp->next;
-	}
-	return (NULL);
-}
-
 t_env		*env_to_cont(char *env)
 {
 	t_env	*var;

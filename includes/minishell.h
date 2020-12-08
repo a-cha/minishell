@@ -82,6 +82,7 @@ int					max(int n1, int n2);
 int					space(const char *str, int start, int len);
 int					ret_token(char t, int n, char *str);
 int					set_status(int stat);
+void				free_and_exit(char *s1, char *s2, t_data *part, char flag);
 
 /*
 ** Prototypes for commands
