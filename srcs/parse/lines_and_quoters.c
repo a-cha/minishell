@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 /*
-** Checks if symbol has escaped (or not escaped)
+** If there are escaped symbols in string, put string in order
 */
 
 static void		escape_symb_line(char *dup)

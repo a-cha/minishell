@@ -59,7 +59,7 @@ static int	is_wrong_redir(const char *str)
 	return (0);
 }
 
-char		is_in_quots(const char *line, size_t n)
+static char	is_in_quots(const char *line, size_t n)
 {
 	size_t	i;
 	int		s;
@@ -80,7 +80,7 @@ char		is_in_quots(const char *line, size_t n)
 	return (0);
 }
 
-int			is_closed_pipe(const char *line)
+static int	is_closed_pipe(const char *line)
 {
 	char	*pipe;
 	char	*dup;

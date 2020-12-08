@@ -32,7 +32,7 @@ static char	*get_filename(const char *line)
 	return (name);
 }
 
-int			set_redir(char *name, char flag, t_data *part)
+static int	set_redir(char *name, char flag, t_data *part)
 {
 	if (flag == '<')
 	{
@@ -49,7 +49,6 @@ int			set_redir(char *name, char flag, t_data *part)
 		O_WRONLY | O_CREAT | (flag == '>' ? O_TRUNC : O_APPEND), 0644)) < 0)
 			return (0);
 	}
-	printf("fd: %d\n", part->outfile);
 	return (1);
 }
 

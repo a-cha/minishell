@@ -15,6 +15,7 @@
 /*
 ** Frees pointer's content and turns it to NULL
 */
+
 void		free_memory(void *memory)
 {
 	free(memory);

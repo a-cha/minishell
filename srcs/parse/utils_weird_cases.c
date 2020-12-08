@@ -12,6 +12,10 @@
 
 #include "minishell.h"
 
+/*
+** Find out if part of the line is empty
+*/
+
 int			space(const char *str, int start, int len)
 {
 	size_t	i;
@@ -25,6 +29,10 @@ int			space(const char *str, int start, int len)
 		return (0);
 	return (1);
 }
+
+/*
+** Print error message and return needed value
+*/
 
 int			ret_token(char t, int n, char *str)
 {
@@ -46,6 +54,10 @@ int			ret_token(char t, int n, char *str)
 	free_memory(weird);
 	return (1);
 }
+
+/*
+** Set last operation status and return needed value
+*/
 
 int			set_status(int stat)
 {

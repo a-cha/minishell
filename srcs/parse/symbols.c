@@ -36,10 +36,10 @@ int				is_closed_quot(const char *line, char r)
 }
 
 /*
-** Find out if symbol is escaped
+** Find out if the symbol is escaped
 */
 
-static size_t	is_esc(const char *line, size_t i)
+static size_t	is_escaped(const char *line, size_t i)
 {
 	size_t		n;
 
@@ -64,7 +64,7 @@ int				is_symb(const char *line, char c)
 	min = ft_strlen(line);
 	while ((symb = ft_strchr(line + i, c)))
 	{
-		if (min > symb - line && !(is_esc(line, symb - line)))
+		if (min > symb - line && !(is_escaped(line, symb - line)))
 		{
 			min = symb - line;
 			break ;
