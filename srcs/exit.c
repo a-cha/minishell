@@ -48,7 +48,7 @@ static	int			error_arguments(t_data *data, int exit_status)
 		{
 			ft_putstr_fd("exit\n", 2);
 			ft_putstr_fd("minihell > exit: too many arguments\n", 2);
-			return (-1);
+			return (300);
 		}
 		if (ft_is_number(data->args[1]) == 1)
 			exit_status = ft_atoi(data->args[1]);
@@ -57,7 +57,7 @@ static	int			error_arguments(t_data *data, int exit_status)
 			ft_putstr_fd("exit :", 2);
 			ft_putstr_fd(data->args[1], 2);
 			ft_putstr_fd(": numeric argument required\n", 2);
-			exit_status = 0;
+			exit_status = -1;
 		}
 	}
 	return (exit_status);
@@ -65,7 +65,7 @@ static	int			error_arguments(t_data *data, int exit_status)
 
 void				ft_exit(t_data *data, int exit_status)
 {
-	if ((exit_status = error_arguments(data, exit_status)) == -1)
+	if ((exit_status = error_arguments(data, exit_status)) == 300)
 		return ;
 	if (data->infile >= 0)
 		close(data->infile);
