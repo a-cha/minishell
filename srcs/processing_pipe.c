@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int			for_return(t_data *data, void (*f)(t_data *data))
+int					for_return(t_data *data, void (*f)(t_data *data))
 {
 	f(data);
 	return (0);
@@ -30,12 +30,20 @@ int					our_command_if_no_pipe(t_data *data)
 			return (for_return(data, env_unset));
 		else if (!(ft_strcmp(data->args[0], "exit")))
 		{
-			ft_exit(data, last_status);
+			ft_exit(data, g_last_status);
 			return (0);
 		}
 		return (1);
 	}
 	return (1);
+}
+
+static void			child_init(t_data *data)
+{
+	g_last_status = 0;
+	errno = 0;
+	if (data->pipe_fd[0])
+		close(data->pipe_fd[0]);
 }
 
 static char			*corr_path(t_data *data)
@@ -64,14 +72,10 @@ static char			*corr_path(t_data *data)
 
 void				child_process(t_data *data)
 {
-	char		**ar;
 	char		*str;
 	char		**env;
 
-	last_status = 0;
-	errno = 0;
-	if (data->pipe_fd[0])
-		close(data->pipe_fd[0]);
+	child_init(data);
 	if (our_command(data) == 0)
 		exit(EXIT_SUCCESS);
 	str = corr_path(data);
@@ -92,6 +96,5 @@ void				child_process(t_data *data)
 	ft_putstr_fd(": command not found\n", 2);
 	free_memory(str);
 	ft_arrayfree(env);
-	last_status = 127;
 	exit(127);
 }

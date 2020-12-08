@@ -16,7 +16,7 @@ static void	set_flag(int flag)
 {
 	if (flag == 0)
 		ft_putstr_fd("\n", 1);
-	last_status = 0;
+	g_last_status = 0;
 }
 
 void		echo(t_data *data)

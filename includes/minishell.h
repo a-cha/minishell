@@ -24,9 +24,8 @@
 # include <signal.h>
 # include <string.h>
 
-extern int			sigint_flag;
-extern int			last_pid;
-extern int			last_status;
+extern int			g_last_pid;
+extern int			g_last_status;
 
 typedef struct		s_env
 {
@@ -94,6 +93,7 @@ void				new_processing(t_data *data);
 int					process_status(void);
 int					our_command(t_data *data);
 int					our_command_if_no_pipe(t_data *data);
+int					for_return(t_data *data, void (*f)(t_data *data));
 void				processing(t_data *data);
 void				processing_pipe(t_data *data);
 void				child_process(t_data *data);

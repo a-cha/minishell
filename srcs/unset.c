@@ -61,7 +61,7 @@ void			env_unset(t_data *data)
 		env = find_env1(&data->env, data->args[i]);
 		if (env == NULL)
 		{
-			last_status = 1;
+			g_last_status = 1;
 			return ;
 		}
 		if (!(ft_strcmp(data->args[i], env->env_name)))

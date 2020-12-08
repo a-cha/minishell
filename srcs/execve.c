@@ -75,7 +75,7 @@ char			*is_corr_path(char **arr, char *str)
 	return (NULL);
 }
 
-int					our_command(t_data *data)
+int				our_command(t_data *data)
 {
 	if (data->args[0])
 	{
@@ -96,7 +96,7 @@ int					our_command(t_data *data)
 		}
 		else if (!(ft_strcmp(data->args[0], "exit")))
 		{
-			ft_exit(data, last_status);
+			ft_exit(data, g_last_status);
 			return (0);
 		}
 		return (1);

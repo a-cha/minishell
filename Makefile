@@ -33,6 +33,7 @@ srcs/env_utils.c					\
 srcs/pwd.c							\
 srcs/utils.c						\
 srcs/execve.c						\
+srcs/fd_utils.c						\
 srcs/env_export.c					\
 srcs/exit.c							\
 srcs/unset.c						\
@@ -46,6 +47,7 @@ srcs/parse/parse.c					\
 srcs/parse/symbols.c				\
 srcs/parse/utils_parse.c			\
 srcs/parse/weird_cases.c			\
+srcs/parse/utils_weird_cases.c		\
 srcs/parse/redirections.c			\
 main.c								\
 #tests/tests_parsing.c				\

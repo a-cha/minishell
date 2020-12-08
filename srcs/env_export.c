@@ -24,7 +24,7 @@ void		set_new_env(t_data *data)
 			ft_putstr_fd("minihell: export: '", 2);
 			ft_putstr_fd(data->args[i], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
-			last_status = 1;
+			g_last_status = 1;
 			continue ;
 		}
 		ft_lstadd_back(&data->env, ft_lstnew(env_to_cont(data->args[i])));

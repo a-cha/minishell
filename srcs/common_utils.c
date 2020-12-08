@@ -23,8 +23,8 @@ int			process_status(void)
 		status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		status = status | 128;
-	if (last_pid == child)
-		last_status = status;
+	if (g_last_pid == child)
+		g_last_status = status;
 	return (status);
 }
 

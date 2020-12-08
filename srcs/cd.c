@@ -45,10 +45,10 @@ void	cd(t_data *data)
 	}
 	else if (chdir(data->args[1]) == -1)
 	{
-		last_status = 1;
+		g_last_status = 1;
 		return (ft_putstr_fd("cd: No such file or directory \n", 1));
 	}
-	last_status = 0;
+	g_last_status = 0;
 	cd = getcwd(NULL, 0);
 	renew_pwd(data->env, cd);
 }

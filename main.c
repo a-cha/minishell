@@ -12,9 +12,8 @@
 
 #include "minishell.h"
 
-int		last_status = 0;
-int		last_pid = 0;
-int		sigint_flag = 0;
+int		g_last_status = 0;
+int		g_last_pid = 0;
 
 t_data	*shell_init(int argc, char **argv, char **env)
 {
@@ -55,8 +54,8 @@ int 		read_stdin(t_data *data, char **line)
 	{
 		if (!**line)
 		{
-			last_status = 131;
-			ft_exit(data, last_status);
+			g_last_status = 131;
+			ft_exit(data, g_last_pid);
 		}
 		free_memory(*line);
 	}
@@ -97,7 +96,6 @@ int			main(int argc, char **argv, char **env)
 	{
 		ft_putstr_fd("minihell > ", 1);
 		errno = 0;
-		sigint_flag = 0;
 		n = 0;
 		if ((read_stdin(data, &line)) == -1)
 			ft_exit(data, EXIT_FAILURE);
