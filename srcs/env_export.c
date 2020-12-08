@@ -66,8 +66,7 @@ void		print_exp_list(t_list **env_dup, t_data *data)
 	while (tmp)
 	{
 		env = tmp->content;
-		if (is_first_symbol(env->env_name, '_') == 0 ||
-				(env->env_name[1] && is_first_symbol(env->env_name + 1, '_')))
+		if (is_first_symbol(env->env_name, '_') != 0)
 		{
 			ft_putstr_fd("declare -x ", 1);
 			ft_putstr_fd((env->env_name), 1);
