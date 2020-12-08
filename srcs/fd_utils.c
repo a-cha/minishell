@@ -27,7 +27,6 @@ void					reset_t_data(t_data *data)
 		close(data->outfile);
 		data->outfile = -1;
 	}
-	data->flag_redir = 0;
 	dup2(data->orig_input, 0);
 	dup2(data->orig_output, 1);
 }

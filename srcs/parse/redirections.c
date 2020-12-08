@@ -94,6 +94,5 @@ void		redirections(char *line, t_data *part)
 			ft_exit(part, EXIT_FAILURE);
 		}
 		free_memory(name);
-		part->flag_redir = 1;
 	}
 }
