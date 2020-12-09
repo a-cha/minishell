@@ -57,19 +57,19 @@ static size_t	is_escaped(const char *line, size_t i)
 int				is_symb(const char *line, char c)
 {
 	size_t		i;
-	size_t		min;
+	int			min;
 	char		*symb;
 
 	i = 0;
 	min = ft_strlen(line);
 	while ((symb = ft_strchr(line + i, c)))
 	{
-		if (min > symb - line && !(is_escaped(line, symb - line)))
+		if (min > (int)(symb - line) && !(is_escaped(line, symb - line)))
 		{
-			min = symb - line;
+			min = (int)(symb - line);
 			break ;
 		}
 		i += symb - line + 1;
 	}
-	return (min == ft_strlen(line) ? -1 : (int)min);
+	return (min == (int)ft_strlen(line) ? -1 : (int)min);
 }

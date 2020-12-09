@@ -54,7 +54,7 @@ int			is_quotmark(const char *line)
 
 size_t		catch_first_sign(const char *str, t_data *part, char *r)
 {
-	size_t	min;
+	int		min;
 	int		res;
 
 	min = ft_strlen(str);

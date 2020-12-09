@@ -29,7 +29,7 @@ static char	*fill_env(char *env, char q, size_t *f, t_data *part)
 	return (ret);
 }
 
-static char	*concat_env(char *dup, const char *line, size_t *s, t_data *part)
+static char	*concat_env(char *dup, const char *line, int *s, t_data *part)
 {
 	char	*env;
 	char	*tmp;
@@ -48,7 +48,7 @@ static char	*concat_env(char *dup, const char *line, size_t *s, t_data *part)
 		ft_exit(part, EXIT_FAILURE);
 	tmp = dup;
 	dup = ft_strjoin(dup, env);
-	*s += f + 1 + ft_isdigit(*(line - 1));
+	*s += (int)f + 1 + ft_isdigit(*(line - 1));
 	free_memory(tmp);
 	free_memory(env);
 	return (dup);
@@ -60,7 +60,7 @@ char		*handle_env(char *line, t_data *part)
 	char	*dup1;
 	char	*tmp;
 	size_t	i;
-	size_t	s;
+	int		s;
 
 	i = 0;
 	if (!(dup = ft_strdup("")))

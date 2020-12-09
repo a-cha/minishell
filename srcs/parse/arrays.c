@@ -73,7 +73,7 @@ static char	**is_empty_arr(char **arr1, char **arr2)
 
 char		**ft_arrjoin_pro(char **arr1, char **arr2, char flag)
 {
-	size_t	i;
+	int		i;
 	int		l;
 	char	**res;
 

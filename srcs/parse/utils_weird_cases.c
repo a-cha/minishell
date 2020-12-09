@@ -18,7 +18,7 @@
 
 int			space(const char *str, int start, int len)
 {
-	size_t	i;
+	int		i;
 
 	i = 0;
 	while (i < len && !is_symb(&str[start + i], ' '))
