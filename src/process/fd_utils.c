@@ -18,15 +18,11 @@ void					reset_t_data(t_data *data)
 	data->args = (char **)ft_calloc(1, sizeof(char **));
 	*(data->args) = NULL;
 	if (data->infile >= 0)
-	{
 		close(data->infile);
-		data->infile = -1;
-	}
+	data->infile = -1;
 	if (data->outfile >= 0)
-	{
 		close(data->outfile);
-		data->outfile = -1;
-	}
+	data->outfile = -1;
 	dup2(data->orig_input, 0);
 	dup2(data->orig_output, 1);
 }

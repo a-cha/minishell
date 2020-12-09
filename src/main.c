@@ -107,8 +107,7 @@ int				main(int argc, char **argv, char **env)
 			n = n < 0 ? free_and_exit(line, NULL, data, 1) : ft_strlen(line);
 		while (*(line + n))
 		{
-			if ((n += parse(line + n, data)) < 0)
-				free_and_exit(line, NULL, data, 1);
+			n += parse(line + n, data);
 			execution(data);
 			if (*(line + n))
 				reset_t_data(data);

@@ -16,6 +16,7 @@
 ** Find out if part of the line is empty
 */
 
+//	не работают редиректы вместе с лайнбрейками
 int			space(const char *str, int start, int len)
 {
 	int		i;

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.17)
 project(minishell C)
 
 set(CMAKE_C_STANDARD 11)
-
+add_definitions( "-Wall -Wextra -Werror" )
 include_directories(includes)
 include_directories(libft/includes)
 
@@ -58,30 +58,30 @@ add_executable(minishell
         libft/src/libft/ft_substr.c
         libft/src/libft/ft_tolower.c
         libft/src/libft/ft_toupper.c
-        srcs/parse/arrays.c
-        srcs/parse/env_subst.c
-        srcs/parse/lines_and_quoters.c
-        srcs/parse/parse.c
-        srcs/parse/symbols.c
-        srcs/parse/utils_parse.c
-        srcs/parse/weird_cases.c
-        srcs/cd.c
-        srcs/common_utils.c
-        srcs/echo.c
-        srcs/env_export.c
-        srcs/env_utils.c
-        srcs/execve.c
-        srcs/exit.c
-        srcs/pwd.c
-        srcs/signals.c
-        srcs/unset.c
-        srcs/utils.c
-        srcs/main.c
-        srcs/parse/redirections.c
-        srcs/processing_pipe.c
-        srcs/parse/env_subst.c
-        srcs/parse/lines_and_quoters.c
-        srcs/parse/utils_weird_cases.c
-        srcs/fd_utils.c)
+        src/parse/arrays.c
+        src/parse/env_subst.c
+        src/parse/lines_and_quoters.c
+        src/parse/parse.c
+        src/parse/symbols.c
+        src/parse/utils_parse.c
+        src/parse/weird_cases.c
+        src/process/cd.c
+        src/process/common_utils.c
+        src/process/echo.c
+        src/process/env_export.c
+        src/process/env_utils.c
+        src/process/execve.c
+        src/process/exit.c
+        src/process/pwd.c
+        src/process/signals.c
+        src/process/unset.c
+        src/parse/utils.c
+        src/main.c
+        src/parse/redirections.c
+        src/process/processing_pipe.c
+        src/parse/env_subst.c
+        src/parse/lines_and_quoters.c
+        src/parse/utils_weird_cases.c
+        src/process/fd_utils.c)
 
 target_link_libraries(minishell libft.a)

@@ -39,7 +39,11 @@ static int	set_redir(char *name, char flag, t_data *part)
 		if (part->infile >= 0)
 			close(part->infile);
 		if ((part->infile = open(name, O_RDONLY)) < 0)
-			return (0);
+		{
+			print_error(0, strerror(errno), 1);
+			g_last_status = 1;
+			return (-1);
+		}
 	}
 	else
 	{
@@ -47,9 +51,9 @@ static int	set_redir(char *name, char flag, t_data *part)
 			close(part->outfile);
 		if ((part->outfile = open(name,
 		O_WRONLY | O_CREAT | (flag == '>' ? O_TRUNC : O_APPEND), 0644)) < 0)
-			return (0);
+			return (1);
 	}
-	return (1);
+	return (0);
 }
 
 int			is_redir(const char *line, char *r)
@@ -88,10 +92,13 @@ void		redirections(char *line, t_data *part)
 		i += s + 1;
 		if (!(name = get_filename(line + i)))
 			ft_exit(part, EXIT_FAILURE);
-		if (!(set_redir(name, r, part)))
+		if ((r = (char)set_redir(name, r, part)))
 		{
 			free_memory(name);
-			ft_exit(part, EXIT_FAILURE);
+			if (r == 1)
+				ft_exit(part, EXIT_FAILURE);
+			part->infile = -2;
+			break ;
 		}
 		free_memory(name);
 	}

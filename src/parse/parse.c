@@ -59,6 +59,13 @@ int			parse(const char *line, t_data *part)
 		if (!(part->args = ft_arrjoin_pro(part->args,
 					handle_line(line, i, s, part), *(line + i))))
 			ft_exit(part, EXIT_FAILURE);
+		if (part->infile == -2)
+		{
+			if ((i = is_linebreak(line)) < 0)
+				i = (int)ft_strlen(line) - 1;
+			reset_t_data(part);
+			return (i + 1);
+		}
 		if (!r)
 			break ;
 		i += s + 2 + quot_marks(line + i, part, s, r);

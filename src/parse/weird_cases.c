@@ -106,7 +106,7 @@ static int	is_closed_pipe(const char *line)
 
 int			weird_cases(const char *line)
 {
-	size_t	i;
+	int 	i;
 	int		s;
 	char	r;
 	int		ret;
