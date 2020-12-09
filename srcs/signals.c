@@ -16,6 +16,7 @@ static void			sig_quit(int i)
 {
 	int	exit_status;
 
+	i= 0;
 	if ((exit_status = process_status()) == -1)
 		return ;
 	else if (exit_status == 131)
@@ -26,6 +27,7 @@ static void			sig_int(int i)
 {
 	int	exit_status;
 
+	i = 0;
 	if ((exit_status = process_status()) == -1)
 	{
 		ft_putstr_fd("\n", 1);

@@ -57,7 +57,7 @@ void		rewrite_cont(t_data *data, t_env *env)
 	}
 }
 
-void		print_exp_list(t_list **env_dup, t_data *data)
+void		print_exp_list(t_list **env_dup)
 {
 	t_list	*tmp;
 	t_env	*env;
@@ -66,7 +66,7 @@ void		print_exp_list(t_list **env_dup, t_data *data)
 	while (tmp)
 	{
 		env = tmp->content;
-		if (is_first_symbol(env->env_name, '_') != 0)
+		if (is_first_symbol(env->env_name, '_', 1) != 0 )
 		{
 			ft_putstr_fd("declare -x ", 1);
 			ft_putstr_fd((env->env_name), 1);
@@ -99,7 +99,7 @@ void		env_export(t_data *data)
 		return ;
 	}
 	new_list = list_dup_sort(data);
-	print_exp_list(&new_list, data);
+	print_exp_list(&new_list);
 	ft_lstclear(&new_list, del_content);
 }
 

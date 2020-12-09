@@ -12,7 +12,7 @@
 
 # Compile
 CC := gcc
-CFLAGS := #-Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror
 
 # Directories
 SRC_DIR := ./src/

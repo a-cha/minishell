@@ -21,8 +21,8 @@ static void	set_flag(int flag)
 
 void		echo(t_data *data)
 {
-	unsigned long int	i;
-	int					flag;
+	int			i;
+	int			flag;
 
 	i = 0;
 	flag = 0;

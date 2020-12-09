@@ -28,11 +28,11 @@ int			process_status(void)
 	return (status);
 }
 
-int			is_first_symbol(const char *str, char c)
+int			is_first_symbol(const char *str, char c, int i)
 {
 	if (!str)
 		return (-1);
-	else if (str[0] == c)
+	else if (str[i] == c)
 		return (0);
 	return (-1);
 }
